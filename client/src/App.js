@@ -1,34 +1,23 @@
 import './App.css';
-import {useState} from 'react';
-import {BrowserRouter,Route,Routes,Navigate} from 'react-router-dom';
-import NavBar from './components/NavBar.js';
-import Login from './components/Login.js';
-import SignUp from './components/SignUp.js';
-import Footer from './components/Footer.js';
+import {HashRouter,Route,Routes} from 'react-router-dom';
+import Header from './components/header/Header.js';
+import Footer from './components/footer/Footer.js';
+import Announcement from './views/Announcement/Announcement.js';
 
 function App() {
-  const [user,setUser]=useState(null);
-
-  const setUserData =  (userData) =>{
-    setUser(userData);
-  }
-
-  const clearUserData = () =>{
-    setUser(null);
-  }
 
   return (
     <div className="App">
-      <BrowserRouter>
-        <NavBar user={user} clearUserData={clearUserData}/>
+      <HashRouter>
+        <Header/>
         <Routes>
-          {/* <Route path='/' element={<Home/>}/> */}
-          <Route path='/login' element={<Login setUserData={setUserData}/>}/>
-          <Route path='/signup' element={<SignUp/>}/>
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <NavRoute key="404" exact path="/404" name="Page 404" component={Page404} />
+          <NavRoute key="500" exact path="/500" name="Page 500" component={Page500} />
+          <NavRoute key="home" path="/home" name="Home" component={DefaultLayout} />
+          <NavRoute key="login" name="Login Page" component={Login} />
         </Routes>
         <Footer/>
-      </BrowserRouter>
+      </HashRouter>
     </div>
   );
 }

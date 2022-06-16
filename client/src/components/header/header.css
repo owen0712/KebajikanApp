@@ -1,0 +1,32 @@
+#header{
+    background-color: #192F59;
+    padding: 10px;
+    display: flex;
+}
+
+.white-text{
+    color: white;
+}
+
+.blue-text{
+    color: #50B5EA;
+}
+
+.logo-name{
+    font-size: x-large;
+    font-weight: bold;
+}
+
+.nav-item{
+    padding: 6px 0;
+    font-weight: bold;
+}
+
+#user-section{
+    right: 20px;
+    position: absolute;
+}
+
+svg{
+    color: white;
+}

@@ -1,0 +1,14 @@
+label{
+    background-color: #192F59;
+    color: white;
+    font-weight: bold;
+}
+
+.file-upload{
+    width: 80%;
+}
+
+
+.file-upload>*{
+    display: block;
+}
