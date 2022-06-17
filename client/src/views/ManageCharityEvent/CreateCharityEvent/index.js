@@ -36,9 +36,12 @@ class CreateCharityEvent extends Component {
     render() {
         return (
             <React.Fragment>
-                <p>Back</p>
+                <span id="back-section">
+                    <ArrowBackIcon id="back-icon"/>
+                    <a>Back</a>
+                </span>
                 <form onSubmit={event=>this.handleSubmit(event)}>
-                    <div>
+                    <div id="form-left-content">
                         <span className="short-input">
                             <label >TITLE</label>
                             <input type="text" name="title"/>
@@ -52,7 +55,7 @@ class CreateCharityEvent extends Component {
                             <input type="text" name="description"/>
                         </span>
                     </div>
-                    <div>
+                    <div id="form-right-content">
                         <span className="short-input">
                             <label >LOCATION</label>
                             <input type="text" name="location"/>
@@ -79,15 +82,15 @@ class CreateCharityEvent extends Component {
                         </span>
                         <span className="short-input">
                             <label >SUPPORTING DOCUMENT</label>
-                            <input type="date" name="document"/>
+                            <input type="file" name="document"/>
                         </span>
                     </div>
                     <span className="file-upload">
-                        <label >Cover Photo</label>
+                        <label >COVER PHOTO</label>
                         <input ref={this.fileUploadInput} type="file" accept="image/*" id="fileInput" onChange={this.handleFileInputOnChange}/>
                         <img ref={this.imageDisplay} src="data:," name="image" onClick={event=>this.handleImageOnClick(event)}/>
                     </span>
-                    <input type="submit" value="Create"/>
+                    <input type="submit" value="Create" id="create-button"/>
                 </form>
             </React.Fragment>
         )
