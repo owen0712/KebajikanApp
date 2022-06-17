@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 export default class Navigation extends Component {
     constructor(props){
@@ -41,7 +41,7 @@ export default class Navigation extends Component {
             <React.Fragment>
             {
                 !!this.state.toObject?
-                (<Redirect push={this.state.isPush} to={this.state.toObject} />):
+                (<Navigate push={this.state.isPush} to={this.state.toObject} />):
                 (null)
             }
             {

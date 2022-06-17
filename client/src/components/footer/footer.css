@@ -19,7 +19,7 @@ hr{
 
 #main-content{
     display: flex;
-    margin: 30px;
+    margin: 10px;
 }
 
 #left-content{
@@ -39,7 +39,7 @@ hr{
 
 a{
     display: block;
-    margin: 5px;
+    margin: 20px;
 }
 
 span{

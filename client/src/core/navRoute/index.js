@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
-import { Navigation } from 'core';
+import { Navigation } from '../../core';
 
 export default class NavRoute extends Component {
 

@@ -1,6 +1,5 @@
 #header{
     background-color: #192F59;
-    padding: 10px;
     display: flex;
 }
 
@@ -29,4 +28,5 @@
 
 svg{
     color: white;
+    margin: 15px 0;
 }
