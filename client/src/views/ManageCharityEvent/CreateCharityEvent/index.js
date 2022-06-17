@@ -41,6 +41,7 @@ class CreateCharityEvent extends Component {
                     <a>Back</a>
                 </span>
                 <form onSubmit={event=>this.handleSubmit(event)}>
+                    <div id="upper-part">
                     <div id="form-left-content">
                         <span className="short-input">
                             <label >TITLE</label>
@@ -84,6 +85,7 @@ class CreateCharityEvent extends Component {
                             <label >SUPPORTING DOCUMENT</label>
                             <input type="file" name="document"/>
                         </span>
+                    </div>
                     </div>
                     <span className="file-upload">
                         <label >COVER PHOTO</label>
