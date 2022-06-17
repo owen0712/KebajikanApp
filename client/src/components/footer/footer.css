@@ -1,0 +1,50 @@
+#footer{
+    background-color: #192F59;
+    padding: 10px;
+}
+
+hr{
+    border-width: 1;
+    color:white;
+    background-color:white
+}
+
+.white-text{
+    color: white;
+}
+
+.blue-text{
+    color: #50B5EA;
+}
+
+#main-content{
+    display: flex;
+    margin: 10px;
+}
+
+#left-content{
+    width: 45%;
+    margin: 10px;
+    display: inline-block;
+}
+
+#left-content>span{
+    text-align: center;
+}
+
+#right-content{
+    width: 55%;
+    margin: 10px;
+}
+
+a{
+    display: block;
+    margin: 20px;
+}
+
+span{
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 20px;
+    margin-right: 20px;
+}
