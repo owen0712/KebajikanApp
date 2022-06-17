@@ -8,8 +8,8 @@ router.get('/announcement',(req,res)=>{
         res.json({announcements:annoucements});
     }).catch(err=>{
         res.json({error:err});
-    })
-})
+    });
+});
 
 router.post('/announcement/:id',(req,res)=>{
     const {title,description,attachment} = req.body;
@@ -23,10 +23,10 @@ router.post('/announcement/:id',(req,res)=>{
         createdBy:req.params.id
     });
     newAnnouncement.save().then(createdAnnouncement=>{
-        res.json({message:'New event successfully created'});
+        res.json({message:'New announcement successfully created'});
     }).catch(err=>{
         res.json({error:err});
-    })
+    });
 });
 
 router.put('/announcement/:id',(req,res)=>{
@@ -38,7 +38,7 @@ router.put('/announcement/:id',(req,res)=>{
         res.json({message:'Announcement successfully updated'});
     }).catch(err=>{
         res.json({error:err});
-    })
+    });
 });
 
 router.delete('/announcement/:id',(req,res)=>{

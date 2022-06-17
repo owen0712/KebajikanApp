@@ -11,6 +11,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Header/>
+        <div id="body">
         <Routes>
           {/* <NavRoute key="404" exact path="/404" name="Page 404" component={Page404} />
           <NavRoute key="500" exact path="/500" name="Page 500" component={Page500} />
@@ -18,6 +19,7 @@ function App() {
           <NavRoute key="login" name="Login Page" component={Login} /> */}
           <Route path='/announcement' element={<CreateCharityEvent/>}/>
         </Routes>
+        </div>
         <Footer/>
       </BrowserRouter>
     </div>

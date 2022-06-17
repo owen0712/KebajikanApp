@@ -5,13 +5,15 @@ const mongoose = require('mongoose');
 const { MONGOURI } = require('./config/keys');
 
 require('./models/userModel');
+require('./models/charityEventModel');
 
 const cors = require('cors');
 app.use(cors());
-app.use(express.json());
+app.use(express.json({limit: '50mb'}));
 
 app.use(require('./routes/authenticationRoute'));
 app.use(require('./routes/userRoute'));
+app.use(require('./routes/charityEventRoute'));
 
 if (process.env.NODE_ENV == 'production') {
     app.use(express.static('client/build'))

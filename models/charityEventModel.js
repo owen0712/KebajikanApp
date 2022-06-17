@@ -27,7 +27,7 @@ const charityEventSchema = new mongoose.Schema({
         required:true
     },
     amount:{
-        type:Double,
+        type:Number,
         required:true
     },
     purpose:{
@@ -35,8 +35,8 @@ const charityEventSchema = new mongoose.Schema({
         required:true
     },
     description:{
-        type:String
-        //not compulsary
+        type:String,
+        required:true
     },
     location:{
         type:String,
@@ -57,11 +57,17 @@ const charityEventSchema = new mongoose.Schema({
         required:true
     },
     created_by:{
-        type:String,
+        type:ObjectId,
+        ref:"User",
         required:true
     },
-    cover:{
-        
+    photo:{
+        type:Object,
+        required:true
+    },
+    document:{
+        type:Object,
+        required:true
     }
 })
 

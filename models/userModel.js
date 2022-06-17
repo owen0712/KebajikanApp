@@ -21,12 +21,21 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    status:{
+        type:String,
+        default:"Active",
+        required:true
+    },
+    identity_no:{
+        type:String
+    },
     role:{
         type:String,
         default:'User'
     },
-    resetToken:String,
-    expireToken:String
+    profile_pic:{
+        type:Object
+    }
 })
 
 mongoose.model('User',userSchema);
