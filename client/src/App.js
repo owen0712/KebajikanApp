@@ -3,6 +3,7 @@ import {BrowserRouter,Route,Routes} from 'react-router-dom';
 import Header from './components/header/Header.js';
 import Footer from './components/footer/Footer.js';
 import CreateCharityEvent from './views/ManageCharityEvent/CreateCharityEvent';
+import CreatePartTimeJob from './views/ManagePartTimeJob/CreatePartTimeJob';
 // import NavRoute from './core/navRoute';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
           <NavRoute key="home" path="/home" name="Home" component={Announcement} />
           <NavRoute key="login" name="Login Page" component={Login} /> */}
           <Route path='/announcement' element={<CreateCharityEvent/>}/>
+          <Route path='/managePartTimeJob/createPartTimeJob' element={<CreatePartTimeJob/>}/>
         </Routes>
         </div>
         <Footer/>
