@@ -3,6 +3,11 @@
     display: flex;
 }
 
+#header span{
+    display: inline-block;
+    vertical-align: top;
+}
+
 .white-text{
     color: white;
 }

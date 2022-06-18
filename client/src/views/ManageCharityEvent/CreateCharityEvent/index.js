@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from "prop-types";
 import './create_charity_event.css';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import BackSection from '../../../components/BackSection';
 
 const propTypes = {
     children: PropTypes.node,
@@ -28,22 +28,8 @@ class CreateCharityEvent extends Component {
         };
         this.imageUploadInput = React.createRef();
         this.imageDisplay = React.createRef();
-        this.handleTitleOnChange=this.handleTitleOnChange.bind(this);
-        this.handlePurposeOnChange=this.handlePurposeOnChange.bind(this);
-        this.handleDescriptionOnChange=this.handleDescriptionOnChange.bind(this);
-        this.handleLocationOnChange=this.handleLocationOnChange.bind(this);
-        this.handleAmountOnChange=this.handleAmountOnChange.bind(this);
-        this.handlePreregistrationStartDateOnChange=this.handlePreregistrationStartDateOnChange.bind(this);
-        this.handlePreregistrationEndDateOnChange=this.handlePreregistrationEndDateOnChange.bind(this);
-        this.handleDonationStartDateOnChange=this.handleDonationStartDateOnChange.bind(this);
-        this.handleDonationEndDateOnChange=this.handleDonationEndDateOnChange.bind(this);
         this.fileUploadInput = React.createRef();
         this.fileTextDisplay = React.createRef();
-        this.handleImageOnClick=this.handleImageOnClick.bind(this);
-        this.handleImageOnChange=this.handleImageOnChange.bind(this);
-        this.handleTextInputOnClick=this.handleTextInputOnClick.bind(this);
-        this.handleFileOnChange=this.handleFileOnChange.bind(this);
-        this.handleSubmit=this.handleSubmit.bind(this);
     }
 
     handleTitleOnChange(event){
@@ -128,7 +114,6 @@ class CreateCharityEvent extends Component {
 
     handleSubmit(event){
         event.preventDefault();
-        console.log(this.state)
         fetch('/charity_event',{
             method:'post',
             headers:{
@@ -161,13 +146,10 @@ class CreateCharityEvent extends Component {
 
     render() {
         return (
-            <React.Fragment>
-                <div id="back-section">
-                    <ArrowBackIcon id="back-icon"/>
-                    <a>Back</a>
-                </div>
+            <React.Fragment id="create-charity-event-section">
+                <BackSection title="Create Charity Event"/>
                 <form onSubmit={event=>this.handleSubmit(event)}>
-                    <div id="upper-part">
+                    <div id="create-form-upper-part">
                         <div id="form-left-content">
                             <span className="short-input">
                                 <label >TITLE</label>

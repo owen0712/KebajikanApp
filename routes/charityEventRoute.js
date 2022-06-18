@@ -30,7 +30,7 @@ router.post('/charity_event',(req,res)=>{
     newCharityEvent.save().then(createdCharityEvent=>{
         res.json({message:'New event successfully created'});
     }).catch(err=>{
-        res.json({error:err});
+          res.json({error:err});
     });
 });
 

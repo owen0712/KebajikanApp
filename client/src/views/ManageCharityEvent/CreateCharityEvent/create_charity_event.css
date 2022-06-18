@@ -3,7 +3,7 @@ form div{
     width: 50%;
 }
 
-#upper-part{
+#create-form-upper-part{
     display:flex;
     width: 100%;
 }
@@ -38,7 +38,7 @@ textarea{
 
 .long-input{
     margin: 10px;
-    width: 95%;
+    width: 90%;
 }
 
 .long-input *{
@@ -46,11 +46,12 @@ textarea{
 }
 
 .long-input label{
+    width: 96%;
     padding: 15px 8px;
 }
 
 .long-input textarea{
-    width: 100%;
+    width: 96%;
     height: 120px;
 }
 
@@ -65,6 +66,10 @@ textarea{
 
 .short-input input{
     width: 85%;
+}
+
+#form-left-content .short-input{
+    margin-left: 0;
 }
 
 #form-right-content label{
@@ -112,21 +117,21 @@ img{
 }
 
 #back-icon{
-    color: black;
+    color: #192F59;
 }
 
-#back-section{
+#create-form-back-section{
     display: flex;
 }
 
-#back-section svg{
+#create-form-back-section svg{
     display: inline-block;
     margin: 10px;
     height: 18px;
     width: 18px;
 }
 
-#back-section a{
+#create-form-back-section a{
     display: inline-block;
     margin: 10px;
     font-weight: bold;
