@@ -4,7 +4,6 @@ import Header from './components/header/Header.js';
 import Footer from './components/footer/Footer.js';
 import CreateCharityEvent from './views/ManageCharityEvent/CreateCharityEvent';
 import CreatePartTimeJob from './views/ManagePartTimeJob/CreatePartTimeJob';
-import ViewCharityEvent from './views/ManageCharityEvent/ViewCharityEvent';
 // import NavRoute from './core/navRoute';
 
 function App() {
@@ -19,9 +18,8 @@ function App() {
           <NavRoute key="500" exact path="/500" name="Page 500" component={Page500} />
           <NavRoute key="home" path="/home" name="Home" component={Announcement} />
           <NavRoute key="login" name="Login Page" component={Login} /> */}
+          <Route path='/announcement' element={<CreateCharityEvent/>}/>
           <Route path='/managePartTimeJob/createPartTimeJob' element={<CreatePartTimeJob/>}/>
-          <Route path='/announcement' element={<ViewCharityEvent/>}/>
-          <Route path='/announcement/create' element={<CreateCharityEvent/>}/>
         </Routes>
         </div>
         <Footer/>
