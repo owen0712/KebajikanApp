@@ -1,0 +1,105 @@
+#charity-event-list-back-section svg{
+    color: #192F59;
+    margin: 0;
+}
+
+#charity-event-list-back-section{
+    padding: 5px;
+    border-right: 3px solid rgb(25, 47, 89, .4);
+    margin-right: ;
+}
+
+#charity-event-list-upper-part{
+    display: flex;
+    font-weight: bold;
+    border-bottom: 3px solid rgb(25, 47, 89, .4);
+    padding-bottom: 10px;
+}
+
+#charity-event-list-upper-part p{
+    margin: 7px 0;
+    font-size: 20px;
+}
+
+#charity-event-list-upper-part button{
+    margin: auto 20px auto auto;
+    position: relative;
+}
+
+.button-list{
+    display: flex;
+    justify-content: center;
+}
+
+.button{
+    color: #192F59;
+    display: flex;
+    height: 30px;
+    border: 2px solid #192F59;
+    background-color: white;
+    border-radius: 10px;
+    font-weight: bold;
+    margin: 10px;
+    line-height: 25px;
+}
+
+.button svg{
+    margin: 0 5px 0 0;
+    color: #192F59;
+}
+
+.danger-button{
+    color: #DF5645;
+    display: flex;
+    height: 30px;
+    border: 2px solid #DF5645;
+    background-color: white;
+    border-radius: 10px;
+    font-weight: bold;
+    margin: 10px;
+    line-height: 25px;
+}
+
+.danger-button svg{
+    margin: 0 5px 0 0;
+    color: #DF5645;
+}
+
+#charity-event-list-table-section{
+    padding: 20px;
+    background-color: #E2ECFF;
+}
+
+table{
+    padding: 10px;
+    width: 100%;
+    color: #192F59;
+    margin-top: 15px;
+    background-color: white;
+}
+
+table thead{
+    height: 35px;
+    background-color: #192F59;
+    color: white;
+}
+
+thead th{
+    border: 2px solid #192F59;
+    text-align: left;
+    padding-left: 20px;
+}
+
+tbody{
+    background-color: white;
+    color: #192F59;
+    font-weight: bold;
+}
+
+tbody tr{
+    border-bottom: 3px solid rgb(25, 47, 89, .4);
+}
+
+tbody td{
+    padding-left: 20px;
+}
