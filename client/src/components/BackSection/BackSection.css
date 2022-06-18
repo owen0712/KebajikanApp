@@ -1,0 +1,65 @@
+#back-icon{
+    color: black;
+}
+
+#back-section{
+    display: flex;
+    border-bottom: 2px solid rgba(25, 47, 89, 0.4);
+    margin: -1% -5.5% 2% -5.5%;
+}
+
+#back-button{
+    margin: 3px 3px;
+    padding: 0 20px;
+    border-radius: 5px;
+    border : none;
+    background-color: white;
+    
+}
+
+#back-button:hover{
+    margin: 2px 2px;
+    background-color: rgba(215,215,215,1);
+    border : 1px solid rgba(25, 47, 89, 0.4);
+}
+
+#back-section svg{
+    display: inline-block;
+    height: 35px;
+    width: 35px;
+    
+}
+
+#back-section a{
+    display: inline-block;
+    margin: 10px;
+    font-weight: bold;
+}
+
+.back-section-title{
+    color:#192f59;
+    text-align: center;
+    font-family: 'Roboto Condensed';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 30px;
+    margin: 10px 0;
+    border-left: 2px solid rgba(25, 47, 89, 0.4);
+    padding-left: 10px;
+
+    display: flex;
+    align-items: flex-end;
+
+    color: #192F59;
+}
+
+#back-text{
+    color:#192f59;
+    text-align: center;
+    font-family: 'Roboto Condensed';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 30px;
+    margin: 10px 0;
+    padding: 0 10px
+}
