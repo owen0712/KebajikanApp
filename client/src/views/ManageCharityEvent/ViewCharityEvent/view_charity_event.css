@@ -6,7 +6,7 @@
 #charity-event-list-back-section{
     padding: 5px;
     border-right: 3px solid rgb(25, 47, 89, .4);
-    margin-right: ;
+    margin-right: 10px;
 }
 
 #charity-event-list-upper-part{
@@ -96,10 +96,7 @@ tbody{
     font-weight: bold;
 }
 
-tbody tr{
-    border-bottom: 3px solid rgb(25, 47, 89, .4);
-}
-
 tbody td{
     padding-left: 20px;
+    border-bottom: 3px solid rgb(25, 47, 89, .4);
 }

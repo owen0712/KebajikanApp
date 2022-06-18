@@ -5,6 +5,7 @@ import Footer from './components/footer/Footer.js';
 import CreateCharityEvent from './views/ManageCharityEvent/CreateCharityEvent';
 import CreatePartTimeJob from './views/ManagePartTimeJob/CreatePartTimeJob';
 import ViewCharityEvent from './views/ManageCharityEvent/ViewCharityEvent';
+import ViewCharityEventDetails from './views/ManageCharityEvent/ViewCharityEventDetails/index.js';
 // import NavRoute from './core/navRoute';
 
 function App() {
@@ -20,8 +21,9 @@ function App() {
           <NavRoute key="home" path="/home" name="Home" component={Announcement} />
           <NavRoute key="login" name="Login Page" component={Login} /> */}
           <Route path='/managePartTimeJob/createPartTimeJob' element={<CreatePartTimeJob/>}/>
-          <Route path='/announcement' element={<ViewCharityEvent/>}/>
-          <Route path='/announcement/create' element={<CreateCharityEvent/>}/>
+          <Route path='/charity_event' element={<ViewCharityEvent/>}/>
+          <Route path='/charity_event/create' element={<CreateCharityEvent/>}/>
+          <Route path='/charity_event/view/:id' element={<ViewCharityEventDetails/>}/>
         </Routes>
         </div>
         <Footer/>

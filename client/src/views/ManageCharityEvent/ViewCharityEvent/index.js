@@ -9,6 +9,7 @@ import CreateIcon from '@mui/icons-material/Create';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import Swal from 'sweetalert2';
 
 const ViewCharityEvent = (props) => {
 
@@ -42,19 +43,51 @@ const ViewCharityEvent = (props) => {
     }
 
     const handleCreate = () => {
-        navigate('/announcement/create');
+        navigate('/charity_event/create');
     }
 
     const handleView = (id) => {
-
+        navigate('/charity_event/view/'+id);
     }
 
     const handleEdit = (id) => {
-
+        navigate('/charity_event/edit/'+id);
     }
 
     const handleDelete = (id) =>{
-
+        Swal.fire({
+            title: 'Delete Charity Event',
+            text: 'Do you want to delete this charity event?',
+            icon: 'warning',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'Cancel',
+            showCancelButton: true
+        }).then(result=>{
+            if(result.isConfirmed){
+                console.log(id)
+                fetch('/charity_event/'+id,{
+                    method:'delete',
+                    headers:{
+                        'Content-Type':'application/json'
+                    }
+                }).then(res=>res.json()).then(data=>{
+                    if(data.error){
+                        console.log(data.error);
+                    }
+                    else{
+                        console.log(data.message);
+                        Swal.fire({
+                            title: data.message,
+                            text: 'Do you want to delete this charity event?',
+                            icon: 'success',
+                            confirmButtonText: 'Ok'
+                        })
+                    }
+                }).catch(err=>{
+                    console.log(err);
+                })
+            }
+        })
     }
 
     return (
@@ -90,20 +123,20 @@ const ViewCharityEvent = (props) => {
                                 <td>{event.created_on}</td>
                                 <td>{event.status}</td>
                                 <td className='button-list'>
-                                    <button className='button' onClick={handleView(event.id)}><RemoveRedEyeIcon/>View</button>
-                                    <button className='button' onClick={handleEdit(event.id)}><CreateIcon/>Edit</button>
-                                    <button className='danger-button' onClick={handleDelete(event.id)}><DeleteIcon/>Delete</button>    
+                                    <button className='button' onClick={()=>handleView(event._id)}><RemoveRedEyeIcon/>View</button>
+                                    <button className='button' onClick={()=>handleEdit(event._id)}><CreateIcon/>Edit</button>
+                                    <button className='danger-button' onClick={()=>handleDelete(event._id)}><DeleteIcon/>Delete</button>    
                                 </td>
                             </tr>
                         })}
                     </tbody>
                 </table>
-                <div id="charity-event-list-pagination">
+                {/* <div id="charity-event-list-pagination">
                     <ArrowLeftIcon/>
                     <input type="number" defaultValue={pageNumber}/>
                     <p>/{events.length/7}</p>
                     <ArrowRightIcon/>
-                </div>
+                </div> */}
             </div>
             </>}            
         </React.Fragment>

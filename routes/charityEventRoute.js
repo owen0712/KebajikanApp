@@ -9,7 +9,6 @@ router.post('/charity_event',(req,res)=>{
     if(!title||!purpose||!description||!location||!amount||!preregister_start_date||!preregister_end_date||!donation_start_date||!donation_end_date||!photo||!document){
         return res.json({error:'please fill all fields'});
     }
-    console.log("Pass phase1");
     const newCharityEvent = new CharityEvent({
         title,
         purpose,
@@ -35,7 +34,9 @@ router.post('/charity_event',(req,res)=>{
 });
 
 router.get('/charity_event',(req,res)=>{
-    CharityEvent.find().then(events=>{
+    CharityEvent.find()
+    .select("-photo,-document")
+    .then(events=>{
         res.json({events:events});
     }).catch(err=>{
         res.json({error:err});
@@ -43,15 +44,23 @@ router.get('/charity_event',(req,res)=>{
 });
 
 router.get('/charity_event/:id',(req,res)=>{
-    Announcement.find({_id:req.params.id}).then(annoucement=>{
-        res.json({announcement:annoucement});
+    CharityEvent.find({_id:req.params.id}).then(event=>{
+        res.json({event:event});
     }).catch(err=>{
         res.json({error:err});
     });
 })
 
-router.put('./chaaity_event/:id',);
+router.put('./charity_event/:id',(req,res)=>{
 
-router.delete('./charity_event/:id',);
+});
+
+router.delete('./charity_event/:id',(req,res)=>{
+    CharityEvent.deleteOne({_id:req.params.id}).then(result=>{
+        res.json({message:"Successfully Deleted"});
+    }).catch(err=>{
+        res.json({error:err})
+    })
+});
 
 module.exports = router;
