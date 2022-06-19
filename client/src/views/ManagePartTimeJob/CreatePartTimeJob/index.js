@@ -103,7 +103,7 @@ class CreatePartTimeJob extends Component {
     handleSubmit = (event) =>{
         event.preventDefault();
         console.log(this.state)
-        fetch('/parttime_job',{
+        fetch('/part_time_job',{
             method:'post',
             headers:{
                 'Content-Type':'application/json'
@@ -131,7 +131,7 @@ class CreatePartTimeJob extends Component {
 
     render() {
         return (
-            <React.Fragment>
+            <React.Fragment id="createPartTimeJob">
                 <BackSection title="Create Part-Time Job"/>
                 <form onSubmit={event=>this.handleSubmit(event)}>
                     <div id="upper-part">

@@ -62,3 +62,26 @@
     margin: 10px 0;
     padding: 0 10px
 }
+
+.create-button{
+    color: #192F59;
+    display: flex;
+    height: 30px;
+    border: 2px solid #192F59;
+    background-color: white;
+    border-radius: 10px;
+    font-weight: bold;
+    margin: 10px;
+    line-height: 25px;
+}
+
+.create-button #add-icon{
+    margin: 0 5px 0 0;
+    color: #192F59;
+    height: 25px;
+}
+
+#back-section .create-button{
+    margin: auto 20px auto auto;
+    position: relative;
+}
