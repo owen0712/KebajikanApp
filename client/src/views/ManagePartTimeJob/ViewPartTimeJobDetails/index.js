@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {useNavigate} from "react-router-dom";
 import {BackSection} from '../../../components';
 import PropTypes from "prop-types";
-import './create_part_time_job.css';
+import './view_part_time_job_details.css';
 
 const propTypes = {
     children: PropTypes.node,
@@ -10,7 +10,7 @@ const propTypes = {
 
 const defaultProps = {};
 
-class CreatePartTimeJob extends Component {
+class ViewPartTimeJobDetails extends Component {
 
     constructor(props) {
         super(props);
@@ -20,11 +20,63 @@ class CreatePartTimeJob extends Component {
             description:"",
             location:"",
             allowance:0,
-            closed_date:null,
-            photo:null
+            closed_date:"",
+            photo:null,
+            isDisable:true
         };
         this.imageUploadInput = React.createRef();
         this.imageDisplay = React.createRef();
+    }
+
+    componentDidMount(){
+        const path = window.location.pathname;
+        const id  = path.substring(path.lastIndexOf("/")+1);
+        console.log("ID",id);
+        fetch('/part_time_job/'+id,{
+            method:'get',
+            headers:{
+                'Content-Type':'application/json'
+            }
+        }).then((res)=>{
+            const json = res.json();
+            Promise.resolve(json.then((data)=>{
+                return data.event;
+            }).then((info)=>{
+                info.map((job)=>{
+                    this.setState({
+                        title:job.title,
+                        required_student:job.required_student,
+                        description:job.description,
+                        location:job.location,
+                        allowance:job.allowance,
+                        closed_date:this.convertDateFormat(job.closed_date),
+                        photo:job.photo,
+                    })
+                    console.log("date",new Date(job.closed_date).toLocaleDateString());
+                })    
+            }))
+            return json;
+        }).catch(err=>{
+            console.log(err);
+        })
+        
+    }
+
+    convertDateFormat = (rawDate) =>{
+        var monthNames = [
+            "JAN", "FEB", "MAR",
+            "APR", "MAY", "JUN", "JUL",
+            "AUG", "SEP", "OCT",
+            "NOV", "DEC"
+            ];
+        let tempDate = new Date(rawDate);
+        let tempYear = tempDate.getFullYear();
+        let tempMonth = tempDate.getMonth()+1;
+        let tempDay = tempDate.getDate();
+        const newDate = tempYear + "-" + (tempMonth.toString().length < 2 ? "0" +tempMonth : tempMonth) + "-" + (tempDay.toString().length < 2 ? "0" + tempDay : tempDay);
+        console.log("Not format:", tempDate.toLocaleDateString);
+        console.log("Format:", newDate);
+        return newDate
     }
 
     handleTitleOnChange = (event) =>{
@@ -124,7 +176,6 @@ class CreatePartTimeJob extends Component {
             }
             else{
                 console.log(data.message);
-                window.history.back();
             }
         }).catch(err=>{
             console.log(err);
@@ -134,51 +185,48 @@ class CreatePartTimeJob extends Component {
     render() {
         return (
             <React.Fragment>
-                <BackSection title="Create Part-Time Job" onBackButtonClick={()=>{window.history.back()}}/> 
+                <BackSection title="View Part-Time Job Details" onBackButtonClick={()=>{window.history.back()}}/> 
                 <form onSubmit={event=>this.handleSubmit(event)}>
                     <div id="upper-part">
                         <div id="form-left-content">
                             <span className="short-input">
                                 <label >TITLE</label>
-                                <input type="text" name="title" onChange={event=>this.handleTitleOnChange(event)}/>
+                                <input disabled={this.state.isDisable} value={this.state.title} type="text" name="title" onChange={event=>this.handleTitleOnChange(event)}/>
                             </span>
                             <span className="long-input">
                                 <label >DESCRIPTION</label>
-                                <textarea name="description" onChange={event=>this.handleDescriptionOnChange(event)}/>
+                                <textarea disabled={this.state.isDisable} value={this.state.description} name="description" onChange={event=>this.handleDescriptionOnChange(event)}/>
                             </span>
                         </div>
                         <div id="form-right-content">
                             <span className="short-input">
                                 <label >REQUIRED STUDENT</label>
-                                <input type="number" name="amount" onChange={event=>this.handleRequiredStudentOnChange(event)}/>
+                                <input disabled={this.state.isDisable} value={this.state.required_student} type="number" name="amount" onChange={event=>this.handleRequiredStudentOnChange(event)}/>
                             </span>
                             <span className="short-input">
                                 <label >LOCATION</label>
-                                <input type="text" name="location" onChange={event=>this.handleLocationOnChange(event)}/>
+                                <input disabled={this.state.isDisable} value={this.state.location} type="text" name="location" onChange={event=>this.handleLocationOnChange(event)}/>
                             </span>
                             <span className="short-input">
                                 <label >ALLOWANCE (RM)</label>
-                                <input type="number" name="amount" onChange={event=>this.handleAllowanceOnChange(event)}/>
+                                <input disabled={this.state.isDisable} value={this.state.allowance} type="number" name="amount" onChange={event=>this.handleAllowanceOnChange(event)}/>
                             </span>
                             <span className="short-input">
                                 <label >CLOSED DATE</label>
-                                <input type="date" name="preregistration_start_date" onChange={event=>this.handleClosedDateOnChange(event)}/>
+                                <input disabled={this.state.isDisable} value={this.state.closed_date} type="date" name="preregistration_start_date" onChange={event=>this.handleClosedDateOnChange(event)}/>
                             </span>
                         </div>
                     </div>
                     <span className="file-upload">
                         <label >COVER PHOTO</label>
-                        <input className="hidden" ref={this.imageUploadInput} type="file" accept="image/*" onChange={event=>this.handleImageOnChange(event)}/>
+                        <input disabled={this.state.isDisable} className="hidden" ref={this.imageUploadInput} type="file" accept="image/*" onChange={event=>this.handleImageOnChange(event)}/>
                         <img ref={this.imageDisplay} alt="" src="data:," name="image" onClick={this.handleImageOnClick}/>
                     </span>
-                    <input type="submit" value="Create" id="create-button"/>
+                    <input className={(this.state.isDisable)?"hidden":""}type="submit" value="Save" id="create-button"/>
                 </form>
             </React.Fragment>
         )
     }
 }
 
-CreatePartTimeJob.propTypes = propTypes;
-CreatePartTimeJob.defaultProps = defaultProps;
-
-export default CreatePartTimeJob;
+export default ViewPartTimeJobDetails;

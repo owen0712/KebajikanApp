@@ -4,6 +4,8 @@ import Header from './components/header/Header.js';
 import Footer from './components/footer/Footer.js';
 import CreateCharityEvent from './views/ManageCharityEvent/CreateCharityEvent';
 import CreatePartTimeJob from './views/ManagePartTimeJob/CreatePartTimeJob';
+import ViewPartTimeJob from './views/ManagePartTimeJob/ViewPartTimeJob';
+import ViewPartTimeJobDetails from './views/ManagePartTimeJob/ViewPartTimeJobDetails';
 import ViewCharityEvent from './views/ManageCharityEvent/ViewCharityEvent';
 import ViewCharityEventDetails from './views/ManageCharityEvent/ViewCharityEventDetails';
 import EditCharityEvent from './views/ManageCharityEvent/EditCharityEvent';
@@ -22,7 +24,9 @@ function App() {
           <NavRoute key="500" exact path="/500" name="Page 500" component={Page500} />
           <NavRoute key="home" path="/home" name="Home" component={Announcement} />
           <NavRoute key="login" name="Login Page" component={Login} /> */}
-          <Route path='/managePartTimeJob/createPartTimeJob' element={<CreatePartTimeJob/>}/>
+          <Route path='/manage_part_time_job/create' element={<CreatePartTimeJob/>}/>
+          <Route path='/manage_part_time_job' element={<ViewPartTimeJob/>}/>
+          <Route path='/manage_part_time_job/view/:id' element={<ViewPartTimeJobDetails/>}/>
           <Route path='/manage_charity_event' element={<ViewCharityEvent/>}/>
           <Route path='/manage_charity_event/create' element={<CreateCharityEvent/>}/>
           <Route path='/manage_charity_event/view/:id' element={<ViewCharityEventDetails/>}/>

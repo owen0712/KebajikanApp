@@ -9,7 +9,7 @@ class BackSection extends Component{
     render(){
         return(
             <div id="back-section">
-                <button id="back-button" onClick={this.props.onClick}>
+                <button id="back-button" onClick={this.props.onBackButtonClick}>
                     <ArrowBackIcon id="back-icon"/>
                     {(!this.props.title) && <span id="back-text">Back</span>}
                     {(this.props.previousIsHome===true) && <HomeIcon id="back-icon"/>}

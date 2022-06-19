@@ -21,8 +21,7 @@ router.post('/part_time_job',(req,res)=>{
         status:"Available",
         //temporary testing
         organizer_id:"62acb99f3e617b651832c980",
-        created_by:"62acb99f3e617b651832c980",
-        created_on:((new Date()).getDate()),
+        created_by:"62acb99f3e617b651832c980"
     });
     newPartTimeJob.save().then(createdPartTimeJob=>{
         res.json({message:'New part-time job successfully created'});
@@ -53,7 +52,7 @@ router.put('./part_time_job/:id',(req,res)=>{
 
 });
 
-router.delete('./part_time_job/:id',(req,res)=>{
+router.delete('/part_time_job/:id',(req,res)=>{
     PartTimeJob.deleteOne({_id:req.params.id}).then(result=>{
         res.json({message:"Successfully Deleted"});
     }).catch(err=>{
