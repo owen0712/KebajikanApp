@@ -10,6 +10,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import Swal from 'sweetalert2';
+import { BackSection } from '../../../components';
 
 const ViewCharityEvent = (props) => {
 
@@ -43,15 +44,15 @@ const ViewCharityEvent = (props) => {
     }
 
     const handleCreate = () => {
-        navigate('/charity_event/create');
+        navigate('/manage_charity_event/create');
     }
 
     const handleView = (id) => {
-        navigate('/charity_event/view/'+id);
+        navigate('/manage_charity_event/view/'+id);
     }
 
     const handleEdit = (id) => {
-        navigate('/charity_event/edit/'+id);
+        navigate('/manage_charity_event/edit/'+id);
     }
 
     const handleDelete = (id) =>{
@@ -78,10 +79,10 @@ const ViewCharityEvent = (props) => {
                         console.log(data.message);
                         Swal.fire({
                             title: data.message,
-                            text: 'Do you want to delete this charity event?',
                             icon: 'success',
                             confirmButtonText: 'Ok'
                         })
+                        fetchData();
                     }
                 }).catch(err=>{
                     console.log(err);
@@ -92,15 +93,8 @@ const ViewCharityEvent = (props) => {
 
     return (
         <React.Fragment>
-            {isLoading?<p>The content is loading</p>:<>
-            <div id="charity-event-list-upper-part">
-                <span id="charity-event-list-back-section">
-                    <ArrowBackIcon id="back-icon"/>
-                    <HomeIcon/>
-                </span>
-                <p>Charity Event</p>
-                <button className="button" onClick={handleCreate}><AddIcon/>Create New Charity Event</button>
-            </div>
+            {isLoading?<p>Loading...</p>:<>
+        <BackSection title="View Charity Event" createButtonName="Create New Charity Event" handleButtonCreate={handleCreate}/>
             <div id="#charity-event-list-table-section">
                 <table>
                     <thead>
@@ -118,8 +112,8 @@ const ViewCharityEvent = (props) => {
                         events.map(event=>{
                             return <tr key={event._id}>
                                 <td>{event.title}</td>
-                                <td>{event.organizer_id}</td>
-                                <td>{event.amount}</td>
+                                <td>{event.organizer_id.name}</td>
+                                <td>RM{event.current_amount}/{event.amount}</td>
                                 <td>{event.created_on}</td>
                                 <td>{event.status}</td>
                                 <td className='button-list'>

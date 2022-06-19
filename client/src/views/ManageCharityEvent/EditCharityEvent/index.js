@@ -1,9 +1,14 @@
-import React, { useRef, useState } from 'react'
-import './create_charity_event.css';
+import React, { useEffect, useRef, useState } from 'react'
+import './edit_charity_event.css';
 import BackSection from '../../../components/BackSection';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import CreateIcon from '@mui/icons-material/Create';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { useParams } from 'react-router-dom';
 
-const CreateCharityEvent = (props) => {
+const EditCharityEvent = (props) => {
 
+    const [isLoading,setIsLoading] = useState(true);
     const [title,setTitle] = useState("");
     const [purpose,setPurpose] = useState("");
     const [description,setDescription] = useState("");
@@ -15,10 +20,49 @@ const CreateCharityEvent = (props) => {
     const [donation_end_date,setDonationEndDate] = useState(null);
     const [document,setDocument] = useState(null);
     const [photo,setPhoto] = useState(null);
+    const [receipients,setReceipients] = useState([]);
     const imageUploadInput = useRef();
     const imageDisplay = useRef();
     const fileUploadInput = useRef();
     const fileTextDisplay = useRef();
+    const {id} = useParams();;
+
+    useEffect(()=>{
+        fetchData();
+    },[])
+
+    const fetchData = () =>{
+        setIsLoading(true);
+        fetch('/charity_event/'+id,{
+            method:'get',
+            headers:{
+                'Content-Type':'application/json'
+            }
+        }).then(res=>res.json()).then(data=>{
+            if(data.error){
+                console.log(data.error);
+            }
+            else{
+                const event = data.event;
+                console.log(event)
+                setTitle(event.title);
+                setPurpose(event.purpose);
+                setDescription(event.description);
+                setLocation(event.location);
+                setAmount(event.amount);
+                setPreregisterStartDate(event.preregister_start_date.slice(0, 10));
+                setPreregisterEndDate(event.preregister_end_date.slice(0, 10));
+                setDonationStartDate(event.donation_start_date.slice(0, 10));
+                setDonationEndDate(event.donation_end_date.slice(0, 10));
+                setDocument(event.document);
+                setPhoto(event.photo);
+                setReceipients(event.receipient);
+                setIsLoading(false);
+            }
+        }).catch(err=>{
+            console.log(err);
+        })
+    }
 
     const handleTitleOnChange = (event) => {
         setTitle(event.target.value);
@@ -102,8 +146,8 @@ const CreateCharityEvent = (props) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        fetch('/charity_event',{
-            method:'post',
+        fetch('/charity_event/'+id,{
+            method:'put',
             headers:{
                 'Content-Type':'application/json'
             },
@@ -134,52 +178,53 @@ const CreateCharityEvent = (props) => {
         
     return (
         <React.Fragment>
+            {isLoading?<p>Loading...</p>:<>
             <BackSection title="Edit Charity Event"/>
             <form onSubmit={event=>handleSubmit(event)}>
                 <div id="create-form-upper-part">
                     <div id="form-left-content">
                         <span className="short-input">
                             <label >TITLE</label>
-                            <input type="text" name="title" onChange={event=>handleTitleOnChange(event)}/>
+                            <input type="text" name="title" defaultValue={title} onChange={event=>handleTitleOnChange(event)}/>
                         </span>
                         <span className="long-input">
                             <label >PURPOSE</label>
-                            <textarea name="purpose" onChange={event=>handlePurposeOnChange(event)}/>
+                            <textarea name="purpose" defaultValue={purpose} onChange={event=>handlePurposeOnChange(event)}/>
                         </span>
                         <span className="long-input">
                             <label >DESCRIPTION</label>
-                            <textarea name="description" onChange={event=>handleDescriptionOnChange(event)}/>
+                            <textarea name="description" defaultValue={description} onChange={event=>handleDescriptionOnChange(event)}/>
                         </span>
                     </div>
                     <div id="form-right-content">
                         <span className="short-input">
                             <label >LOCATION</label>
-                            <input type="text" name="location" onChange={event=>handleLocationOnChange(event)}/>
+                            <input type="text" name="location" defaultValue={location} onChange={event=>handleLocationOnChange(event)}/>
                         </span>
                         <span className="short-input">
                             <label >TARGET AMOUNT(RM)</label>
-                            <input type="number" name="amount" min="0" defaultValue={0} onChange={event=>handleAmountOnChange(event)}/>
+                            <input type="number" name="amount" min="0" defaultValue={amount} onChange={event=>handleAmountOnChange(event)}/>
                         </span>
                         <span className="short-input">
                             <label >PREREGISTRATION START DATE</label>
-                            <input type="date" name="preregistration_start_date" onChange={event=>handlePreregistrationStartDateOnChange(event)}/>
+                            <input type="date" name="preregistration_start_date" defaultValue={preregister_start_date} onChange={event=>handlePreregistrationStartDateOnChange(event)}/>
                             </span>
                         <span className="short-input">
                             <label >PREREGISTRATION END DATE</label>
-                            <input type="date" name="preregistration_end_date" onChange={event=>handlePreregistrationEndDateOnChange(event)}/>
+                            <input type="date" name="preregistration_end_date" defaultValue={preregister_end_date} onChange={event=>handlePreregistrationEndDateOnChange(event)}/>
                         </span>
                         <span className="short-input">
                             <label >DONATION START DATE</label>
-                            <input type="date" name="donation_start_date" onChange={event=>handleDonationStartDateOnChange(event)}/>
+                            <input type="date" name="donation_start_date" defaultValue={donation_start_date} onChange={event=>handleDonationStartDateOnChange(event)}/>
                         </span>
                         <span className="short-input">
                             <label >DONATION END DATE</label>
-                            <input type="date" name="donation_end_date" onChange={event=>handleDonationEndDateOnChange(event)}/>
+                            <input type="date" name="donation_end_date" defaultValue={donation_end_date} onChange={event=>handleDonationEndDateOnChange(event)}/>
                         </span>
                         <span className="short-input">
                             <label >SUPPORTING DOCUMENT</label>
                             <input className="hidden" ref={fileUploadInput} onChange={event=>handleFileOnChange(event)} type="file" accept=".zip,.rar,.7zip" name="document"/>
-                            <input ref={fileTextDisplay} onClick={handleTextInputOnClick} type="text" defaultValue="No file is chosen"/>
+                            <input ref={fileTextDisplay} onClick={handleTextInputOnClick} type="text" defaultValue={document.name}/>
                         </span>
                         <p id="file-upload-reminder">* Please upload your charity event proposal together with supporting documents in zip files</p>
                     </div>
@@ -187,13 +232,43 @@ const CreateCharityEvent = (props) => {
                 <span className="file-upload">
                     <label >COVER PHOTO</label>
                     <input className="hidden" ref={imageUploadInput} type="file" accept="image/*" onChange={event=>handleImageOnChange(event)}/>
-                    <img ref={imageDisplay} src="data:," name="image" onClick={handleImageOnClick}/>
+                    <img ref={imageDisplay} src={photo.content} name="image" onClick={handleImageOnClick}/>
                 </span>
-                <input type="submit" value="Create" id="create-button"/>
+                <div id="#charity-event-list-table-section">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>STUDENT'S NAME</th>
+                                <th>DATE APPROVED</th>
+                                <th>STATUS</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {/* {
+                            receipients.map(recepient=>{
+                                return <tr key={recepient._id}>
+                                    <td>{event.title}</td>
+                                    <td>{event.organizer_id.name}</td>
+                                    <td>RM{event.current_amount}/{event.amount}</td>
+                                    <td>{event.created_on}</td>
+                                    <td>{event.status}</td>
+                                    <td className='button-list'>
+                                        <button className='button'><RemoveRedEyeIcon/>View</button>
+                                        <button className='button'><CreateIcon/>Edit</button>
+                                        <button className='danger-button'><DeleteIcon/>Delete</button>    
+                                    </td>
+                                </tr>
+                            })} */}
+                        </tbody>
+                    </table>
+                </div>
+                <input type="submit" value="Save" id="create-button"/>
             </form>
+            </>}
         </React.Fragment>
     )
 }
 
 
-export default CreateCharityEvent;
+export default EditCharityEvent;

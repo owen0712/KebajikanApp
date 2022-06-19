@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from "prop-types";
 import './announcement.css';
+import { BackSection } from '../../components';
 
 const propTypes = {
     children: PropTypes.node,
@@ -29,13 +30,16 @@ class Announcement extends Component {
 
     render() {
         return (
-            <form>
+            <React.Fragment>
+                <BackSection title="Announcement List" createButtonName="Create New Announcement" />
+                <form>
                 <span className="file-upload">
                     <label >Cover Photo</label>
                     <input ref={this.fileUploadInput} type="file" accept="image/*" id="fileInput" onChange={this.handleFileInputOnChange}/>
                     <img ref={this.imageDisplay} src="data:," onClick={event=>this.handleImageOnClick(event)}/>
                 </span>
             </form>
+            </React.Fragment>
         )
   }
 }

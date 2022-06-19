@@ -30,6 +30,11 @@ const charityEventSchema = new mongoose.Schema({
         type:Number,
         required:true
     },
+    current_amount:{
+        type:Number,
+        default:0,
+        required:true
+    },
     purpose:{
         type:String,
         required:true

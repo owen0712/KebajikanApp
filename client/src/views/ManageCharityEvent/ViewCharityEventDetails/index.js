@@ -147,7 +147,7 @@ class ViewCharityEventDetails extends Component {
     render() {
         return (
             <React.Fragment id="create-charity-event-section">
-                <BackSection title="Create Charity Event"/>
+                <BackSection title="View Charity Event"/>
                 <form onSubmit={event=>this.handleSubmit(event)}>
                     <div id="create-form-upper-part">
                         <div id="form-left-content">

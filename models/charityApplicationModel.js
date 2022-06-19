@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 const {ObjectId} = mongoose.Schema.Types;
 
 const charityApplicationSchema = new mongoose.Schema({
+    event_id:{
+        type:ObjectId,
+        ref:"CharityEvent",
+        required:true
+    },
     name:{
         type:String,
         required:true
@@ -94,15 +99,18 @@ const charityApplicationSchema = new mongoose.Schema({
         required:true
     },
     verified_by:{
-        type:ObjectId,
-        required:true
+        type:ObjectId
     },
     verified_on:{
-        type:Date,
-        required:true
+        type:Date
     },
     document:{
-
+        type:String,
+        required:true
+    },
+    photo:{
+        type:String,
+        required:true
     }
 })
 
