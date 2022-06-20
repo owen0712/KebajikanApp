@@ -15,8 +15,8 @@ const ApplyForHelp = (props) => {
     const [permanent_address,setPermanentAddress] = useState(null);
     const [program,setProgram] = useState("");
     const [department,setDepartment] = useState("");
-    const [year_of_study,setYearOfStudy] = useState("");
-    const [semester,setSemester] = useState("");
+    const [year_of_study,setYearOfStudy] = useState(1);
+    const [semester,setSemester] = useState(1);
     const [father_occ,setFatherOcc] = useState("");
     const [mother_occ,setMotherOcc] = useState("");
     const [father_income,setFatherIncome] = useState(0);
@@ -117,12 +117,12 @@ const ApplyForHelp = (props) => {
     
     const handleFatherIncomeOnChange = (event) => {
         setFatherIncome(event.target.value);
-        setTotalIncome(event.target.value+mother_income);
+        setTotalIncome(parseInt(event.target.value)+parseInt(mother_income));
     }
     
     const handleMotherIncomeOnChange = (event) => {
         setMotherIncome(event.target.value);
-        setTotalIncome(event.target.value+father_income)
+        setTotalIncome(parseInt(event.target.value)+parseInt(father_income))
     }
 
     const handleSiblingNoOnChange = (event) => {
@@ -179,7 +179,7 @@ const ApplyForHelp = (props) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        fetch('/charity_application',{
+        fetch('/charity_application/'+id.id,{
             method:'post',
             headers:{
                 'Content-Type':'application/json'
@@ -230,7 +230,7 @@ const ApplyForHelp = (props) => {
                         <input className="hidden" ref={imageUploadInput} type="file" accept="image/*" onChange={event=>handleImageOnChange(event)}/>
                         <img ref={imageDisplay} src="data:," name="image" onClick={handleImageOnClick}/>
                     </span>
-                    <div id="form-right-content">
+                    <div id="apply-form-right-content">
                         <span className="full-input">
                             <label >NAME</label>
                             <input type="text" name="name" onChange={event=>handleNameOnChange(event)}/>
@@ -256,13 +256,13 @@ const ApplyForHelp = (props) => {
                     </span>
                     <span className="full-input">
                         <label >MARITAL STATUS</label>
-                        <select name="marital_status" onChange={event=>handleMaritalStatusOnChange(event)}>
+                        <select name="marital_status" defaultValue={""} onChange={event=>handleMaritalStatusOnChange(event)}>
+                            <option value="" disabled hidden> </option>
                             <option>Single</option>
                             <option>Married</option>
                             <option>Widowed</option>
                             <option>Separated</option>
                             <option>Divorced</option>
-                            <option>Single</option>
                         </select>                    
                     </span>
                     <span className="full-input">
@@ -277,8 +277,8 @@ const ApplyForHelp = (props) => {
                     <p className='section-header'>PROGRAM OF STUDY</p>
                     <span className="full-input">
                         <label >PROGRAM</label>
-                        <select name="department" onChange={event=>handleProgramOnChange(event)}>
-                            <option>-</option>
+                        <select name="program" defaultValue={""}onChange={event=>handleProgramOnChange(event)}>
+                            <option value="" disabled hidden> </option>
                             <option>Bachelor of Computer Science(Software Engineering)</option>
                             <option>Bachelor of Computer Science(Artificial Intelligence)</option>
                             <option>Bachelor of Computer Science(Information Systems)</option>
@@ -289,8 +289,8 @@ const ApplyForHelp = (props) => {
                     </span>
                     <span className="full-input">
                         <label >DEPARTMENT</label>
-                        <select name="department" onChange={event=>handleDepartmentOnChange(event)}>
-                            <option>-</option>
+                        <select name="department" defaultValue={""} onChange={event=>handleDepartmentOnChange(event)}>
+                            <option value="" disabled hidden> </option>
                             <option>Software Engineering</option>
                             <option>Artificial Intelligence</option>
                             <option>Information Systems</option>
@@ -326,7 +326,7 @@ const ApplyForHelp = (props) => {
                     </span>
                     <span className="full-input">
                         <label >TOTAL MONTHLY INCOME (RM)</label>
-                        <input type="number" name="total_income" min="0" defaultValue={total_income} readOnly/>
+                        <input type="number" name="total_income" min="0" value={total_income} readOnly/>
                     </span>
                     <span className="full-input">
                         <label >NUMBER OF SIBLINGS</label>
@@ -341,7 +341,7 @@ const ApplyForHelp = (props) => {
                         <input className="hidden" ref={fileUploadInput} onChange={event=>handleFileOnChange(event)} type="file" accept=".zip,.rar,.7zip" name="document"/>
                         <input ref={fileTextDisplay} onClick={handleTextInputOnClick} type="text" defaultValue="No file is chosen"/>
                     </span>
-                    <p id="file-upload-reminder">* Please upload your charity event proposal together with supporting documents in zip files</p>
+                    <p id="file-upload-reminder">* Please upload your parents or guardian salary statement together with supporting documents in zip files</p>
                 </div>
                 <div id="tnc-section">
                     <input type="checkbox"/>

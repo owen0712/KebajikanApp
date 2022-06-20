@@ -29,9 +29,8 @@ function App() {
           <Route path='/manage_part_time_job/view/:id' element={<ViewPartTimeJobDetails/>}/>
           <Route path='/manage_charity_event' element={<ViewCharityEvent/>}/>
           <Route path='/manage_charity_event/create' element={<CreateCharityEvent/>}/>
-          <Route path='/manage_charity_event/view/:id' element={<ViewCharityEventDetails/>}/>
-          <Route path='/manage_charity_event/edit/:id' element={<EditCharityEvent/>}/>
-          <Route path='/manage_charity_event/edit/:id' element={<EditCharityEvent/>}/>
+          <Route path='/manage_charity_event/view/:id' element={<ViewCharityEventDetails isEdit={false}/>}/>
+          <Route path='/manage_charity_event/edit/:id' element={<ViewCharityEventDetails isEdit={true}/>}/>
           <Route path='/charity_event/apply_help/:id' element={<ApplyForHelp/>}/>
         </Routes>
         </div>

@@ -234,7 +234,7 @@ const EditCharityEvent = (props) => {
                     <input className="hidden" ref={imageUploadInput} type="file" accept="image/*" onChange={event=>handleImageOnChange(event)}/>
                     <img ref={imageDisplay} src={photo.content} name="image" onClick={handleImageOnClick}/>
                 </span>
-                <div id="#charity-event-list-table-section">
+                {/* <div id="#charity-event-list-table-section">
                     <table>
                         <thead>
                             <tr>
@@ -245,7 +245,7 @@ const EditCharityEvent = (props) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {/* {
+                            {
                             receipients.map(recepient=>{
                                 return <tr key={recepient._id}>
                                     <td>{event.title}</td>
@@ -259,10 +259,10 @@ const EditCharityEvent = (props) => {
                                         <button className='danger-button'><DeleteIcon/>Delete</button>    
                                     </td>
                                 </tr>
-                            })} */}
+                            })}
                         </tbody>
                     </table>
-                </div>
+                </div> */}
                 <input type="submit" value="Save" id="create-button"/>
             </form>
             </>}

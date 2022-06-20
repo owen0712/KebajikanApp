@@ -48,11 +48,11 @@ const charityApplicationSchema = new mongoose.Schema({
         required:true
     },
     year_of_study:{
-        type:Integer,
+        type:Number,
         required:true
     },
     semester:{
-        type:Integer,
+        type:Number,
         required:true
     },
     father_occ:{
@@ -64,23 +64,23 @@ const charityApplicationSchema = new mongoose.Schema({
         required:true
     },
     father_income:{
-        type:Double,
+        type:Number,
         required:true
     },
     mother_income:{
-        type:Double,
+        type:Number,
         required:true
     },
     total_income:{
-        type:Double,
+        type:Number,
         required:true
     },
     no_sibling:{
-        type:Integer,
+        type:Number,
         required:true
     },
     no_dependent:{
-        type:Integer,
+        type:Number,
         required:true
     },
     status:{
@@ -105,11 +105,11 @@ const charityApplicationSchema = new mongoose.Schema({
         type:Date
     },
     document:{
-        type:String,
+        type:Object,
         required:true
     },
     photo:{
-        type:String,
+        type:Object,
         required:true
     }
 })

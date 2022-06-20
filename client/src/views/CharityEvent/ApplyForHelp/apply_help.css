@@ -1,14 +1,33 @@
 #apply-form-upper-part{
-    display: flex;
+    display: inline-flex;
+    width: 100%;
 }
 
 #apply-form-upper-part img{
-    width: 150px;
-    height: 200px;;
+    width: 187.5px;
+    height: 250px;
 }
 
-#apply-form-upper-part #form-right-content{
+#apply-form-upper-part .file-upload{
+    width: fit-content;
+    margin: 10px 20px 0px 10px;
+}
+
+form #apply-form-right-content{
     width: 100%;
+    padding-top: 5px;
+}
+
+#apply-form-right-content *{
+    display: flex;
+}
+
+#apply-form-right-content label{
+    width: 20%;
+}
+
+#apply-form-right-content input{
+    width: 80%;
 }
 
 #apply-form-lower-part{
