@@ -1,0 +1,95 @@
+#carousel{
+    display: flex;
+    margin: 20px;
+}
+
+#carousel img{
+    width:50%;
+    border: 0px;
+    cursor: pointer;
+}
+
+#carousel span{
+    width:50%;
+    padding: 40px;
+    cursor: pointer;
+}
+
+#carousel svg{
+    color: #192F59;
+    margin: auto 0px auto 0px;
+    width: 50px;
+    height: 50px;
+}
+
+#title-section{
+    background-color: #192F59;
+    color:white;
+    font-weight: bold;
+    display: flex;
+}
+
+#title-section p{
+    margin-left: 20px;
+    font-size: 24px;
+}
+
+#title-section button{
+    color: white;
+    display: inline-flex;
+    height: 30px;
+    border: 2px solid #192F59;
+    background-color: #192F59;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    margin: 10px;
+    line-height: 30px;
+    vertical-align: middle;
+    margin:24px 20px 24px auto;
+}
+
+#title-section svg{
+    display: inline-block;
+    height: 28px;
+    width: 28px;
+    margin: 0px;
+}
+
+.donate-button{
+    border: 10px solid #1A7755;
+    color: white;
+    background-color: #1A7755;
+    border-radius: 10px;
+    height: 40px;
+    cursor: pointer;
+}
+
+.preregistration-button{
+    border: 1px solid #FDC800;
+    color: white;
+    background-color: #FDC800;
+    border-radius: 10px;
+    height: 40px;
+    cursor: pointer;
+}
+
+#event-list{
+    margin: 20px auto;
+}
+
+.card{
+    width: 25%;
+    background-color: #F6F8FB;
+    border-radius: 10px;
+    display: inline-block;
+    margin: 20px;
+    padding: 35px;
+    box-shadow: 4px 4px rgb(0,0,0,.2);
+    cursor: pointer;
+}
+
+.card img{
+    height: 300px;
+    cursor: pointer;
+}

@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom';
-import './view_charity_event_details.css';
+import './manage_charity_event_details.css';
 import BackSection from '../../../components/BackSection';
 
-const ViewCharityEventDetails = (props) => {
+const ManageCharityEventDetails = (props) => {
 
     const [isLoading,setIsLoading] = useState(true);
     const [title,setTitle] = useState("");
@@ -276,4 +276,4 @@ const ViewCharityEventDetails = (props) => {
     }
 
 
-export default ViewCharityEventDetails;
+export default ManageCharityEventDetails;

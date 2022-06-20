@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {useNavigate} from 'react-router-dom';
-import './view_charity_event.css';
+import './view_charity_event_list.css';
 import HomeIcon from '@mui/icons-material/Home';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AddIcon from '@mui/icons-material/Add';
@@ -12,7 +12,7 @@ import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import Swal from 'sweetalert2';
 import { BackSection } from '../../../components';
 
-const ViewCharityEvent = (props) => {
+const ViewCharityEventList = (props) => {
 
     const navigate = useNavigate();
     const [events,setEvents] = useState([]);
@@ -114,7 +114,7 @@ const ViewCharityEvent = (props) => {
                                 <td>{event.title}</td>
                                 <td>{event.organizer_id.name}</td>
                                 <td>RM{event.current_amount}/{event.amount}</td>
-                                <td>{event.created_on}</td>
+                                <td>{event.created_on.slice(0,10)}</td>
                                 <td>{event.status}</td>
                                 <td className='button-list'>
                                     <button className='button' onClick={()=>handleView(event._id)}><RemoveRedEyeIcon/>View</button>
@@ -137,4 +137,4 @@ const ViewCharityEvent = (props) => {
     )
 }
 
-export default ViewCharityEvent;
+export default ViewCharityEventList;

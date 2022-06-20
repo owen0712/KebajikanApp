@@ -33,6 +33,17 @@ router.post('/charity_event',(req,res)=>{
     });
 });
 
+router.get('/charity_event/approved',(req,res)=>{
+    CharityEvent.find({ "status" : { "$in": ["In Progress", "Preregistration"] }})
+    .select("-document")
+    .sort('-created_on')
+    .then(events=>{
+        res.json({events:events});
+    }).catch(err=>{
+        res.json({error:err});
+    });
+})
+
 router.get('/charity_event',(req,res)=>{
     CharityEvent.find()
     .select("-document")
@@ -46,7 +57,9 @@ router.get('/charity_event',(req,res)=>{
 });
 
 router.get('/charity_event/:id',(req,res)=>{
-    CharityEvent.find({_id:req.params.id}).then(event=>{
+    CharityEvent.find({_id:req.params.id})
+    .populate("organizer_id","name")
+    .then(event=>{
         res.json({event:event[0]});
     }).catch(err=>{
         res.json({error:err});
@@ -65,6 +78,19 @@ router.put('/charity_event/:id',(req,res)=>{
     const {title,purpose,description,location,amount,preregister_start_date,preregister_end_date,donation_start_date,donation_end_date,photo,document,receipeint} = req.body;
     if(!title||!purpose||!description||!location||!amount||!preregister_start_date||!preregister_end_date||!donation_start_date||!donation_end_date||!photo||!document){
         return res.json({error:'please fill all fields'});
+    }
+    CharityEvent.findByIdAndUpdate(req.params.id,req.body,{new:false},(err,result)=>{
+        if(err){
+            return res.json({error:err})
+        }
+        res.json({message:"Successfully updated"})
+    })
+});
+
+router.put('/charity_event/status/:id',(req,res)=>{
+    const {status} = req.body;
+    if(!status){
+        return res.json({error:'Invalid status'});
     }
     CharityEvent.findByIdAndUpdate(req.params.id,req.body,{new:false},(err,result)=>{
         if(err){

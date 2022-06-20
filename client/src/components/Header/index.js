@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import "./header.css";
+import { Link } from "react-router-dom";
 // import { SessionService } from "services";
 // import Environment from "../../environment";
 
@@ -37,14 +38,14 @@ class Header extends Component {
         {/* <AppSidebarToggler className="d-lg-none" display="md" mobile />
         <AppSidebarToggler className="d-md-down-none" display="lg" /> */}
         <nav id="">
-            <span><a className="logo-name white-text">Kebajikan App</a></span>
-            <span><a className="nav-item white-text">ANNOUNCEMENT</a></span>
-            <span><a className="nav-item white-text">CHARITY EVENT</a></span>
-            <span><a className="nav-item white-text">PART-TIME JOB</a></span>
-            <span><a className="nav-item white-text">ABOUT US</a></span>
+            <span><Link to='/' className="logo-name white-text">Kebajikan App</Link></span>
+            <span><Link to='/announcement/view' className="nav-item white-text">ANNOUNCEMENT</Link></span>
+            <span><Link to='/charity_event/view' className="nav-item white-text">CHARITY EVENT</Link></span>
+            <span><Link to='/' className="nav-item white-text">PART-TIME JOB</Link></span>
+            <span><Link to='/' className="nav-item white-text">ABOUT US</Link></span>
         </nav>
         <nav id="user-section">
-            <span><a className="nav-item white-text">Sign In</a></span>
+            <span><Link to='/login' className="nav-item white-text">Sign In</Link></span>
             <AccountCircleIcon className="nav-item"/>
         </nav>
       </div>
