@@ -42,14 +42,23 @@ router.get('/part_time_job',(req,res)=>{
 
 router.get('/part_time_job/:id',(req,res)=>{
     PartTimeJob.find({_id:req.params.id}).then(event=>{
-        res.json({event:event});
+        res.json({event:event[0]});
     }).catch(err=>{
         res.json({error:err});
     });
 })
 
-router.put('./part_time_job/:id',(req,res)=>{
-
+router.put('/part_time_job/:id',(req,res)=>{
+    const {title,required_student,description,location,allowance,closed_date,photo} = req.body;
+    if(!title||!required_student||!description||!location||!allowance||!closed_date||!photo){
+        return res.json({error:'please fill all fields'});
+    }
+    PartTimeJob.findByIdAndUpdate(req.params.id,req.body,{new:false},(err,result)=>{
+        if(err){
+            return res.json({error:err})
+        }
+        res.json({message:"Successfully updated"})
+    })
 });
 
 router.delete('/part_time_job/:id',(req,res)=>{

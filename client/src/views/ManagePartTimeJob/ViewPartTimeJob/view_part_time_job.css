@@ -13,6 +13,7 @@
     font-weight: bold;
     margin: 10px;
     line-height: 25px;
+    cursor: pointer;
 }
 
 .button svg{
@@ -30,6 +31,7 @@
     font-weight: bold;
     margin: 10px;
     line-height: 25px;
+    cursor: pointer;
 }
 
 .danger-button svg{

@@ -1,0 +1,27 @@
+.status{
+    font-size: 16px;
+    border-radius: 5px;
+    padding: 5% 10%;
+    height: auto;
+    color: #192F59;
+}
+
+#active-status, #approved-status, #available-status, #verified-status, #in-progress-status{
+    color: #FFFFFF;
+    background-color: #00A65A;
+}
+
+#inactive-status, #rejected-status, #closed-status{
+    color: #FFFFFF;
+    background-color: #DD4B39;
+}
+
+#pending-status, #pre-registration-status{
+    color: #FFFFFF;
+    background-color: #FDC800;
+}
+
+#appointment-status{
+    color: #FFFFFF;
+    background-color: #B248AD;
+}

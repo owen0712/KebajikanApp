@@ -8,7 +8,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import Swal from 'sweetalert2';
-import { BackSection } from '../../../components';
+import { Status, BackSection } from '../../../components';
 
 const ViewPartTimeJob = (props) => {
 
@@ -115,8 +115,8 @@ const ViewPartTimeJob = (props) => {
                                 <td>{event.title}</td>
                                 <td>{event.organizer_id}</td>
                                 <td>{event.allocated_student.length}/{event.required_student}</td>
-                                <td>{event.created_on}</td>
-                                <td>{event.status}</td>
+                                <td>{event.created_on.slice(0,10)}</td>
+                                <td><Status statusName={event.status}/></td>
                                 <td className='button-list'>
                                     <button className='button' onClick={()=>handleView(event._id)}><RemoveRedEyeIcon/>View</button>
                                     <button className='button' onClick={()=>handleEdit(event._id)}><CreateIcon/>Edit</button>

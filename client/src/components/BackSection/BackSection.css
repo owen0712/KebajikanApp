@@ -14,7 +14,7 @@
     border-radius: 5px;
     border : none;
     background-color: white;
-    
+    cursor: pointer;
 }
 
 #back-button:hover{
@@ -73,6 +73,11 @@
     font-weight: bold;
     margin: 10px;
     line-height: 25px;
+    cursor: pointer;
+}
+
+.create-button:hover{
+    background-color: rgba(215,215,215,1);
 }
 
 .create-button #add-icon{

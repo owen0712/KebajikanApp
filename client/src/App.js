@@ -26,7 +26,8 @@ function App() {
           <NavRoute key="login" name="Login Page" component={Login} /> */}
           <Route path='/manage_part_time_job/create' element={<CreatePartTimeJob/>}/>
           <Route path='/manage_part_time_job' element={<ViewPartTimeJob/>}/>
-          <Route path='/manage_part_time_job/view/:id' element={<ViewPartTimeJobDetails/>}/>
+          <Route path='/manage_part_time_job/view/:id' element={<ViewPartTimeJobDetails isEdit={false}/>}/>
+          <Route path='/manage_part_time_job/edit/:id' element={<ViewPartTimeJobDetails isEdit={true}/>}/>
           <Route path='/manage_charity_event' element={<ViewCharityEvent/>}/>
           <Route path='/manage_charity_event/create' element={<CreateCharityEvent/>}/>
           <Route path='/manage_charity_event/view/:id' element={<ViewCharityEventDetails isEdit={false}/>}/>

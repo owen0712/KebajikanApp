@@ -32,6 +32,12 @@ input,textarea{
     height: 40px;
 }
 
+input:disabled,textarea:disabled{
+    
+    color: rgba(25, 47, 89, 0.8);
+    background-color: #E1E1E1;
+}
+
 textarea{
     resize: none;
 }
@@ -109,9 +115,42 @@ img{
     position: relative;
     display: block;
     width: 100px;
+    cursor: pointer;
 }
 
+#save-button{
+    background-color: #192F59;
+    color: white;
+    margin: 10px 4px;
+    border-radius: 20px;
+    height: 40px;
+    position: relative;
+    display: inline-block;
+    text-align: center;
+    width: 100px;
+    cursor: pointer;
+}
 
+#cancel-button{
+    background-color: #DD4B39;
+    border-color: #DD4B39;
+    color: white;
+    margin: 10px 4px;
+    border-radius: 20px;
+    height: 40px;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    width: 100px;
+    cursor: pointer;
+}
+
+#save-section{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
 
 #file-upload-reminder{
     padding-left: 20px;
