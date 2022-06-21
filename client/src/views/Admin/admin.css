@@ -1,21 +1,27 @@
 #admin-section{
     display: flex;
+    flex-wrap: wrap;
+    padding: 0 10%;
+
 }
 
 .option-card{
     display: block;
     border-radius: 20px;
-    margin: 20px;
+    margin: 20px 30px;
     padding: 20px;
-    width: 50%;
+    width: 15%;
     height: 30vh;
     box-shadow: 4px 4px rgb(0,0,0,.3);
+    text-align: center;
+    background-color: #F6F8FB;
 }
 
 .option-card svg{
     color:#192F59;
     width: 100px;
     height: 100px;
+    margin: 15px auto;
 }
 
 .option-card p{

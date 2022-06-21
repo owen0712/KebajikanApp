@@ -2,6 +2,12 @@ import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './admin.css';
 import NewReleasesIcon from '@mui/icons-material/NewReleases';
+import EventTwoToneIcon from '@mui/icons-material/EventTwoTone';
+import WorkTwoToneIcon from '@mui/icons-material/WorkTwoTone';
+import FactCheckTwoToneIcon from '@mui/icons-material/FactCheckTwoTone';
+import PaidTwoToneIcon from '@mui/icons-material/PaidTwoTone';
+import NotificationsActiveTwoToneIcon from '@mui/icons-material/NotificationsActiveTwoTone';
+import GroupTwoToneIcon from '@mui/icons-material/GroupTwoTone';
 
 const Admin = (props) => {
 
@@ -19,27 +25,27 @@ const Admin = (props) => {
                     <p>ANNOUNCEMENT</p>
                 </span>
                 <span className="option-card" onClick={()=>handleClick('/manage_charity_event')}>
-                    <NewReleasesIcon/>
+                    <EventTwoToneIcon/>
                     <p>CHARITY EVENT</p>
                 </span>
                 <span className="option-card" onClick={()=>handleClick('/manage_part_time_job')}>
-                    <NewReleasesIcon/>
+                    <WorkTwoToneIcon/>
                     <p>PART-TIME JOB</p>
                 </span>
                 <span className="option-card" onClick={()=>handleClick('/')}>
-                    <NewReleasesIcon/>
+                    <FactCheckTwoToneIcon/>
                     <p>USER APPLICATION</p>
                 </span>
                 <span className="option-card" onClick={()=>handleClick('/')}>
-                    <NewReleasesIcon/>
+                    <PaidTwoToneIcon/>
                     <p>DONATION</p>
                 </span>
                 <span className="option-card" onClick={()=>handleClick('/')}>
-                    <NewReleasesIcon/>
+                    <NotificationsActiveTwoToneIcon/>
                     <p>NOTIFICATION</p>
                 </span>
                 <span className="option-card" onClick={()=>handleClick('/')}>
-                    <NewReleasesIcon/>
+                    <GroupTwoToneIcon/>
                     <p>USER</p>
                 </span>
             </div>
