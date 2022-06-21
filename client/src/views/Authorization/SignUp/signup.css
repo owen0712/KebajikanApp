@@ -17,6 +17,7 @@
     background-color: #F6F8FB;
     padding-left: 30px;
     padding-bottom: 30px;
+    border-radius: 20px 0px 0px 20px;
 }
 
 #sign-up-form{
@@ -25,6 +26,7 @@
     padding-left: 30px;
     padding-bottom: 30px;
     justify-content: center;
+    box-shadow: 5px 6px 2px -2px rgb(0,0,0,.3);
 }
 
 #sign-up-form input{
@@ -48,9 +50,16 @@
     content: "";
 }
 
+.half-section span{
+    width: 45%;
+    display: inline-block;
+}
+
 #image{
     width: 50%;
-    height: 25%;
+    border-radius: 0px 20px 20px 0px;
+    box-shadow: 4px 4px rgb(0,0,0,.3);
+    margin: 0px 10px;
 }
 
 #image img{

@@ -85,7 +85,7 @@ const SignUp = (props) => {
                     <label>PHONE NUMBER *</label>
                     <input type="text" onChange={event=>handlePhoneNumberOnChange(event)}/>
                 </span>
-                <span>
+                <span className='half-section'>
                     <span>
                         <label>ID NO</label>
                         <input type="text" onChange={event=>handleIdentityNoOnChange(event)}/>
@@ -96,7 +96,7 @@ const SignUp = (props) => {
                     </span>
                     
                 </span>
-                <span>
+                <span className='half-section'>
                     <span>
                         <label>PASSWORD *</label>
                         <input type="password" onChange={event=>handlePasswordOnChange(event)}/>
