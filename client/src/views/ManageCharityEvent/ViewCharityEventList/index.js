@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import {useNavigate} from 'react-router-dom';
 import './view_charity_event_list.css';
-import HomeIcon from '@mui/icons-material/Home';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import AddIcon from '@mui/icons-material/Add';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import CreateIcon from '@mui/icons-material/Create';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import Swal from 'sweetalert2';
-import { BackSection } from '../../../components';
+import { BackSection, Status } from '../../../components';
 
 const ViewCharityEventList = (props) => {
 
@@ -91,10 +88,14 @@ const ViewCharityEventList = (props) => {
         })
     }
 
+    const handleRedirectBack = () => {
+        navigate('/admin');
+    }
+
     return (
         <React.Fragment>
             {isLoading?<p>Loading...</p>:<>
-        <BackSection title="View Charity Event" createButtonName="Create New Charity Event" handleButtonCreate={handleCreate}/>
+            <BackSection title="View Charity Event" onBackButtonClick={handleRedirectBack} previousIsHome={true} createButtonName="Create New Charity Event" handleButtonCreate={handleCreate}/>
             <div id="#charity-event-list-table-section">
                 <table>
                     <thead>
@@ -115,7 +116,7 @@ const ViewCharityEventList = (props) => {
                                 <td>{event.organizer_id.name}</td>
                                 <td>RM{event.current_amount}/{event.amount}</td>
                                 <td>{event.created_on.slice(0,10)}</td>
-                                <td>{event.status}</td>
+                                <td><Status statusName={event.status}/></td>
                                 <td className='button-list'>
                                     <button className='button' onClick={()=>handleView(event._id)}><RemoveRedEyeIcon/>View</button>
                                     <button className='button' onClick={()=>handleEdit(event._id)}><CreateIcon/>Edit</button>

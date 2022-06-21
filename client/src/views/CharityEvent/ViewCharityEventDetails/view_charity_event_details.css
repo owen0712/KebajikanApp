@@ -31,3 +31,14 @@
     font-weight: bold;
     margin: 20px 0 20px 0;
 }
+
+.chat-button{
+    border: 1px solid #192F59;
+    color: white;
+    background-color: #192F59;
+    border-radius: 10px;
+    height: 40px;
+    width:80px;
+    cursor: pointer;
+    margin: 10px;
+}

@@ -38,6 +38,10 @@ const ViewCharityEventDetails = (props) => {
     const handleClick = (action,id) => {
         navigate(`/charity_event/${action}/${id}`);
     }
+
+    const handleChat = (id) =>{
+        navigate('/chat/'+id);
+    }
         
     return (
         <React.Fragment>
@@ -57,6 +61,7 @@ const ViewCharityEventDetails = (props) => {
                     </>:
                     <button onClick={()=>handleClick("apply_help",event._id)} className="preregistration-button">Apply For Help</button>
                     }
+                    <button onClick={()=>handleChat(event.organizer_id._id)} className="chat-button">Chat</button>
                 </span>
             </div>
             </>}

@@ -180,11 +180,15 @@ const ManageCharityEventDetails = (props) => {
         setIsEdit(true);
         console.log(isEdit);
     }
+
+    const handleRedirectBack = () => {
+        navigate('/manage_charity_event');
+    }
         
     return (
         <React.Fragment>
             {isLoading?<p>Loading...</p>:<>
-            <BackSection title={isEdit?"Edit Charity Event":"View Charity Event"}/>
+            <BackSection onBackButtonClick={handleRedirectBack} title={isEdit?"Edit Charity Event":"View Charity Event"}/>
             <form onSubmit={handleSubmit}>
                 <div id="create-form-upper-part">
                     <div id="form-left-content">

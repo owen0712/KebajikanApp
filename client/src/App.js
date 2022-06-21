@@ -13,6 +13,7 @@ import ViewCharityEvent from './views/CharityEvent/ViewCharityEvent';
 import ViewCharityEventDetails from './views/CharityEvent/ViewCharityEventDetails';
 import Login from './views/Authorization/Login';
 import SignUp from './views/Authorization/SignUp';
+import Admin from './views/Admin';
 // import NavRoute from './core/navRoute';
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
           <Route path='/charity_event/view/:id' element={<ViewCharityEventDetails/>}/>
           <Route path='/login' element={<Login/>}/>
           <Route path='/signup' element={<SignUp/>}/>
+          <Route path='/admin' element={<Admin/>}/>
         </Routes>
         </div>
         <Footer/>

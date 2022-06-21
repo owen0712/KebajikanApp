@@ -1,0 +1,23 @@
+#admin-section{
+    display: flex;
+}
+
+.option-card{
+    display: block;
+    border-radius: 20px;
+    margin: 20px;
+    padding: 20px;
+    width: 50%;
+    height: 30vh;
+    box-shadow: 4px 4px rgb(0,0,0,.3);
+}
+
+.option-card svg{
+    color:#192F59;
+    width: 100px;
+    height: 100px;
+}
+
+.option-card p{
+    font-weight: bold;
+}

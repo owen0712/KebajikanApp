@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react'
 import './create_charity_event.css';
 import BackSection from '../../../components/BackSection';
+import { useNavigate } from 'react-router-dom';
 
 const CreateCharityEvent = (props) => {
 
@@ -19,6 +20,7 @@ const CreateCharityEvent = (props) => {
     const imageDisplay = useRef();
     const fileUploadInput = useRef();
     const fileTextDisplay = useRef();
+    const navigate = useNavigate();
 
     const handleTitleOnChange = (event) => {
         setTitle(event.target.value);
@@ -131,10 +133,14 @@ const CreateCharityEvent = (props) => {
             console.log(err);
         })
     }
+
+    const handleRedirectBack = () => {
+        navigate('/manage_charity_event');
+    }
         
     return (
         <React.Fragment>
-            <BackSection title="Edit Charity Event"/>
+            <BackSection onBackButtonClick={handleRedirectBack} title="Edit Charity Event"/>
             <form onSubmit={event=>handleSubmit(event)}>
                 <div id="create-form-upper-part">
                     <div id="form-left-content">

@@ -63,6 +63,7 @@
     border-radius: 10px;
     height: 40px;
     cursor: pointer;
+    margin: 10px;
 }
 
 .preregistration-button{
@@ -72,6 +73,7 @@
     border-radius: 10px;
     height: 40px;
     cursor: pointer;
+    margin: 10px;
 }
 
 #event-list{

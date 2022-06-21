@@ -45,7 +45,7 @@ router.get('/charity_event/approved',(req,res)=>{
 })
 
 router.get('/charity_event',(req,res)=>{
-    CharityEvent.find()
+    CharityEvent.find({"status" : { "$in": ["In Progress", "Preregistration","Closed"]}})
     .select("-document")
     .select("-photo")
     .populate("organizer_id","-_id name")
