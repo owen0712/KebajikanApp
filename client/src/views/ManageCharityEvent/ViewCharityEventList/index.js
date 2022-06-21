@@ -14,7 +14,7 @@ const ViewCharityEventList = (props) => {
     const navigate = useNavigate();
     const [events,setEvents] = useState([]);
     const [pageNumber,setPageNumber] = useState(1);
-    const [isLoading,setIsLoading] = useState(false);
+    const [isLoading,setIsLoading] = useState(true);
 
     useEffect(()=>{
         fetchData();

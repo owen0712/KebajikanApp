@@ -20,7 +20,7 @@ const Admin = (props) => {
     return (
         <React.Fragment>
             <div id="admin-section">
-                <span className="option-card" onClick={()=>handleClick('/manage_announcement/view')}>
+                <span className="option-card" onClick={()=>handleClick('/manage_announcement')}>
                     <NewReleasesIcon/>
                     <p>ANNOUNCEMENT</p>
                 </span>

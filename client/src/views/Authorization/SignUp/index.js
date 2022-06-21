@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './signup.css';
-import BackSection from '../../../components/BackSection';
+import logo from '../../../assets/img/signup.png'
 
 const SignUp = (props) => {
 
@@ -72,30 +72,48 @@ const SignUp = (props) => {
     return (
         <div id="signup-section">
             <form id="sign-up-form">
-                <h3>SIGNUP</h3>
-                <label>FULL NAME *</label>
-                <input type="text" onChange={event=>handleNameOnChange(event)}/>
-                <label>EMAIL *</label>
-                <input type="email" onChange={event=>handleEmailOnChange(event)}/>
-                <label>PHONE NUMBER *</label>
-                <input type="text" onChange={event=>handlePhoneNumberOnChange(event)}/>
+                <h1>SIGNUP</h1>
                 <span>
-                    <label>ID NO</label>
-                    <input type="text" onChange={event=>handleIdentityNoOnChange(event)}/>
-                    <label>BIRTHDATE</label>
-                    <input type="date" defaultValue={new Date().toISOString().substr(0,10)} onChange={event=>handleBirthDateOnChange(event)}/>
+                    <label>FULL NAME *</label>
+                    <input type="text" onChange={event=>handleNameOnChange(event)}/>
                 </span>
                 <span>
-                    <label>PASSWORD *</label>
-                    <input type="password" onChange={event=>handlePasswordOnChange(event)}/>
-
-                    <label>CONFIRM PASSWORD *</label>
-                    <input type="password" onChange={event=>handleConfirmPasswordOnChange(event)}/>
+                    <label>EMAIL *</label>
+                    <input type="email" onChange={event=>handleEmailOnChange(event)}/>
                 </span>
-                
+                <span>
+                    <label>PHONE NUMBER *</label>
+                    <input type="text" onChange={event=>handlePhoneNumberOnChange(event)}/>
+                </span>
+                <span>
+                    <span>
+                        <label>ID NO</label>
+                        <input type="text" onChange={event=>handleIdentityNoOnChange(event)}/>
+                    </span>
+                    <span>
+                        <label>BIRTHDATE</label>
+                        <input type="date" defaultValue={new Date().toISOString().substr(0,10)} onChange={event=>handleBirthDateOnChange(event)}/>
+                    </span>
+                    
+                </span>
+                <span>
+                    <span>
+                        <label>PASSWORD *</label>
+                        <input type="password" onChange={event=>handlePasswordOnChange(event)}/>
+                    </span>
+                    <span>
+                        <label>CONFIRM PASSWORD *</label>
+                        <input type="password" onChange={event=>handleConfirmPasswordOnChange(event)}/>
+                    </span>
+                </span>
+                <input id="signup-button" type="submit" value="SIGNUP"/>
             </form>
             <div id="image">
-
+                <span>
+                    <h2>Register to join</h2>
+                    <h2>Kebajikan App</h2>
+                </span>
+                <img src={logo} />
             </div>
             
         </div>

@@ -46,12 +46,12 @@ textarea{
 }
 
 .long-input label{
-    width: 96%;
+    width: 100%;
     padding: 15px 8px;
 }
 
 .long-input textarea{
-    width: 96%;
+    width: 100%;
     height: 120px;
 }
 
@@ -70,6 +70,17 @@ textarea{
 
 #form-left-content .short-input{
     margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 0px;
+}
+
+#form-left-content .long-input *{
+    width: 98%;
+}
+
+#form-left-content{
+    width: 50%;
+    margin-right: 15px;
 }
 
 #form-right-content label{

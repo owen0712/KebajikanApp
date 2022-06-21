@@ -184,6 +184,15 @@ const ManageCharityEventDetails = (props) => {
     const handleRedirectBack = () => {
         navigate('/manage_charity_event');
     }
+
+    const toggleCancel = () => {
+        setIsEdit(false);
+        resetState();
+    }
+
+    const resetState = () => {
+        fetchData();
+    };
         
     return (
         <React.Fragment>
@@ -272,7 +281,12 @@ const ManageCharityEventDetails = (props) => {
                         </tbody>
                     </table>
                 </div> */}
-                {isEdit?<input type="submit" value="Save" id="create-button"/>:<button onClick={toggleEdit} id="create-button">Edit</button>}
+                {isEdit?<div id="save-section">
+                <button onClick={toggleCancel} id="cancel-button">Cancel</button>
+                <input type="submit" value="Save" id="create-button"/>
+                </div>:
+                <button onClick={toggleEdit} id="create-button">Edit</button>
+                }
             </form>
             </>}
         </React.Fragment>
