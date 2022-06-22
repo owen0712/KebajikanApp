@@ -41,8 +41,11 @@ const ViewCharityEvent = (props) => {
     }
 
     const handleClick = (action,id) => {
-        console.log(id)
         navigate(`/charity_event/${action}/${id}`);
+    }
+
+    const handlePropose = () => {
+        navigate('/charity_event/create');
     }
         
     return (
@@ -62,7 +65,7 @@ const ViewCharityEvent = (props) => {
             </div>
             <div id="title-section">
                 <p>Charity Event</p>
-                <button><AddIcon/>Propose New Charity Event</button>
+                <button onClick={handlePropose}><AddIcon />Propose New Charity Event</button>
             </div>
             <div id="event-list">
                 {events.map(event=>{

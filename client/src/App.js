@@ -1,7 +1,7 @@
 import './App.css';
 import {BrowserRouter,Route,Routes} from 'react-router-dom';
-import Header from './components/header';
-import Footer from './components/footer';
+import Header from './components/Header';
+import Footer from './components/Footer';
 import CreateCharityEvent from './views/ManageCharityEvent/CreateCharityEvent';
 import CreatePartTimeJob from './views/ManagePartTimeJob/CreatePartTimeJob';
 import ManagePartTimeJob from './views/ManagePartTimeJob/ManagePartTimeJob';
@@ -17,14 +17,25 @@ import ViewCharityEventDetails from './views/CharityEvent/ViewCharityEventDetail
 import Login from './views/Authorization/Login';
 import SignUp from './views/Authorization/SignUp';
 import Admin from './views/Admin';
+import { useState } from 'react';
 // import NavRoute from './core/navRoute';
 
 function App() {
 
+  const [isAuthenticated,setIsAuthenticated] = useState(false);
+
+  const handleLogin = () => {
+    setIsAuthenticated(true);
+  }
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+  }
+
   return (
     <div className="App">
       <BrowserRouter>
-        <Header/>
+        <Header isAuthenticated={isAuthenticated} handleLogout={handleLogout}/>
         <div id="body">
         <Routes>
           {/* <NavRoute key="404" exact path="/404" name="Page 404" component={Page404} />
@@ -45,7 +56,7 @@ function App() {
           <Route path='/charity_event/apply_help/:id' element={<ApplyForHelp/>}/>
           <Route path='/charity_event/view' element={<ViewCharityEvent/>}/>
           <Route path='/charity_event/view/:id' element={<ViewCharityEventDetails/>}/>
-          <Route path='/login' element={<Login/>}/>
+          <Route path='/login' element={<Login handleLogin={handleLogin}/>}/>
           <Route path='/signup' element={<SignUp/>}/>
           <Route path='/admin' element={<Admin/>}/>
         </Routes>
