@@ -6,10 +6,19 @@ import { Link } from "react-router-dom";
 const Header = (props) => {
 
   const [user,setUser] = useState(JSON.parse(sessionStorage.getItem("user")));
+  const [isAdmin,setIsAdmin] = useState(false);
+  const isAuthenticated = props.isAuthenticated;
+  const handleLogout = props.handleLogout;
 
-  const handleLogout = () => {
+  useEffect(()=>{
+    setUser(JSON.parse(sessionStorage.getItem("user")));
+    setIsAdmin(user&&user.role>0);
+  },[isAuthenticated,user])
+
+  const handleOnClick = () => {
     sessionStorage.clear();
     setUser(null);
+    handleLogout();
   }
   
   return (
@@ -25,10 +34,11 @@ const Header = (props) => {
       {
         user?
         <nav id="user-section">
+        {isAdmin?<span><Link to='/admin' className="nav-item white-text">Administration</Link></span>:<></>}
         <span><Link to='/profile' className="nav-item white-text">{user.name}</Link></span>
         <AccountCircleIcon className="nav-item"/>
-        <span><Link to='/signin'  onClick={handleLogout} className="nav-item white-text">Logout</Link></span>
-      </nav>
+        <span><Link to='/login'  onClick={handleOnClick} className="nav-item white-text">Logout</Link></span>
+        </nav>
         :
         <nav id="user-section">
           <span><Link to='/login' className="nav-item white-text">Sign In</Link></span>

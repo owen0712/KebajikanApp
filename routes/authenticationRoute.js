@@ -83,7 +83,7 @@ router.post("/signin", (req, res) => {
           else if(savedUser.role=="Admin"){
             savedUser.role=2;
           }
-          res.json({ token, user:{id:savedUser._id,name:savedUser.name,rol:savedUser.role}, message: "Successfully signed in" });
+          res.json({ token, user:{id:savedUser._id,name:savedUser.name,role:savedUser.role}, message: "Successfully signed in" });
         } else {
           return res.json({ error: "Invalid email or password" });
         }

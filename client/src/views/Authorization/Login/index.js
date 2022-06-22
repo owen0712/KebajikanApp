@@ -9,6 +9,7 @@ const Login = (props) => {
     const [email,setEmail] = useState("");
     const [password,setPassword] = useState("");
     const navigate = useNavigate();
+    const handleLogin = props.handleLogin;
 
     const handleEmailOnChange = (event) => {
         setEmail(event.target.value);
@@ -39,11 +40,14 @@ const Login = (props) => {
             else{
                 sessionStorage.setItem("jwt",data.token)
                 sessionStorage.setItem("user",JSON.stringify(data.user))
+                handleLogin();
                 Swal.fire({
                     icon:"success",
                     title:data.message
                 })
-                .then(navigate("/"))
+                .then(()=>{
+                    navigate("/");
+                })
             }
         }).catch(err=>{
             Swal.fire({
