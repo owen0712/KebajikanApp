@@ -1,11 +1,14 @@
 import './App.css';
 import {BrowserRouter,Route,Routes} from 'react-router-dom';
-import Header from './components/Header';
-import Footer from './components/Footer';
+import Header from './components/header';
+import Footer from './components/footer';
 import CreateCharityEvent from './views/ManageCharityEvent/CreateCharityEvent';
 import CreatePartTimeJob from './views/ManagePartTimeJob/CreatePartTimeJob';
-import ViewPartTimeJob from './views/ManagePartTimeJob/ViewPartTimeJob';
-import ViewPartTimeJobDetails from './views/ManagePartTimeJob/ViewPartTimeJobDetails';
+import ManagePartTimeJob from './views/ManagePartTimeJob/ManagePartTimeJob';
+import ManagePartTimeJobDetails from './views/ManagePartTimeJob/ManagePartTimeJobDetails';
+import ViewPartTimeJob from './views/PartTimeJob/ViewPartTimeJob';
+import ViewPartTimeJobDetails from './views/PartTimeJob/ViewPartTimeJobDetails';
+import ApplyPartTimeJob from './views/PartTimeJob/ApplyPartTimeJob';
 import ViewCharityEventList from './views/ManageCharityEvent/ViewCharityEventList';
 import ManageCharityEventDetails from './views/ManageCharityEvent/ManageCharityEventDetails';
 import ApplyForHelp from './views/CharityEvent/ApplyForHelp';
@@ -29,9 +32,12 @@ function App() {
           <NavRoute key="home" path="/home" name="Home" component={Announcement} />
           <NavRoute key="login" name="Login Page" component={Login} /> */}
           <Route path='/manage_part_time_job/create' element={<CreatePartTimeJob/>}/>
-          <Route path='/manage_part_time_job' element={<ViewPartTimeJob/>}/>
-          <Route path='/manage_part_time_job/view/:id' element={<ViewPartTimeJobDetails isEdit={false}/>}/>
-          <Route path='/manage_part_time_job/edit/:id' element={<ViewPartTimeJobDetails isEdit={true}/>}/>
+          <Route path='/manage_part_time_job' element={<ManagePartTimeJob/>}/>
+          <Route path='/manage_part_time_job/view/:id' element={<ManagePartTimeJobDetails isEdit={false}/>}/>
+          <Route path='/manage_part_time_job/edit/:id' element={<ManagePartTimeJobDetails isEdit={true}/>}/>
+          <Route path='/part_time_job/apply/:id' element={<ApplyPartTimeJob/>}/>
+          <Route path='/part_time_job/view' element={<ViewPartTimeJob/>}/>
+          <Route path='/part_time_job/view/:id' element={<ViewPartTimeJobDetails/>}/>
           <Route path='/manage_charity_event' element={<ViewCharityEventList/>}/>
           <Route path='/manage_charity_event/create' element={<CreateCharityEvent/>}/>
           <Route path='/manage_charity_event/view/:id' element={<ManageCharityEventDetails isEdit={false}/>}/>

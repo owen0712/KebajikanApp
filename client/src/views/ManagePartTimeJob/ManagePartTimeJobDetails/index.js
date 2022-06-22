@@ -1,10 +1,10 @@
 import React, { useRef, useEffect, useState } from 'react'
 import {useNavigate, useParams} from "react-router-dom";
 import {BackSection} from '../../../components';
-import './view_part_time_job_details.css';
+import './manage_part_time_job_details.css';
 import Swal from 'sweetalert2';
 
-const ViewPartTimeJobDetails = (props) => {
+const ManagePartTimeJobDetails = (props) => {
     
     const [isLoading,setIsLoading] = useState(true);
     const [title, setTitle] = useState("");
@@ -208,4 +208,4 @@ const ViewPartTimeJobDetails = (props) => {
     )
 }
 
-export default ViewPartTimeJobDetails;
+export default ManagePartTimeJobDetails;

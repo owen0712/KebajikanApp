@@ -40,6 +40,15 @@ router.get('/part_time_job',(req,res)=>{
     });
 });
 
+router.get('/part_time_job/available',(req,res)=>{
+    PartTimeJob.find({status:"Available"})
+    .then(events=>{
+        res.json({events:events});
+    }).catch(err=>{
+        res.json({error:err});
+    });
+});
+
 router.get('/part_time_job/:id',(req,res)=>{
     PartTimeJob.find({_id:req.params.id}).then(event=>{
         res.json({event:event[0]});

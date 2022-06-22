@@ -1,0 +1,38 @@
+#job-list{
+    margin: 20px auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.job-card{
+    width: 25%;
+    background-color: #F6F8FB;
+    border-radius: 10px;
+    display: block;
+    margin: 20px;
+    padding: 35px;
+    box-shadow: 4px 4px rgb(0,0,0,.2);
+    cursor: pointer;
+}
+
+.job-title{
+    text-align: center;
+    text-transform: uppercase;
+    align-items: center;
+    font-size: large;
+    font-weight: bold;
+}
+
+.job-content{
+    word-wrap: break-word;
+}
+
+.apply-button{
+    border: 10px solid #B248AD;
+    color: white;
+    background-color: #B248AD;
+    border-radius: 10px;
+    height: 40px;
+    cursor: pointer;
+    margin: 10px auto;
+}

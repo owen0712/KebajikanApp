@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {useNavigate} from 'react-router-dom';
-import './view_part_time_job.css';
+import './manage_part_time_job.css';
 import AddIcon from '@mui/icons-material/Add';
-import Carousel from 'react-material-ui-carousel'
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import CreateIcon from '@mui/icons-material/Create';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -11,7 +10,7 @@ import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import Swal from 'sweetalert2';
 import { Status, BackSection } from '../../../components';
 
-const ViewPartTimeJob = (props) => {
+const ManagePartTimeJob = (props) => {
 
     const navigate = useNavigate();
     const [events,setEvents] = useState([]);
@@ -93,10 +92,14 @@ const ViewPartTimeJob = (props) => {
         
     }
 
+    const navigatePrev = () =>{
+        navigate('/admin');
+    }
+
     return (
         <React.Fragment>
             {isLoading?<p>The content is loading</p>:<>
-            <BackSection title="Part-Time Job" previousIsHome={true} createButtonName="Create New Part-Time Job" handleButtonCreate={handleCreate}/>
+            <BackSection title="Part-Time Job" previousIsHome={true} createButtonName="Create New Part-Time Job" onBackButtonClick={navigatePrev} handleButtonCreate={handleCreate}/>
             <div id="#part-time-job-list-table-section">
                 <table>
                     <thead>
@@ -139,4 +142,4 @@ const ViewPartTimeJob = (props) => {
     )
 }
 
-export default ViewPartTimeJob;
+export default ManagePartTimeJob;
