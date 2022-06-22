@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './signup.css';
 import logo from '../../../assets/img/signup.png'
+import Swal from 'sweetalert2';
 
 const SignUp = (props) => {
 
@@ -9,7 +10,7 @@ const SignUp = (props) => {
     const [email,setEmail] = useState("");
     const [phone_number,setPhoneNumber] = useState(""); 
     const [identity_no,setIdentityNo] = useState("");
-    const [birthdate,setBirthDate] = useState(""); 
+    const [birthdate,setBirthDate] = useState(new Date().toISOString().slice(0,10)); 
     const [password,setPassword] = useState("");
     const [confirm_password,setConfirmPassword] = useState("");
     const navigate = useNavigate();
@@ -44,6 +45,13 @@ const SignUp = (props) => {
 
     const handleSubmit = (event) =>{
         event.preventDefault();
+        if(password!=confirm_password){
+            Swal.fire({
+                icon: 'error',
+                title: "Both password are not same",
+            })
+            return;
+        }
         fetch('/signup',{
             method:'post',
             headers:{
@@ -59,19 +67,28 @@ const SignUp = (props) => {
             })
         }).then(res=>res.json()).then(data=>{
             if(data.error){
-                console.log(data.error);
+                Swal.fire({
+                    icon: 'error',
+                    title: data.error,
+                })
             }
             else{
-                navigate('/login')
+                Swal.fire({
+                    icon: 'sucess',
+                    title: data.message,
+                }).then(navigate('/login'))
             }
         }).catch(err=>{
-            console.log(err);
+            Swal.fire({
+                icon: 'error',
+                title: err,
+            })
         })
     }
         
     return (
         <div id="signup-section">
-            <form id="sign-up-form">
+            <form id="sign-up-form" onSubmit={event=>handleSubmit(event)}>
                 <h1>SIGNUP</h1>
                 <span>
                     <label>FULL NAME *</label>
@@ -92,7 +109,7 @@ const SignUp = (props) => {
                     </span>
                     <span>
                         <label>BIRTHDATE</label>
-                        <input type="date" defaultValue={new Date().toISOString().substr(0,10)} onChange={event=>handleBirthDateOnChange(event)}/>
+                        <input type="date" defaultValue={new Date().toISOString().slice(0,10)} onChange={event=>handleBirthDateOnChange(event)}/>
                     </span>
                     
                 </span>
