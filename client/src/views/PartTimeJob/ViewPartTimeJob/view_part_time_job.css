@@ -36,3 +36,8 @@
     cursor: pointer;
     margin: 10px auto;
 }
+
+.carousel-item{
+    display: flex;
+    padding: 5px 10%;
+}

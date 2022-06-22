@@ -36,7 +36,7 @@ const ViewPartTimeJobDetails = (props) => {
     }
 
     const handleApply = (id) => {
-        navigate('/part_time_job/apply');
+        navigate('/part_time_job/apply/'+id);
     }
 
     const handleChat = (id) =>{
@@ -44,14 +44,14 @@ const ViewPartTimeJobDetails = (props) => {
     }
 
     const navigatePrev = () =>{
-        navigate('/part_time_job');
+        navigate('/part_time_job/view');
     }
         
     return (
         <React.Fragment>
             <BackSection onBackButtonClick={navigatePrev} title="View Part-Time Job Details"/>
             {isLoading?"":<>
-            <div id="event-details-section">
+            <div id="job-details-section">
                 <img src={event.photo.content}/>
                 <span>
                     <p id="organizer"><AccountCircleIcon/>{event.organizer_id}</p>

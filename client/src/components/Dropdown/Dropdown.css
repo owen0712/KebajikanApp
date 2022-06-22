@@ -1,0 +1,8 @@
+.dropdown svg{
+    margin: 0 !important;
+    color: #192F59;
+}
+
+.dropdown legend{
+    display:none;
+}

@@ -18,8 +18,6 @@ const ViewPartTimeJob = (props) => {
 
     const navigate = useNavigate();
     const [events,setEvents] = useState([]);
-    const [firstEvent,setFirstEvent] = useState(null);
-    const [firstImageDisplay,setFirstImageDisplay] = useState('');
     const [isLoading,setIsLoading] = useState(false);
 
     useEffect(()=>{
@@ -40,9 +38,7 @@ const ViewPartTimeJob = (props) => {
                 console.log(data.error);
             }
             else{
-                
-                setEvents(data.events)  
-                
+                setEvents(data.events);  
                 setIsLoading(false);
             }
         }).catch(err=>{
@@ -67,7 +63,22 @@ const ViewPartTimeJob = (props) => {
             {isLoading?<p>The content is loading</p>:<>
             <div id="carousel">
                 <ArrowLeftIcon/>
-                {/* <img src={""} onError={errorHandler} onClick={()=>handleView(firstEvent._id)}/> */}
+                {
+                    events.slice(0,1).map(data=>{
+                        return(
+                            <div key={data._id} class="carousel-item">
+                                <img src={data.photo.content} onClick={()=>handleView(data._id)}/>
+                                <span>
+                                    <h1 onClick={()=>handleView(data._id)}>{events[0].title}</h1>
+                                    <p onClick={()=>handleView(data._id)}>Description: {data.description}</p>
+                                    <p onClick={()=>handleView(data._id)}>Target Amount: {data.amount}</p>
+                                    <button onClick={()=>handleApply(data._id)} className="apply-button">Apply</button>
+                                </span>
+                            </div>
+                        )
+                    })
+                }
+                {/* <img src={events[0].photo.content} onError={errorHandler} onClick={()=>handleView(events[0]._id)}/> */}
                 {/* <span>
                     <h1 onClick={()=>handleView(events[0]._id)}>{events[0].title}</h1>
                     <p onClick={()=>handleView(events[0]._id)}>Description: {events[0].description}</p>
@@ -83,14 +94,15 @@ const ViewPartTimeJob = (props) => {
             <div id="job-list">
                 {events.map(event=>{
                 return(
-                <Card onClick={()=>handleView(firstEvent._id)} key={event._id} className="job-card">
+                <Card key={event._id} className="job-card">
                     <CardMedia
                         component="img"
-                        alt="green iguana"
+                        alt={event.title}
                         height="140"
                         src={event.photo.content}
+                        onClick={()=>handleView(event._id)}
                     />
-                    <CardContent className="job-content">
+                    <CardContent onClick={()=>handleView(event._id)} className="job-content">
                         <p className="job-title">
                             {event.title}
                         </p>
