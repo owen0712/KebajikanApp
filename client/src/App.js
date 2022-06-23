@@ -14,6 +14,7 @@ import ManageCharityEventDetails from './views/ManageCharityEvent/ManageCharityE
 import ApplyForHelp from './views/CharityEvent/ApplyForHelp';
 import ViewCharityEvent from './views/CharityEvent/ViewCharityEvent';
 import ViewCharityEventDetails from './views/CharityEvent/ViewCharityEventDetails';
+import ApplicationHistory from './views/Profile/ApplicationHistory';
 import Login from './views/Authorization/Login';
 import SignUp from './views/Authorization/SignUp';
 import Admin from './views/Admin';
@@ -56,6 +57,7 @@ function App() {
           <Route path='/charity_event/apply_help/:id' element={<ApplyForHelp/>}/>
           <Route path='/charity_event/view' element={<ViewCharityEvent/>}/>
           <Route path='/charity_event/view/:id' element={<ViewCharityEventDetails/>}/>
+          <Route path='/profile/application_history' element={<ApplicationHistory/>}/>
           <Route path='/login' element={<Login handleLogin={handleLogin}/>}/>
           <Route path='/signup' element={<SignUp/>}/>
           <Route path='/admin' element={<Admin/>}/>

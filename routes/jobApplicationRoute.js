@@ -18,7 +18,7 @@ router.post('/job_application/:id',(req,res)=>{
         course,
         status:"Pending",
         //temporary testing
-        created_by:"62acb99f3e617b651832c980",
+        created_by:"62acb9307821dc5fe5e123cf",
         document
     });
     newPartTimeJobApplication.save().then(createdPartTimeJobApplication=>{
@@ -40,12 +40,15 @@ router.get('/job_application',(req,res)=>{
 });
 
 router.get('/job_application/:id',(req,res)=>{
-    JobApplication.find({_id:req.params.id}).then(event=>{
-        res.json({event:event[0]});
+    JobApplication.find({"created_by":req.params.id})
+    .select("-document")
+    .populate("job_id","title")
+    .then(events=>{
+        res.json({events:events});
     }).catch(err=>{
         res.json({error:err});
     });
-})
+});
 
 router.put('/job_application/:id',(req,res)=>{
     const {name,email,identity_no,course,document} = req.body;

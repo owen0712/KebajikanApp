@@ -46,7 +46,17 @@ router.post('/charity_application/:id',(req,res)=>{
 
 router.get('/charity_application',);
 
-router.get('/charity_application/:id',);
+router.get('/charity_application/:id',(req,res)=>{
+    CharityApplication.find({"created_by":req.params.id})
+    .select("-photo")
+    .select("-document")
+    .populate("event_id","title")
+    .then(events=>{
+        res.json({events:events});
+    }).catch(err=>{
+        res.json({error:err});
+    });
+});
 
 router.put('/charity_application/:id',);
 

@@ -93,7 +93,7 @@ const charityApplicationSchema = new mongoose.Schema({
         ref:"User",
         required:true
     },
-    crated_on:{
+    created_on:{
         type:Date,
         default:Date.now,
         required:true
