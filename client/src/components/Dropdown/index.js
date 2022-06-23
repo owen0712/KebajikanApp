@@ -21,7 +21,7 @@ class Dropdown extends Component{
         return(
             <span className="short-input dropdown">
                 <label >{(this.props.label)&&this.props.label}</label>
-                <Select
+                <Select disabled={this.props.isDisabled}
                     labelId="dropdown-label"
                     id="dropdown"
                     value={this.props.value}

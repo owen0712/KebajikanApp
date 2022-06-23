@@ -25,6 +25,7 @@ const ApplicationHistoty = (props) =>{
 
     const fetchJobApplicationData=()=>{
         setIsLoading(true);
+        console.log("id",id)
         fetch('/job_application/'+id,{
             method:'get',
             headers:{
@@ -36,6 +37,7 @@ const ApplicationHistoty = (props) =>{
             }
             else{
                 setJobApplications(data.events);
+                console.log("Part-time",data.events)
                 setIsLoading(false);
             }
         }).catch(err=>{
@@ -64,54 +66,65 @@ const ApplicationHistoty = (props) =>{
         })
     }
 
-    const handleView = (id) => {
+    const handleViewEventApplication = (id) => {
         // navigate('/manage_part_time_job/view/'+id);
         console.log("View",id);
     }
+    
+    const handleViewJobApplication = (id) => {
+        navigate('/profile/application_history/job_application/view/'+id);
+    }
+    
 
     const handleEdit = (id) => {
         // navigate('/manage_part_time_job/edit/'+id);
         console.log("Edit",id);
     }
 
+    const handleEditJobApplication = (id) => {
+        navigate('/profile/application_history/job_application/edit/'+id);
+    }
+
     const handleDelete = (id) =>{
         console.log("Delete",id);
-        // Swal.fire({
-        //     title: 'Delete Part-Time Job',
-        //     text: 'Do you want to delete this part-time job?',
-        //     icon: 'warning',
-        //     confirmButtonText: 'Yes',
-        //     cancelButtonText: 'Cancel',
-        //     showCancelButton: true
-        // }).then(result=>{
-        //     if(result.isConfirmed){
-        //         console.log(id)
-        //         fetch('/part_time_job/'+id,{
-        //             method:'delete',
-        //             headers:{
-        //                 'Content-Type':'application/json'
-        //             }
-        //         }).then(res=>res.json()).then(data=>{
-        //             if(data.error){
-        //                 console.log(data.error);
-        //             }
-        //             else{
-        //                 console.log(data.message);
-        //                 Swal.fire({
-        //                     title: data.message,
-        //                     text: 'Do you want to delete this part-time job?',
-        //                     icon: 'success',
-        //                     confirmButtonText: 'Ok'
-        //                 })
-        //             }
+    }
+
+    const handleDeleteJobApplication = (id) =>{
+        Swal.fire({
+            title: 'Withdraw Job Application',
+            text: 'Do you want to withdraw this job application?',
+            icon: 'warning',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'Cancel',
+            showCancelButton: true
+        }).then(result=>{
+            if(result.isConfirmed){
+                console.log(id)
+                fetch('/job_application/'+id,{
+                    method:'delete',
+                    headers:{
+                        'Content-Type':'application/json'
+                    }
+                }).then(res=>res.json()).then(data=>{
+                    if(data.error){
+                        console.log(data.error);
+                    }
+                    else{
+                        console.log(data.message);
+                        Swal.fire({
+                            title: data.message,
+                            text: 'Do you want to withdraw this application?',
+                            icon: 'success',
+                            confirmButtonText: 'Ok'
+                        })
+                    }
                     
-        //         }).catch(err=>{
-        //             console.log(err);
-        //         })
-        //         window.location.reload();
-        //     }
-        // })
-        
+                }).catch(err=>{
+                    console.log(err);
+                })
+                window.location.reload();
+            }
+        })
     }
 
     const onDisplayEventApplication = ()=> {
@@ -152,7 +165,7 @@ const ApplicationHistoty = (props) =>{
                                 <td>{application.created_on.slice(0,10)}</td>
                                 <td><Status statusName={application.status}/></td>
                                 <td className='button-list'>
-                                    <button className='button' onClick={()=>handleView(application._id)}><RemoveRedEyeIcon/>View</button>
+                                    <button className='button' onClick={()=>handleViewEventApplication(application._id)}><RemoveRedEyeIcon/>View</button>
                                     <button className='button' onClick={()=>handleEdit(application._id)}><CreateIcon/>Edit</button>
                                     <button className='danger-button' onClick={()=>handleDelete(application._id)}><PersonRemoveIcon/>Withdraw</button>    
                                 </td>
@@ -184,9 +197,9 @@ const ApplicationHistoty = (props) =>{
                                 <td>{application.created_on.slice(0,10)}</td>
                                 <td><Status statusName={application.status}/></td>
                                 <td className='button-list'>
-                                    <button className='button' onClick={()=>handleView(application._id)}><RemoveRedEyeIcon/>View</button>
-                                    <button className='button' onClick={()=>handleEdit(application._id)}><CreateIcon/>Edit</button>
-                                    <button className='danger-button' onClick={()=>handleDelete(application._id)}><PersonRemoveIcon/>Withdraw</button>    
+                                    <button className='button' onClick={()=>handleViewJobApplication(application._id)}><RemoveRedEyeIcon/>View</button>
+                                    <button className='button' onClick={()=>handleEditJobApplication(application._id)}><CreateIcon/>Edit</button>
+                                    <button className='danger-button' onClick={()=>handleDeleteJobApplication(application._id)}><PersonRemoveIcon/>Withdraw</button>    
                                 </td>
                             </tr>
                         })}

@@ -50,6 +50,16 @@ router.get('/job_application/:id',(req,res)=>{
     });
 });
 
+router.get('/job_application/view/:id',(req,res)=>{
+    JobApplication.find({"_id":req.params.id})
+    .populate("job_id")
+    .then(event=>{
+        res.json({event:event[0]});
+    }).catch(err=>{
+        res.json({error:err});
+    });
+});
+
 router.put('/job_application/:id',(req,res)=>{
     const {name,email,identity_no,course,document} = req.body;
     if(!name||!email||!identity_no||!course||!document){
