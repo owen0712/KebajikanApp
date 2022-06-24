@@ -21,9 +21,7 @@ const ViewPartTimeJob = (props) => {
     const [isLoading,setIsLoading] = useState(false);
 
     useEffect(()=>{
-        console.log("Before")
         fetchData();
-        console.log("AFter")
     },[])
 
     const fetchData = () =>{
@@ -66,7 +64,7 @@ const ViewPartTimeJob = (props) => {
                 {
                     events.slice(0,1).map(data=>{
                         return(
-                            <div key={data._id} class="carousel-item">
+                            <div key={data._id} className="carousel-item">
                                 <img src={data.photo.content} onClick={()=>handleView(data._id)}/>
                                 <span>
                                     <h1 onClick={()=>handleView(data._id)}>{events[0].title}</h1>

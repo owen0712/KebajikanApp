@@ -26,7 +26,6 @@ const ManagePartTimeJobDetails = (props) => {
 
     const fetchData = () => {
         setIsLoading(true);
-        console.log("ID:",id)
         fetch('/part_time_job/'+id,{
             method:'get',
             headers:{
@@ -153,13 +152,11 @@ const ManagePartTimeJobDetails = (props) => {
 
     const toggleEdit = () => {
         setIsEdit(true);
-        console.log(isEdit);
     }
 
     const toggleCancel = () => {
         setIsEdit(false);
         resetState();
-        console.log(isEdit);
     }
 
     return (

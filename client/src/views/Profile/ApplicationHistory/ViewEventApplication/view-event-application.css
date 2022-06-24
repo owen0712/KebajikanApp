@@ -1,0 +1,92 @@
+#apply-form-upper-part{
+    display: inline-flex;
+    width: 100%;
+}
+
+#apply-form-upper-part img{
+    width: 187.5px;
+    height: 250px;
+}
+
+#apply-form-upper-part .file-upload{
+    width: fit-content;
+    margin: 10px 20px 0px 10px;
+}
+
+form #apply-form-right-content{
+    width: 100%;
+    padding-top: 4px;
+    padding-right: 4px;
+}
+
+#apply-form-right-content *{
+    display: flex;
+}
+
+#apply-form-right-content label{
+    width: 20%;
+}
+
+#apply-form-right-content input{
+    width: 80%;
+}
+
+input:disabled{
+    color: rgba(25, 47, 89, 0.8);
+    background-color: #E1E1E1;
+}
+
+#apply-form-lower-part{
+    width: 100%;
+}
+
+.section-header{
+    background-color: #192F59;
+    color: white;
+    display: block;
+    width: 96.5%;
+    font-weight: bold;
+    height:20px;
+    padding: 15px;
+    margin: 10px 0px;
+}
+
+.full-input{
+    width: 98.8%;
+    display: flex;
+    margin: 15px 0px;
+}
+
+.full-input label{
+    width: 20%;
+}
+
+.full-input input,select,option{
+    width: 80%;
+    border: 3px solid #192F59;
+    color: #192F59;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.half-input{
+    width: 49%;
+    display: inline-flex;
+    margin: 10px 10px 10px 0px;
+}
+
+.half-input *{
+    width: 50%;
+}
+
+#tnc-section{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    align-items: center;
+}
+
+#tnc-section a{
+    display: inline;
+    margin: 0;
+}

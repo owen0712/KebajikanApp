@@ -54,7 +54,7 @@ const ViewPartTimeJobDetails = (props) => {
             <div id="job-details-section">
                 <img src={event.photo.content}/>
                 <span>
-                    <p id="organizer"><AccountCircleIcon/>{event.organizer_id}</p>
+                    <p id="organizer"><AccountCircleIcon/>{event.organizer_id.name}</p>
                     <p id="title">{event.title}</p>
                     <p>Description: {event.description}</p>
                     <p>Allowance: RM{event.allowance}</p>

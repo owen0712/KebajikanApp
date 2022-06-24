@@ -17,6 +17,7 @@ const courseOption = [
 const ApplyPartTimeJob = (props) => {
 
     const [event,setEvent] = useState([]); 
+    const [jobTitle,setJobTitle] = useState(""); 
     const [isLoading,setIsLoading] = useState(true);
     const navigate = useNavigate();
     const id = useParams();
@@ -85,6 +86,7 @@ const ApplyPartTimeJob = (props) => {
             }
             else{
                 setEvent(data.event);
+                setJobTitle(data.event.title);
                 setIsLoading(false);
             }
         }).catch(err=>{
@@ -132,7 +134,7 @@ const ApplyPartTimeJob = (props) => {
         
     return (
         <React.Fragment>
-            <BackSection onBackButtonClick={navigatePrev} title="Apply Part-Time Job"/>
+            <BackSection onBackButtonClick={navigatePrev} title={"Apply Part-Time Job: "+jobTitle}/>
             {isLoading?"":<>
             <div id="apply-job-layout">
                 <div id="apply-job-details-section">

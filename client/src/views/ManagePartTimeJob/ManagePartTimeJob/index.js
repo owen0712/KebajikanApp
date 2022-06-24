@@ -117,7 +117,7 @@ const ManagePartTimeJob = (props) => {
                         events.map(event=>{
                             return <tr key={event._id}>
                                 <td>{event.title}</td>
-                                <td>{event.organizer_id}</td>
+                                <td>{event.organizer_id.name}</td>
                                 <td>{event.allocated_student.length}/{event.required_student}</td>
                                 <td>{event.created_on.slice(0,10)}</td>
                                 <td><Status statusName={event.status}/></td>

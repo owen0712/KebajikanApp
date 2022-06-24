@@ -16,6 +16,7 @@ import ViewCharityEvent from './views/CharityEvent/ViewCharityEvent';
 import ViewCharityEventDetails from './views/CharityEvent/ViewCharityEventDetails';
 import ApplicationHistory from './views/Profile/ApplicationHistory';
 import ViewJobApplication from './views/Profile/ApplicationHistory/ViewJobApplication';
+import ViewEventApplication from './views/Profile/ApplicationHistory/ViewEventApplication';
 import ViewProfile from './views/Profile/ViewProfile';
 import Login from './views/Authorization/Login';
 import SignUp from './views/Authorization/SignUp';
@@ -66,7 +67,9 @@ function App() {
           <Route path='/profile/application_history' element={<ApplicationHistory/>}/>
           <Route path='/profile/application_history/job_application/view/:id' element={<ViewJobApplication isEdit={false}/>}/>
           <Route path='/profile/application_history/job_application/edit/:id' element={<ViewJobApplication isEdit={true}/>}/>
-          <Route path='/profile/view' element={<ViewProfile/>}/>
+          <Route path='/profile/application_history/event_application/view/:id' element={<ViewEventApplication isEdit={false}/>}/>
+          <Route path='/profile/application_history/event_application/edit/:id' element={<ViewEventApplication isEdit={true}/>}/>
+          <Route path='/profile' element={<ViewProfile/>}/>
           <Route path='/login' element={<Login handleLogin={handleLogin}/>}/>
           <Route path='/signup' element={<SignUp/>}/>
           <Route path='/admin' element={<Admin/>}/>

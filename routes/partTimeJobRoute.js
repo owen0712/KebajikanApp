@@ -33,6 +33,7 @@ router.post('/part_time_job',(req,res)=>{
 router.get('/part_time_job',(req,res)=>{
     PartTimeJob.find()
     .select("-photo")
+    .populate("organizer_id","name")
     .then(events=>{
         res.json({events:events});
     }).catch(err=>{
@@ -50,7 +51,9 @@ router.get('/part_time_job/available',(req,res)=>{
 });
 
 router.get('/part_time_job/:id',(req,res)=>{
-    PartTimeJob.find({_id:req.params.id}).then(event=>{
+    PartTimeJob.find({_id:req.params.id})
+    .populate("organizer_id","name")
+    .then(event=>{
         res.json({event:event[0]});
     }).catch(err=>{
         res.json({error:err});

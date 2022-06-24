@@ -17,6 +17,7 @@ const courseOption = [
 const ViewJobApplication = (props) => {
 
     const [event,setEvent] = useState([]); 
+    const [jobTitle,setJobTitle] = useState(""); 
     const [isLoading,setIsLoading] = useState(true);
     const navigate = useNavigate();
     const [name, setName] = useState("");
@@ -86,10 +87,10 @@ const ViewJobApplication = (props) => {
                 console.log(data.error);
             }
             else{
-                console.log("job-application",data.event)
                 const event = data.event;
                 setName(event.name);
                 setEvent(event.job_id);
+                setJobTitle(event.job_id.title);
                 setEmail(event.email);
                 setIdentityNo(event.identity_no);
                 setCourse(event.course);
@@ -124,10 +125,10 @@ const ViewJobApplication = (props) => {
                 console.log(data.message);
                 Swal.fire({
                     icon: 'success',
-                    title: 'Job Applied Successfully!',
+                    title: 'Successfully Updated!',
                     confirmButtonText: 'OK'
                 });
-                navigatePrev();
+                toggleCancel();
             }
         }).catch(err=>{
             console.log(err);
@@ -144,18 +145,16 @@ const ViewJobApplication = (props) => {
 
     const toggleEdit = () => {
         setIsEdit(true);
-        console.log(isEdit);
     }
 
     const toggleCancel = () => {
         setIsEdit(false);
         resetState();
-        console.log(isEdit);
     }
         
     return (
         <React.Fragment>
-            <BackSection onBackButtonClick={navigatePrev} title="View Part-Time Job Application"/>
+            <BackSection onBackButtonClick={navigatePrev} title={"View Job Application: "+jobTitle}/>
             {isLoading?"":<>
             <div id="apply-job-layout">
                 <div id="apply-job-details-section">

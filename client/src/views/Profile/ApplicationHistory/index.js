@@ -25,7 +25,6 @@ const ApplicationHistoty = (props) =>{
 
     const fetchJobApplicationData=()=>{
         setIsLoading(true);
-        console.log("id",id)
         fetch('/job_application/'+id,{
             method:'get',
             headers:{
@@ -37,7 +36,6 @@ const ApplicationHistoty = (props) =>{
             }
             else{
                 setJobApplications(data.events);
-                console.log("Part-time",data.events)
                 setIsLoading(false);
             }
         }).catch(err=>{
@@ -58,7 +56,6 @@ const ApplicationHistoty = (props) =>{
             }
             else{
                 setEventApplications(data.events);
-                console.log("Charity",data.events)
                 setIsLoading(false);
             }
         }).catch(err=>{
@@ -67,8 +64,7 @@ const ApplicationHistoty = (props) =>{
     }
 
     const handleViewEventApplication = (id) => {
-        // navigate('/manage_part_time_job/view/'+id);
-        console.log("View",id);
+        navigate('/profile/application_history/event_application/view/'+id);
     }
     
     const handleViewJobApplication = (id) => {
@@ -76,8 +72,8 @@ const ApplicationHistoty = (props) =>{
     }
     
 
-    const handleEdit = (id) => {
-        // navigate('/manage_part_time_job/edit/'+id);
+    const handleEditEventApplication = (id) => {
+        navigate('/profile/application_history/event_application/edit/'+id);
         console.log("Edit",id);
     }
 
@@ -85,8 +81,42 @@ const ApplicationHistoty = (props) =>{
         navigate('/profile/application_history/job_application/edit/'+id);
     }
 
-    const handleDelete = (id) =>{
-        console.log("Delete",id);
+    const handleDeleteEventApplication = (id) =>{
+        Swal.fire({
+            title: 'Withdraw Charity Event Application',
+            text: 'Do you want to withdraw this charity event application?',
+            icon: 'warning',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'Cancel',
+            showCancelButton: true
+        }).then(result=>{
+            if(result.isConfirmed){
+                console.log(id)
+                fetch('/charity_application/'+id,{
+                    method:'delete',
+                    headers:{
+                        'Content-Type':'application/json'
+                    }
+                }).then(res=>res.json()).then(data=>{
+                    if(data.error){
+                        console.log(data.error);
+                    }
+                    else{
+                        console.log(data.message);
+                        Swal.fire({
+                            title: data.message,
+                            text: 'Do you want to withdraw this application?',
+                            icon: 'success',
+                            confirmButtonText: 'Ok'
+                        })
+                    }
+                    
+                }).catch(err=>{
+                    console.log(err);
+                })
+                window.location.reload();
+            }
+        })
     }
 
     const handleDeleteJobApplication = (id) =>{
@@ -166,8 +196,8 @@ const ApplicationHistoty = (props) =>{
                                 <td><Status statusName={application.status}/></td>
                                 <td className='button-list'>
                                     <button className='button' onClick={()=>handleViewEventApplication(application._id)}><RemoveRedEyeIcon/>View</button>
-                                    <button className='button' onClick={()=>handleEdit(application._id)}><CreateIcon/>Edit</button>
-                                    <button className='danger-button' onClick={()=>handleDelete(application._id)}><PersonRemoveIcon/>Withdraw</button>    
+                                    <button className='button' onClick={()=>handleEditEventApplication(application._id)}><CreateIcon/>Edit</button>
+                                    <button className='danger-button' onClick={()=>handleDeleteEventApplication(application._id)}><PersonRemoveIcon/>Withdraw</button>    
                                 </td>
                             </tr>
                         })}
