@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import './view_charity_event_details.css';
 import BackSection from '../../../components/BackSection';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import Swal from 'sweetalert2';
 
 const ViewCharityEventDetails = (props) => {
 
@@ -24,14 +25,22 @@ const ViewCharityEventDetails = (props) => {
             }
         }).then(res=>res.json()).then(data=>{
             if(data.error){
-                console.log(data.error);
+                Swal.fire({
+                    title: data.error,
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                })
             }
             else{
                 setEvent(data.event);
                 setIsLoading(false);
             }
         }).catch(err=>{
-            console.log(err);
+            Swal.fire({
+                title: err,
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            })
         })
     }
 
@@ -42,11 +51,15 @@ const ViewCharityEventDetails = (props) => {
     const handleChat = (id) =>{
         navigate('/chat/'+id);
     }
+
+    const handleRedirectBack = () => {
+        navigate('/charity_event/view')
+    }
         
     return (
         <React.Fragment>
-            <BackSection title="View Charity Event Details"/>
-            {isLoading?"":<>
+            <BackSection title="View Charity Event Details" onBackButtonClick={handleRedirectBack}/>
+            {isLoading?<h1>Loading...</h1>:<>
             <div id="event-details-section">
                 <img src={event.photo.content}/>
                 <span>

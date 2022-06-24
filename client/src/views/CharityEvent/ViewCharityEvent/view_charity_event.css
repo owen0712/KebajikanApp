@@ -22,6 +22,10 @@
     height: 50px;
 }
 
+#carousel h1{
+    text-align: left;
+}
+
 #title-section{
     background-color: #192F59;
     color:white;
@@ -89,6 +93,22 @@
     padding: 35px;
     box-shadow: 4px 4px rgb(0,0,0,.2);
     cursor: pointer;
+}
+
+.card p,#carousel p{
+    text-overflow: clip;
+    overflow: hidden;
+    word-break: break-all;
+    width: 95%;
+    white-space: nowrap; 
+}
+
+.card h4,#carousel h4{
+    text-overflow: clip;
+    overflow: hidden;
+    word-break: break-all;
+    width: 95%;
+    white-space: nowrap; 
 }
 
 .card img{

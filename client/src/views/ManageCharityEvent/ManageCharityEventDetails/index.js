@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom';
 import './manage_charity_event_details.css';
 import BackSection from '../../../components/BackSection';
+import Swal from 'sweetalert2';
 
 const ManageCharityEventDetails = (props) => {
 
@@ -39,7 +40,11 @@ const ManageCharityEventDetails = (props) => {
             }
         }).then(res=>res.json()).then(data=>{
             if(data.error){
-                console.log(data.error);
+                Swal.fire({
+                    title: data.error,
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                });
             }
             else{
                 const event = data.event;
@@ -58,7 +63,11 @@ const ManageCharityEventDetails = (props) => {
                 setIsLoading(false);
             }
         }).catch(err=>{
-            console.log(err);
+            Swal.fire({
+                title: err,
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
         })
     }
 
@@ -144,10 +153,36 @@ const ManageCharityEventDetails = (props) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        if(preregister_end_date<preregister_start_date){
+            Swal.fire({
+                title: "Preregister End Date must greater than Preregister Start Date",
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
+            return;
+        }
+        if(donation_start_date<preregister_end_date){
+            Swal.fire({
+                title: "Donation Start Date must greater than Preregister End Date",
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
+            return;
+        }
+        if(donation_end_date<donation_start_date){
+            Swal.fire({
+                title: "Donation End Date must greater than Donation Start Date",
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
+            return;
+        }
+        const jwt=sessionStorage.getItem("jwt");
         fetch('/charity_event/'+id,{
             method:'put',
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                'Authorization':"Bearer"+jwt
             },
             body:JSON.stringify({
                 title,
@@ -165,20 +200,31 @@ const ManageCharityEventDetails = (props) => {
             })
         }).then(res=>res.json()).then(data=>{
             if(data.error){
-                console.log(data.error);
+                Swal.fire({
+                    title: data.error,
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                });
             }
             else{
-                console.log(data.message);
+                Swal.fire({
+                    icon:"success",
+                    title:data.message,
+                    confirmButtonText: 'Ok'
+                });
                 setIsEdit(false);
             }
         }).catch(err=>{
-            console.log(err);
+            Swal.fire({
+                title: err,
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
         })
     }
 
     const toggleEdit = () => {
         setIsEdit(true);
-        console.log(isEdit);
     }
 
     const handleRedirectBack = () => {
@@ -193,11 +239,37 @@ const ManageCharityEventDetails = (props) => {
     const resetState = () => {
         fetchData();
     };
+
+    const handleViewFile = () => {
+        fetch('/charity_event/document/'+id,{
+            method:'get',
+            headers:{
+                'Content-Type':'application/json'
+            }
+        }).then(res=>res.json()).then(data=>{
+            if(data.error){
+                Swal.fire({
+                    title: data.error,
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                });
+            }
+            else{
+                setDocument(data.document);
+            }
+        }).catch(err=>{
+            Swal.fire({
+                title: err,
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
+        })
+    }
         
     return (
         <React.Fragment>
-            {isLoading?<p>Loading...</p>:<>
             <BackSection onBackButtonClick={handleRedirectBack} title={isEdit?"Edit Charity Event":"View Charity Event"}/>
+            {isLoading?<h1>Loading...</h1>:<>
             <form onSubmit={handleSubmit}>
                 <div id="create-form-upper-part">
                     <div id="form-left-content">
@@ -242,7 +314,8 @@ const ManageCharityEventDetails = (props) => {
                         <span className="short-input">
                             <label >SUPPORTING DOCUMENT</label>
                             <input className="hidden" ref={fileUploadInput} onChange={event=>handleFileOnChange(event)} type="file" accept=".zip,.rar,.7zip" name="document"/>
-                            <input ref={fileTextDisplay} onClick={isEdit?handleTextInputOnClick:()=>{}} type="text" defaultValue={document.name} disabled={!isEdit}/>
+                            <iframe className="hidden" src={document.content} title={document.name}></iframe>
+                            <input className={isEdit?"":"read-only"} ref={fileTextDisplay} onClick={isEdit?handleTextInputOnClick:handleViewFile} type="text" defaultValue={document.name} readOnly={!isEdit}/>
                         </span>
                         <p id="file-upload-reminder">* Please upload your charity event proposal together with supporting documents in zip files</p>
                     </div>

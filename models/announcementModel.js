@@ -11,14 +11,15 @@ const announcementSchema = new mongoose.Schema({
         requried:true
     },
     attachment:{
-            
+        type:Object,
+        required:true
     },
-    createdOn:{
+    created_on:{
         type:Date,
         default:Date.now,
         required:true
     },
-    createdBy:{
+    created_by:{
         type:ObjectId,
         ref:"User",
         required:true

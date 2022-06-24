@@ -5,10 +5,13 @@ const CharityEvent = mongoose.model('CharityEvent');
 
 router.post('/charity_event',(req,res)=>{
     //62acb99f3e617b651832c980
-    const {title,purpose,description,location,amount,preregister_start_date,preregister_end_date,donation_start_date,donation_end_date,photo,document} = req.body;
-    if(!title||!purpose||!description||!location||!amount||!preregister_start_date||!preregister_end_date||!donation_start_date||!donation_end_date||!photo||!document){
+    const {title,purpose,description,location,amount,preregister_start_date,preregister_end_date,donation_start_date,donation_end_date,photo,document,user_id,role} = req.body;
+    if(!title||!purpose||!description||!location||!amount||!preregister_start_date||!preregister_end_date||!donation_start_date||!donation_end_date||!photo||!document||!user_id||!role){
         return res.json({error:'please fill all fields'});
     }
+
+    const status = role==2?"Preregistration":"Pending";
+
     const newCharityEvent = new CharityEvent({
         title,
         purpose,
@@ -19,10 +22,9 @@ router.post('/charity_event',(req,res)=>{
         preregister_end_date,
         donation_start_date,
         donation_end_date,
-        status:"Pending",
-        //temporary testing
-        organizer_id:"62acb99f3e617b651832c980",
-        created_by:"62acb99f3e617b651832c980",
+        status:status,
+        organizer_id:user_id,
+        created_by:user_id,
         photo,
         document
     });
@@ -44,10 +46,20 @@ router.get('/charity_event/approved',(req,res)=>{
     });
 })
 
+router.get('/charity_event/document/:id',(req,res)=>{
+    CharityEvent.find({_id:req.params.id})
+    .then(event=>{
+        res.json({document:event[0].document});
+    }).catch(err=>{
+        res.json({error:err});
+    });
+})
+
 router.get('/charity_event',(req,res)=>{
     CharityEvent.find({"status" : { "$in": ["In Progress", "Preregistration","Closed"]}})
     .select("-document")
     .select("-photo")
+    .sort("-created_on")
     .populate("organizer_id","-_id name")
     .then(events=>{
         res.json({events:events});
@@ -60,6 +72,7 @@ router.get('/charity_event/:id',(req,res)=>{
     CharityEvent.find({_id:req.params.id})
     .populate("organizer_id","name")
     .then(event=>{
+        event[0].document.content="";
         res.json({event:event[0]});
     }).catch(err=>{
         res.json({error:err});

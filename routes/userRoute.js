@@ -4,6 +4,17 @@ const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const bcrypt = require('bcryptjs');
 
+router.get('/user',(req,res)=>{
+    User.find({},{_id:1,name:1})
+    .sort('-role')
+    .sort('name')
+    .then(users=>{
+        res.json({users:users});
+    }).catch(err=>{
+        res.json({error:err});
+    });
+})
+
 router.put('/user/:id',(req,res)=>{
     const {name,email,birthdate,phone_number}=req.body;
     if(!name||!email||!birthdate||!phone_number){

@@ -4,10 +4,8 @@ const mongoose = require('mongoose');
 const CharityApplication = mongoose.model('CharityApplication');
 
 router.post('/charity_application/:id',(req,res)=>{
-    console.log(req.body);
-    //62acb9307821dc5fe5e123cf
-    const {name,phone_number,identity_no,email,ic_no,marital_status,current_address,permanent_address,program,department,year_of_study,semester,father_occ,mother_occ,father_income,mother_income,total_income,no_sibling,no_dependent,document,photo} = req.body;
-    if(!name||!phone_number||!identity_no||!email||!ic_no||!marital_status||!current_address||!permanent_address||!program||!department||!year_of_study||!semester||!father_occ||!mother_occ||!photo||!document){
+    const {name,phone_number,identity_no,email,ic_no,marital_status,current_address,permanent_address,program,department,year_of_study,semester,father_occ,mother_occ,father_income,mother_income,total_income,no_sibling,no_dependent,document,photo,user_id,role} = req.body;
+    if(!name||!phone_number||!identity_no||!email||!ic_no||!marital_status||!current_address||!permanent_address||!program||!department||!year_of_study||!semester||!father_occ||!mother_occ||!photo||!document||!user_id||!role){
         return res.json({error:'please fill all fields'});
     }
     const newCharityEventApplication = new CharityApplication({
@@ -32,13 +30,12 @@ router.post('/charity_application/:id',(req,res)=>{
         no_sibling,
         no_dependent,document,
         photo,
-        //temporary testing
-        created_by:"62acb9307821dc5fe5e123cf",
+        created_by:user_id,
         photo,
         document
     });
     newCharityEventApplication.save().then(createdCharityEventApplication=>{
-        res.json({message:'New aplication successfully created'});
+        res.json({message:'New application successfully created'});
     }).catch(err=>{
           res.json({error:err});
     });

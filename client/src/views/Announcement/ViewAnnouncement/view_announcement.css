@@ -1,0 +1,51 @@
+h1{
+    text-align: center;
+    color: #192F59;
+}
+
+.announcement-card{
+    box-shadow: 4px 4px rgb(0,0,0,.3);
+    display: block;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 30px 10px;
+    background-color: #F6F8FB;
+    min-height: 50vh;
+}
+
+.announcement-card h3{
+    background-color: #192F59;
+    color: white;
+    margin: 0px;
+    text-align: left;
+    padding-left: 20px;
+    padding-top: 20px;
+    height: 40px;
+    text-overflow: ellipsis;
+    display: inline-block;
+    overflow: hidden;
+    width: 98.5%;
+    white-space: nowrap; 
+}
+
+.announcement-card img{
+    width: 99.5%;
+}
+
+.announcement-card p{
+    text-align: left;
+    height: 40px;
+    margin: 10px 0px 0px 0px;
+    color: #192F59;
+    font-size: 18px;
+    font-weight: 550;
+    text-overflow: ellipsis;
+    display: inline-block;
+    overflow: hidden;
+    width: 98.5%;
+    white-space: nowrap; 
+}
+
+.announcement-card span,.announcement-card small{
+    padding-left: 20px;
+}

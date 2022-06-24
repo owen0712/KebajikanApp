@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import {useNavigate} from 'react-router-dom';
-import './view_charity_event_list.css';
+import './view_announcement_list.css';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import CreateIcon from '@mui/icons-material/Create';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import Swal from 'sweetalert2';
 import { BackSection, Status } from '../../../components';
 
-const ViewCharityEventList = (props) => {
+const ViewAnnouncementList = (props) => {
 
     const navigate = useNavigate();
-    const [events,setEvents] = useState([]);
+    const [announcements,setAnnouncements] = useState([]);
     const [pageNumber,setPageNumber] = useState(1);
     const [isLoading,setIsLoading] = useState(true);
 
@@ -20,7 +22,7 @@ const ViewCharityEventList = (props) => {
 
     const fetchData = () =>{
         setIsLoading(true);
-        fetch('/charity_event',{
+        fetch('/announcement/list',{
             method:'get',
             headers:{
                 'Content-Type':'application/json'
@@ -34,7 +36,8 @@ const ViewCharityEventList = (props) => {
                 });
             }
             else{
-                setEvents(data.events)
+                console.log(announcements)
+                setAnnouncements(data.announcements)
                 setIsLoading(false);
             }
         }).catch(err=>{
@@ -42,38 +45,37 @@ const ViewCharityEventList = (props) => {
                 title: err,
                 icon: 'error',
                 confirmButtonText: 'Ok'
-            });
+            })
         })
     }
 
     const handleCreate = () => {
-        navigate('/manage_charity_event/create');
+        navigate('/manage_announcement/create');
     }
 
     const handleView = (id) => {
-        navigate('/manage_charity_event/view/'+id);
+        navigate('/manage_announcement/view/'+id);
     }
 
     const handleEdit = (id) => {
-        navigate('/manage_charity_event/edit/'+id);
+        navigate('/manage_announcement/edit/'+id);
     }
 
     const handleDelete = (id) =>{
         Swal.fire({
-            title: 'Delete Charity Event',
-            text: 'Do you want to delete this charity event?',
+            title: 'Delete Announcement',
+            text: 'Do you want to delete this announcement?',
             icon: 'warning',
             confirmButtonText: 'Yes',
             cancelButtonText: 'Cancel',
             showCancelButton: true
         }).then(result=>{
             if(result.isConfirmed){
-                const jwt=sessionStorage.getItem("jwt");
-                fetch('/charity_event/'+id,{
+                console.log(id)
+                fetch('/announcement/'+id,{
                     method:'delete',
                     headers:{
-                        'Content-Type':'application/json',
-                        'Authorization':"Bearer"+jwt
+                        'Content-Type':'application/json'
                     }
                 }).then(res=>res.json()).then(data=>{
                     if(data.error){
@@ -84,6 +86,7 @@ const ViewCharityEventList = (props) => {
                         })
                     }
                     else{
+                        console.log(data.message);
                         Swal.fire({
                             title: data.message,
                             icon: 'success',
@@ -109,32 +112,27 @@ const ViewCharityEventList = (props) => {
     return (
         <React.Fragment>
             {isLoading?<h1>Loading...</h1>:<>
-            <BackSection title="View Charity Event" onBackButtonClick={handleRedirectBack} previousIsHome={true} createButtonName="Create New Charity Event" handleButtonCreate={handleCreate}/>
-            <div id="#charity-event-list-table-section">
+            <BackSection title="View Announcement" onBackButtonClick={handleRedirectBack} previousIsHome={true} createButtonName="Create New Announcement" handleButtonCreate={handleCreate}/>
+            <div id="#announcement-list-table-section">
                 <table>
                     <thead>
                         <tr>
-                            <th className="title">CHARITY EVENT NAME</th>
-                            <th>ORGANIZER</th>
-                            <th>PROGRESS</th>
+                            <th className='title'>ANNOUNCEMENT</th>
+                            <th className='description'>DESCRIPTION</th>
                             <th>DATE CREATED</th>
-                            <th>STATUS</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        {
-                        events.map(event=>{
-                            return <tr key={event._id}>
-                                <td className="title">{event.title}</td>
-                                <td>{event.organizer_id.name}</td>
-                                <td>RM{event.current_amount}/{event.amount}</td>
-                                <td>{event.created_on.slice(0,10)}</td>
-                                <td><Status statusName={event.status}/></td>
+                        {announcements.map(announcement=>{
+                            return <tr key={announcement._id}>
+                                <td className='title'>{announcement.title}</td>
+                                <td className='description'>{announcement.description}</td>
+                                <td>{announcement.created_on.slice(0,10)}</td>
                                 <td className='button-list'>
-                                    <button className='button' onClick={()=>handleView(event._id)}><RemoveRedEyeIcon/>View</button>
-                                    <button className='button' onClick={()=>handleEdit(event._id)}><CreateIcon/>Edit</button>
-                                    <button className='danger-button' onClick={()=>handleDelete(event._id)}><DeleteIcon/>Delete</button>    
+                                    <button className='button' onClick={()=>handleView(announcement._id)}><RemoveRedEyeIcon/>View</button>
+                                    <button className='button' onClick={()=>handleEdit(announcement._id)}><CreateIcon/>Edit</button>
+                                    <button className='danger-button' onClick={()=>handleDelete(announcement._id)}><DeleteIcon/>Delete</button>    
                                 </td>
                             </tr>
                         })}
@@ -152,4 +150,4 @@ const ViewCharityEventList = (props) => {
     )
 }
 
-export default ViewCharityEventList;
+export default ViewAnnouncementList;

@@ -40,7 +40,7 @@ const Admin = (props) => {
                     <PaidTwoToneIcon/>
                     <p>DONATION</p>
                 </span>
-                <span className="option-card" onClick={()=>handleClick('/')}>
+                <span className="option-card" onClick={()=>handleClick('/manage_notification')}>
                     <NotificationsActiveTwoToneIcon/>
                     <p>NOTIFICATION</p>
                 </span>

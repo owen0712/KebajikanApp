@@ -1,7 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react';
-import {useParams} from 'react-router-dom';
+import {useParams, useNavigate} from 'react-router-dom';
 import './apply_help.css';
 import BackSection from '../../../components/BackSection';
+import Swal from 'sweetalert2';
+import Dropdown from '../../../components/Dropdown';
 
 const ApplyForHelp = (props) => {
 
@@ -10,9 +12,9 @@ const ApplyForHelp = (props) => {
     const [identity_no,setIdentityNo] = useState("");
     const [email,setEmail] = useState("");
     const [ic_no,setIcNo] = useState("");
-    const [marital_status,setMaritalStatus] = useState(null);
-    const [current_address,setCurrentAddress] = useState(null);
-    const [permanent_address,setPermanentAddress] = useState(null);
+    const [marital_status,setMaritalStatus] = useState("");
+    const [current_address,setCurrentAddress] = useState("");
+    const [permanent_address,setPermanentAddress] = useState("");
     const [program,setProgram] = useState("");
     const [department,setDepartment] = useState("");
     const [year_of_study,setYearOfStudy] = useState(1);
@@ -29,11 +31,38 @@ const ApplyForHelp = (props) => {
     const [isAgree,setIsAgree] = useState(false);
     const [event_name,setEventName] = useState(""); 
     const [isLoading,setIsLoading] = useState(true);
-    const id = useParams();
+    const event_id = useParams();
     const imageUploadInput = useRef();
     const imageDisplay = useRef();
     const fileUploadInput = useRef();
     const fileTextDisplay = useRef();
+    const navigate = useNavigate();
+
+    const maritalStatusOption = [
+        "Single",
+        "Married",
+        "Widowed",
+        "Separated",
+        "Divorced",
+    ]
+
+    const programOption = [
+        "Bachelor of Computer Science(Software Engineering)",
+        "Bachelor of Computer Science(Artificial Intelligence)",
+        "Bachelor of Computer Science(Information Systems)",
+        "Bachelor of Computer Science(Computer System and Technology)",
+        "Bachelor of Computer Science(Data Science)",
+        "Bachelor of Computer Science(Multimedia Computing)"
+        
+    ]
+
+    const departmentOption = [
+        "Software Engineering",
+        "Artificial Intelligence",
+        "Information Systems",
+        "Computer System & Technology",
+        "Multimedia"
+    ]
 
     useEffect(()=>{
         fetchData();
@@ -41,21 +70,29 @@ const ApplyForHelp = (props) => {
 
     const fetchData = () => {
         setIsLoading(true);
-        fetch('/charity_event/name/'+id.id,{
+        fetch('/charity_event/name/'+event_id.event_id,{
             method:'get',
             headers:{
                 'Content-Type':'application/json'
             }
         }).then(res=>res.json()).then(data=>{
             if(data.error){
-                console.log(data.error);
+                Swal.fire({
+                    title: data.error,
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                })
             }
             else{
                 setEventName(data.name);
                 setIsLoading(false);
             }
         }).catch(err=>{
-            console.log(err);
+            Swal.fire({
+                title: err,
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            })
         })
     }
 
@@ -150,7 +187,11 @@ const ApplyForHelp = (props) => {
             });
         };
         reader.onerror = function (error) {
-            console.log('Error: ', error);
+            Swal.fire({
+                title: error,
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            })
         };
         fileTextDisplay.current.value = event.target.files[0].name;
     }
@@ -172,17 +213,32 @@ const ApplyForHelp = (props) => {
             });
         }
         reader.onerror = function (error) {
-            console.log('Error: ', error);
+            Swal.fire({
+                title: error,
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            })
         };
         imageDisplay.current.src = URL.createObjectURL(event.target.files[0]);
     }
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        fetch('/charity_application/'+id.id,{
+        if(!isAgree){
+            Swal.fire({
+                icon:"error",
+                title:"Please tick the agreement checkbox",
+                confirmButtonText: 'Ok'
+            });
+            return;
+        }
+        const {id,role}=JSON.parse(sessionStorage.getItem("user"));
+        const jwt=sessionStorage.getItem("jwt");
+        fetch('/charity_application/'+event_id.event_id,{
             method:'post',
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                'Authorization':"Bearer"+jwt
             },
             body:JSON.stringify({
                 name,
@@ -205,24 +261,48 @@ const ApplyForHelp = (props) => {
                 no_sibling,
                 no_dependent,
                 document,
-                photo
+                photo,
+                user_id:id,
+                role
             })
         }).then(res=>res.json()).then(data=>{
             if(data.error){
-                console.log(data.error);
+                Swal.fire({
+                    icon:"error",
+                    title:data.error,
+                    confirmButtonText: 'Ok'
+                });
             }
             else{
-                console.log(data.message);
+                Swal.fire({
+                    icon:"success",
+                    title:data.message,
+                    confirmButtonText: 'Ok'
+                }).then(
+                    navigate('/charity_event/view/'+id)
+                );
             }
         }).catch(err=>{
-            console.log(err);
+            Swal.fire({
+                icon:"error",
+                title:err,
+                confirmButtonText: 'Ok'
+            });
         })
+    }
+
+    const handleRedirectBack = () => {
+        navigate('/charity_event/view')
+    }
+
+    const handleIsAgreeOnChange = (event) => {
+        setIsAgree(event.target.value);
     }
         
     return (
         <React.Fragment>
-            <BackSection title={event_name+"  Application Form"}/>
-            {isLoading?"":<>
+            <BackSection title={event_name+"  Application Form"} onBackButtonClick={handleRedirectBack}/>
+            {isLoading?<h1>Loading...</h1>:<>
             <form id="application-form" onSubmit={event=>handleSubmit(event)}>
                 <p className='section-header'>APPLICATION DETAILS</p>
                 <div id="apply-form-upper-part">
@@ -254,7 +334,13 @@ const ApplyForHelp = (props) => {
                         <label >IDENTITY CARD NO</label>
                         <input type="text" name="ic_no" onChange={event=>handleIcNoOnChange(event)}/>
                     </span>
-                    <span className="full-input">
+                    <Dropdown
+                        optionList={maritalStatusOption}
+                        label = "MARITAL STATUS"
+                        value = {marital_status}
+                        handleOnChange = {handleMaritalStatusOnChange}
+                    />
+                    {/* <span className="full-input">
                         <label >MARITAL STATUS</label>
                         <select name="marital_status" defaultValue={""} onChange={event=>handleMaritalStatusOnChange(event)}>
                             <option value="" disabled hidden> </option>
@@ -264,7 +350,7 @@ const ApplyForHelp = (props) => {
                             <option>Separated</option>
                             <option>Divorced</option>
                         </select>                    
-                    </span>
+                    </span> */}
                     <span className="full-input">
                         <label >CURRENT ADDRESS</label>
                         <input type="text" name="current_address" onChange={event=>handleCurrentAddressOnChange(event)}/>
@@ -275,7 +361,13 @@ const ApplyForHelp = (props) => {
                     </span>
 
                     <p className='section-header'>PROGRAM OF STUDY</p>
-                    <span className="full-input">
+                    <Dropdown
+                        optionList={programOption}
+                        label = "PROGRAM"
+                        value = {program}
+                        handleOnChange = {handleProgramOnChange}
+                    />
+                    {/* <span className="full-input">
                         <label >PROGRAM</label>
                         <select name="program" defaultValue={""}onChange={event=>handleProgramOnChange(event)}>
                             <option value="" disabled hidden> </option>
@@ -286,8 +378,14 @@ const ApplyForHelp = (props) => {
                             <option>Bachelor of Computer Science(Data Science)</option>
                             <option>Bachelor of Computer Science(Multimedia Computing)</option>
                         </select>                    
-                    </span>
-                    <span className="full-input">
+                    </span> */}
+                    <Dropdown
+                        optionList={departmentOption}
+                        label = "DEPARTMENT"
+                        value = {department}
+                        handleOnChange = {handleDepartmentOnChange}
+                    />
+                    {/* <span className="full-input">
                         <label >DEPARTMENT</label>
                         <select name="department" defaultValue={""} onChange={event=>handleDepartmentOnChange(event)}>
                             <option value="" disabled hidden> </option>
@@ -297,7 +395,7 @@ const ApplyForHelp = (props) => {
                             <option>Computer System & Technology</option>
                             <option>Multimedia</option>
                         </select>
-                    </span>
+                    </span> */}
                     <span className="half-input">
                         <label >YEAR</label>
                         <input type="number" name="year_of_study" min="1" max="4" defaultValue="1" onChange={event=>handleYearOfStudyOnChange(event)}/>
@@ -344,7 +442,7 @@ const ApplyForHelp = (props) => {
                     <p id="file-upload-reminder">* Please upload your parents or guardian salary statement together with supporting documents in zip files</p>
                 </div>
                 <div id="tnc-section">
-                    <input type="checkbox"/>
+                    <input type="checkbox" onChange={event=>handleIsAgreeOnChange(event)}/>
                     <p>By proceeding you agree to our <a>Term and Condition</a></p>
                 </div>
                 <input type="submit" value="Submit" id="create-button"/>

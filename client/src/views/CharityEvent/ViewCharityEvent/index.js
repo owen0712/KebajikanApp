@@ -1,10 +1,10 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './view_charity_event.css';
-import BackSection from '../../../components/BackSection';
 import AddIcon from '@mui/icons-material/Add';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import Swal from 'sweetalert2';
 
 const ViewCharityEvent = (props) => {
 
@@ -25,14 +25,22 @@ const ViewCharityEvent = (props) => {
             }
         }).then(res=>res.json()).then(data=>{
             if(data.error){
-                console.log(data.error);
+                Swal.fire({
+                    title: data.error,
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                })
             }
             else{
                 setEvents(data.events);
                 setIsLoading(false);
             }
         }).catch(err=>{
-            console.log(err);
+            Swal.fire({
+                title: err,
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            })
         })
     }
 
@@ -50,7 +58,7 @@ const ViewCharityEvent = (props) => {
         
     return (
         <React.Fragment>
-            {isLoading?"":<>
+            {isLoading?<h1>Loading...</h1>:<>
             <div id="carousel">
                 <ArrowLeftIcon/>
                 <img src={events[0].photo.content} onClick={()=>handleView(events[0]._id)}/>

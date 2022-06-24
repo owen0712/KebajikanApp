@@ -27,8 +27,9 @@
 }
 
 .button-list{
-    display: flex;
+    display: block;
     justify-content: center;
+    width:93%;
 }
 
 .button{
@@ -88,6 +89,7 @@ thead th{
     border: 2px solid #192F59;
     text-align: left;
     padding-left: 20px;
+    width: max-content;
 }
 
 tbody{
@@ -96,7 +98,23 @@ tbody{
     font-weight: bold;
 }
 
-tbody td{
+tbody td,th{
     padding-left: 20px;
     border-bottom: 3px solid rgb(25, 47, 89, .4);
+    width: calc(100%/8);
+}
+
+td .status{
+    text-align: center;
+    justify-content: center;
+}
+
+
+.title{
+    padding: 10px;
+    text-overflow: ellipsis;
+    display: inline-block;
+    overflow: hidden;
+    width: 350px;
+    white-space: nowrap; 
 }

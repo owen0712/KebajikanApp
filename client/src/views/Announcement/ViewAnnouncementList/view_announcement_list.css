@@ -1,0 +1,91 @@
+#charity-event-list-back-section svg{
+    color: #192F59;
+    margin: 0;
+}
+
+#charity-event-list-back-section{
+    padding: 5px;
+    border-right: 3px solid rgb(25, 47, 89, .4);
+    margin-right: 10px;
+}
+
+#charity-event-list-upper-part{
+    display: flex;
+    font-weight: bold;
+    border-bottom: 3px solid rgb(25, 47, 89, .4);
+    padding-bottom: 10px;
+}
+
+#charity-event-list-upper-part p{
+    margin: 7px 0;
+    font-size: 20px;
+}
+
+#charity-event-list-upper-part button{
+    margin: auto 20px auto auto;
+    position: relative;
+}
+
+.button-list{
+    display: flex;
+    justify-content: center;
+}
+
+.button{
+    color: #192F59;
+    display: flex;
+    height: 30px;
+    border: 2px solid #192F59;
+    background-color: white;
+    border-radius: 10px;
+    font-weight: bold;
+    margin: 10px;
+    line-height: 25px;
+}
+
+.button svg{
+    margin: 0 5px 0 0;
+    color: #192F59;
+}
+
+.danger-button{
+    color: #DF5645;
+    display: flex;
+    height: 30px;
+    border: 2px solid #DF5645;
+    background-color: white;
+    border-radius: 10px;
+    font-weight: bold;
+    margin: 10px;
+    line-height: 25px;
+}
+
+.danger-button svg{
+    margin: 0 5px 0 0;
+    color: #DF5645;
+}
+
+#charity-event-list-table-section{
+    padding: 20px;
+    background-color: #E2ECFF;
+}
+
+.title{
+    padding: 10px;
+    text-overflow: ellipsis;
+    display: inline-block;
+    overflow: hidden;
+    word-break: keep-all;
+    width: 350px;
+    white-space: nowrap; 
+}
+
+.description{
+    padding: 10px;
+    text-overflow: ellipsis;
+    display: inline-block;
+    overflow: hidden;
+    word-break: keep-all;
+    width: 460px;
+    white-space: nowrap; 
+}

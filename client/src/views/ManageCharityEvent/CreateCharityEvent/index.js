@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react'
 import './create_charity_event.css';
 import BackSection from '../../../components/BackSection';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const CreateCharityEvent = (props) => {
 
@@ -104,10 +105,37 @@ const CreateCharityEvent = (props) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        if(preregister_end_date<preregister_start_date){
+            Swal.fire({
+                title: "Preregister End Date must greater than Preregister Start Date",
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
+            return;
+        }
+        if(donation_start_date<preregister_end_date){
+            Swal.fire({
+                title: "Donation Start Date must greater than Preregister End Date",
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
+            return;
+        }
+        if(donation_end_date<donation_start_date){
+            Swal.fire({
+                title: "Donation End Date must greater than Donation Start Date",
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
+            return;
+        }
+        const {id,role}=JSON.parse(sessionStorage.getItem("user"));
+        const jwt=sessionStorage.getItem("jwt");
         fetch('/charity_event',{
             method:'post',
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                'Authorization':"Bearer"+jwt
             },
             body:JSON.stringify({
                 title,
@@ -120,17 +148,33 @@ const CreateCharityEvent = (props) => {
                 donation_start_date,
                 donation_end_date,
                 document,
-                photo
+                photo,
+                user_id:id,
+                role
             })
         }).then(res=>res.json()).then(data=>{
             if(data.error){
-                console.log(data.error);
+                Swal.fire({
+                    title: data.error,
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                });
             }
             else{
-                console.log(data.message);
+                Swal.fire({
+                    icon:"success",
+                    title:data.message,
+                    confirmButtonText: 'Ok'
+                }).then(
+                    navigate('/manage_charity_event')
+                );
             }
         }).catch(err=>{
-            console.log(err);
+            Swal.fire({
+                title: err,
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
         })
     }
 
@@ -140,7 +184,7 @@ const CreateCharityEvent = (props) => {
         
     return (
         <React.Fragment>
-            <BackSection onBackButtonClick={handleRedirectBack} title="Edit Charity Event"/>
+            <BackSection onBackButtonClick={handleRedirectBack} title="Create Charity Event"/>
             <form onSubmit={event=>handleSubmit(event)}>
                 <div id="create-form-upper-part">
                     <div id="form-left-content">

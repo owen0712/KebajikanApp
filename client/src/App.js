@@ -20,6 +20,10 @@ import ViewProfile from './views/Profile/ViewProfile';
 import Login from './views/Authorization/Login';
 import SignUp from './views/Authorization/SignUp';
 import Admin from './views/Admin';
+import CreateAnnouncement from './views/Announcement/CreateAnnouncement';
+import ViewAnnouncementList from './views/Announcement/ViewAnnouncementList';
+import ManageAnnouncementDetails from './views/Announcement/ManageAnnouncementDetails';
+import ViewAnnouncement from './views/Announcement/ViewAnnouncement';
 import { useState } from 'react';
 // import NavRoute from './core/navRoute';
 
@@ -56,7 +60,7 @@ function App() {
           <Route path='/manage_charity_event/create' element={<CreateCharityEvent/>}/>
           <Route path='/manage_charity_event/view/:id' element={<ManageCharityEventDetails isEdit={false}/>}/>
           <Route path='/manage_charity_event/edit/:id' element={<ManageCharityEventDetails isEdit={true}/>}/>
-          <Route path='/charity_event/apply_help/:id' element={<ApplyForHelp/>}/>
+          <Route path='/charity_event/apply_help/:event_id' element={<ApplyForHelp/>}/>
           <Route path='/charity_event/view' element={<ViewCharityEvent/>}/>
           <Route path='/charity_event/view/:id' element={<ViewCharityEventDetails/>}/>
           <Route path='/profile/application_history' element={<ApplicationHistory/>}/>
@@ -66,6 +70,11 @@ function App() {
           <Route path='/login' element={<Login handleLogin={handleLogin}/>}/>
           <Route path='/signup' element={<SignUp/>}/>
           <Route path='/admin' element={<Admin/>}/>
+          <Route path='/manage_announcement/create' element={<CreateAnnouncement/>}/>
+          <Route path='/manage_announcement' element={<ViewAnnouncementList/>}/>
+          <Route path='/manage_announcement/view/:id' element={<ManageAnnouncementDetails isEdit={false}/>}/>
+          <Route path='/manage_announcement/edit/:id' element={<ManageAnnouncementDetails isEdit={true}/>}/>
+          <Route path='/announcement/view' element={<ViewAnnouncement/>}/>
         </Routes>
         </div>
         <Footer/>
