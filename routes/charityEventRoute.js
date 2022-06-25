@@ -4,13 +4,12 @@ const mongoose = require('mongoose');
 const CharityEvent = mongoose.model('CharityEvent');
 
 router.post('/charity_event',(req,res)=>{
-    //62acb99f3e617b651832c980
     const {title,purpose,description,location,amount,preregister_start_date,preregister_end_date,donation_start_date,donation_end_date,photo,document,user_id,role} = req.body;
     if(!title||!purpose||!description||!location||!amount||!preregister_start_date||!preregister_end_date||!donation_start_date||!donation_end_date||!photo||!document||!user_id||!role){
         return res.json({error:'please fill all fields'});
     }
 
-    const status = role==2?"Preregistration":"Pending";
+    const status = role==2?"Not Started":"Pending";
 
     const newCharityEvent = new CharityEvent({
         title,
@@ -36,7 +35,7 @@ router.post('/charity_event',(req,res)=>{
 });
 
 router.get('/charity_event/approved',(req,res)=>{
-    CharityEvent.find({ "status" : { "$in": ["In Progress", "Preregistration"] }})
+    CharityEvent.find({ "status" : { "$in": ["Not Started", "In Progress", "Preregistration","Closed"] }})
     .select("-document")
     .sort('-created_on')
     .then(events=>{

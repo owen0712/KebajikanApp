@@ -166,7 +166,7 @@ const CreateCharityEvent = (props) => {
                     title:data.message,
                     confirmButtonText: 'Ok'
                 }).then(
-                    navigate('/manage_charity_event')
+                    props.isAdmin?navigate('/manage_charity_event'):navigate('/charity_event/view')
                 );
             }
         }).catch(err=>{
@@ -178,13 +178,17 @@ const CreateCharityEvent = (props) => {
         })
     }
 
-    const handleRedirectBack = () => {
+    const handleRedirectBackAdmin = () => {
         navigate('/manage_charity_event');
+    }
+
+    const handleRedirectBackUser = () => {
+        navigate('/charity_event/view');
     }
         
     return (
         <React.Fragment>
-            <BackSection onBackButtonClick={handleRedirectBack} title="Create Charity Event"/>
+            <BackSection onBackButtonClick={props.isAdmin?handleRedirectBackAdmin:handleRedirectBackUser} title="Create Charity Event"/>
             <form onSubmit={event=>handleSubmit(event)}>
                 <div id="create-form-upper-part">
                     <div id="form-left-content">

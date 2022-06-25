@@ -20,7 +20,7 @@ const ViewCharityEventList = (props) => {
 
     const fetchData = () =>{
         setIsLoading(true);
-        fetch('/charity_event',{
+        fetch('/charity_event/approved',{
             method:'get',
             headers:{
                 'Content-Type':'application/json'

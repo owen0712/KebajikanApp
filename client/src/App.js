@@ -58,12 +58,13 @@ function App() {
           <Route path='/part_time_job/view' element={<ViewPartTimeJob/>}/>
           <Route path='/part_time_job/view/:id' element={<ViewPartTimeJobDetails/>}/>
           <Route path='/manage_charity_event' element={<ViewCharityEventList/>}/>
-          <Route path='/manage_charity_event/create' element={<CreateCharityEvent/>}/>
+          <Route path='/manage_charity_event/create' element={<CreateCharityEvent isAdmin={true}/>}/>
           <Route path='/manage_charity_event/view/:id' element={<ManageCharityEventDetails isEdit={false}/>}/>
           <Route path='/manage_charity_event/edit/:id' element={<ManageCharityEventDetails isEdit={true}/>}/>
           <Route path='/charity_event/apply_help/:event_id' element={<ApplyForHelp/>}/>
           <Route path='/charity_event/view' element={<ViewCharityEvent/>}/>
           <Route path='/charity_event/view/:id' element={<ViewCharityEventDetails/>}/>
+          <Route path='/charity_event/create' element={<CreateCharityEvent isAdmin={false}/>}/>
           <Route path='/profile/application_history' element={<ApplicationHistory/>}/>
           <Route path='/profile/application_history/job_application/view/:id' element={<ViewJobApplication isEdit={false}/>}/>
           <Route path='/profile/application_history/job_application/edit/:id' element={<ViewJobApplication isEdit={true}/>}/>
