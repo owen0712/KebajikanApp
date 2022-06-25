@@ -121,7 +121,7 @@ const CreatePartTimeJob = (props) => {
     }
 
     const navigatePrev = () =>{
-        if(role==="Admin")
+        if(role==2)
             navigate('/manage_part_time_job');
         else
             navigate('/part_time_job/view');
@@ -129,7 +129,7 @@ const CreatePartTimeJob = (props) => {
 
     return (
         <React.Fragment>
-            <BackSection title={(role==="Admin")?"Create Part-Time Job":"Propose Part-Time Job"} onBackButtonClick={navigatePrev}/> 
+            <BackSection title={(role==2)?"Create Part-Time Job":"Propose Part-Time Job"} onBackButtonClick={navigatePrev}/> 
             <form onSubmit={event=>handleSubmit(event)}>
                 <div id="upper-part">
                     <div id="form-left-content">

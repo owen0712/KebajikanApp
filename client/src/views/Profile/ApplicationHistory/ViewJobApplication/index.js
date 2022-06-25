@@ -104,10 +104,12 @@ const ViewJobApplication = (props) => {
 
     const handleSave = (e) => {
         e.preventDefault();
+        const jwt=sessionStorage.getItem("jwt");
         fetch('/job_application/'+job_id.id,{
             method:'put',
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                'Authorization':"Bearer"+jwt
             },
             body:JSON.stringify({
                 name,

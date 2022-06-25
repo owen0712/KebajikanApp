@@ -204,10 +204,12 @@ const ViewEventApplication = (props) => {
 
     const handleSave = (event) => {
         event.preventDefault();
+        const jwt=sessionStorage.getItem("jwt");
         fetch('/charity_application/'+id.id,{
             method:'put',
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                'Authorization':"Bearer"+jwt
             },
             body:JSON.stringify({
                 name,

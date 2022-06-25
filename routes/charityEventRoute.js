@@ -67,6 +67,18 @@ router.get('/charity_event',(req,res)=>{
     });
 });
 
+router.get('/charity_event/organizer/:id',(req,res)=>{
+    CharityEvent.find({organizer_id:req.params.id})
+    .select("-photo")
+    .select("-document")
+    .populate("organizer_id","name")
+    .then(events=>{
+        res.json({events:events});
+    }).catch(err=>{
+        res.json({error:err});
+    });
+});
+
 router.get('/charity_event/:id',(req,res)=>{
     CharityEvent.find({_id:req.params.id})
     .populate("organizer_id","name")

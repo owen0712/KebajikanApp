@@ -9,8 +9,8 @@ router.post('/part_time_job',(req,res)=>{
     if(!title||!required_student||!description||!location||!allowance||!closed_date||!photo||!user_id||!role){
         return res.json({error:'please fill all fields'});
     }
-    const status = (role==="Admin")?"Available":"Pending";
-    const successMessage = 'New part-time job successfully created'+((role==="Admin")?"created!":"proposed!");
+    const status = (role==2)?"Available":"Pending";
+    const successMessage = 'New part-time job successfully '+((role==2)?"created!":"proposed!");
     const newPartTimeJob = new PartTimeJob({
         title,
         required_student,
@@ -48,7 +48,7 @@ router.get('/part_time_job/organizer/:id',(req,res)=>{
     .select("-photo")
     .populate("organizer_id","name")
     .then(events=>{
-        res.json({events:events, type:"Part-Time Job"});
+        res.json({events:events});
     }).catch(err=>{
         res.json({error:err});
     });

@@ -11,6 +11,9 @@ const ApplicationHistoty = (props) =>{
     const navigate = useNavigate();
     const [eventApplications,setEventApplications] = useState([]);
     const [jobApplications,setJobApplications] = useState([]);
+    const [jobProposal, setJobProposal] = useState([]);
+    const [eventProposal, setEventProposal] = useState([]);
+    const [proposal, setProposal] = useState();
     const [pageNumber,setPageNumber] = useState(1);
     const [isLoading,setIsLoading] = useState(false);
     const [isDisplayEventApplication,setIsDisplayEventApplication] = useState(true);
@@ -20,6 +23,8 @@ const ApplicationHistoty = (props) =>{
     useEffect(()=>{
         fetchEventApplicationData();
         fetchJobApplicationData();
+        fetchEventProposalApplicationData();
+        fetchJobProposalApplicationData();
     },[])
 
     const fetchJobApplicationData=()=>{
@@ -64,6 +69,54 @@ const ApplicationHistoty = (props) =>{
         })
     }
 
+    const fetchEventProposalApplicationData=()=>{
+        setIsLoading(true);
+        const {id}=JSON.parse(sessionStorage.getItem("user"));
+        fetch('/charity_event/organizer/'+id,{
+            method:'get',
+            headers:{
+                'Content-Type':'application/json'
+            }
+        }).then(res=>res.json()).then(data=>{
+            if(data.error){
+                console.log(data.error);
+            }
+            else{
+                console.log("Charity",data.events);
+                data.events.map(event=>{event.type="Charity Event"});
+                const events = data.events;
+                setEventProposal(events);
+                setIsLoading(false);
+            }
+        }).catch(err=>{
+            console.log(err);
+        })
+    }
+
+    const fetchJobProposalApplicationData=()=>{
+        setIsLoading(true);
+        const {id}=JSON.parse(sessionStorage.getItem("user"));
+        fetch('/part_time_job/organizer/'+id,{
+            method:'get',
+            headers:{
+                'Content-Type':'application/json'
+            }
+        }).then(res=>res.json()).then(data=>{
+            if(data.error){
+                console.log(data.error);
+            }
+            else{
+                console.log("Jobs",data.events);
+                data.events.map(event=>{event.type="Part-Time Job"});
+                const events = data.events;
+                setJobProposal(events);
+                setIsLoading(false);
+            }
+        }).catch(err=>{
+            console.log(err);
+        })
+    }
+
     const handleViewEventApplication = (id) => {
         navigate('/profile/application_history/event_application/view/'+id);
     }
@@ -72,14 +125,20 @@ const ApplicationHistoty = (props) =>{
         navigate('/profile/application_history/job_application/view/'+id);
     }
     
+    const handleViewProposalApplication = (id) => {
+        navigate('/profile/application_history/proposal_application/view/'+id);
+    }
 
     const handleEditEventApplication = (id) => {
         navigate('/profile/application_history/event_application/edit/'+id);
-        console.log("Edit",id);
     }
 
     const handleEditJobApplication = (id) => {
         navigate('/profile/application_history/job_application/edit/'+id);
+    }
+
+    const handleEditProposalApplication = (id) => {
+        navigate('/profile/application_history/proposal_application/edit/'+id);
     }
 
     const handleDeleteEventApplication = (id) =>{
@@ -174,6 +233,10 @@ const ApplicationHistoty = (props) =>{
         })
     }
 
+    const handleDeleteProposalApplication =(id)=>{
+        console.log("Delete",id);
+    }
+
     const onDisplayEventApplication = ()=> {
         setIsDisplayEventApplication(true);
         setIsDisplayJobApplication(false);
@@ -190,6 +253,7 @@ const ApplicationHistoty = (props) =>{
         setIsDisplayEventApplication(false);
         setIsDisplayJobApplication(false);
         setIsDisplayProposalApplication(true);
+        setProposal([...eventProposal,...jobProposal]);
     }
 
     const renderEventApplication = () =>{
@@ -257,7 +321,38 @@ const ApplicationHistoty = (props) =>{
     }
 
     const renderProposalApplication = () =>{
-        return<p>There is no record</p>
+        console.log("Proposal",proposal);
+        return(
+            <div id="proposal-application-list-table-section">
+                <table>
+                    <thead>
+                        <tr id="proposal-application-list-table-header-row">
+                            <th>PROPOSAL NAME</th>
+                            <th>TYPE</th>
+                            <th>DATE APPLIED</th>
+                            <th>STATUS</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                        proposal.map(application=>{
+                            return <tr key={application._id}>
+                                <td>{application.title}</td>
+                                <td>{application.type}</td>
+                                <td>{application.created_on.slice(0,10)}</td>
+                                <td><Status statusName={application.status}/></td>
+                                <td className='button-list'>
+                                    <button className='button' onClick={()=>handleViewProposalApplication(application._id)}><RemoveRedEyeIcon/>View</button>
+                                    <button className='button' onClick={()=>handleEditProposalApplication(application._id)}><CreateIcon/>Edit</button>
+                                    <button className='danger-button' onClick={()=>handleDeleteProposalApplication(application._id)}><PersonRemoveIcon/>Withdraw</button>    
+                                </td>
+                            </tr>
+                        })}
+                    </tbody>
+                </table>
+                </div>
+        )
     }
     
     return(
