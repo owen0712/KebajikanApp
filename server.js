@@ -3,6 +3,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const mongoose = require('mongoose');
 const { MONGOURI } = require('./config/keys');
+const http = require('http');
 
 require('./models/userModel');
 require('./models/charityEventModel');
@@ -43,3 +44,5 @@ mongoose.connection.on('error', (err) => {
 app.listen(PORT, () => {
     console.log("server is running on port", PORT)
 })
+
+const server = http.createServer(app);
