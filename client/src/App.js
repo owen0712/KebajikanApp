@@ -50,7 +50,7 @@ function App() {
           <NavRoute key="500" exact path="/500" name="Page 500" component={Page500} />
           <NavRoute key="home" path="/home" name="Home" component={Announcement} />
           <NavRoute key="login" name="Login Page" component={Login} /> */}
-          <Route path='/' element={<ViewAnnouncement/>}/>
+          <Route path='/'  element={<ViewAnnouncement/>}/>
           <Route path='/manage_part_time_job/create' element={<CreatePartTimeJob/>}/>
           <Route path='/manage_part_time_job' element={<ManagePartTimeJob/>}/>
           <Route path='/manage_part_time_job/view/:id' element={<ManagePartTimeJobDetails isEdit={false}/>}/>
