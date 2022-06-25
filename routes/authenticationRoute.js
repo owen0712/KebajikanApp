@@ -7,7 +7,7 @@ const jwt=require("jsonwebtoken")
 const {JWT_SECRET}=require('../config/keys');
 const e = require("express");
 
-router.post("https://kebajikan-app.herokuapp.com/signup", (req, res) => {
+router.post("/signup", (req, res) => {
   console.log(req.body);
   const {
     name,
@@ -54,7 +54,7 @@ router.post("https://kebajikan-app.herokuapp.com/signup", (req, res) => {
     });
 });
 
-router.post("https://kebajikan-app.herokuapp.com/signin", (req, res) => {
+router.post("/signin", (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res.json({ error: "Please fill email or password" });
