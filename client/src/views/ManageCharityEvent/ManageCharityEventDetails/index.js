@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Navigate } from 'react-router-dom';
 import './manage_charity_event_details.css';
 import BackSection from '../../../components/BackSection';
 import Swal from 'sweetalert2';
@@ -108,6 +108,11 @@ const ManageCharityEventDetails = (props) => {
     }
 
     const handleTextInputOnClick = () => {
+        if(!isEdit){
+            handleViewFile();
+            setDocument({name:document.name});
+            return;
+        }
         fileUploadInput.current.click();
     }
 
@@ -212,6 +217,7 @@ const ManageCharityEventDetails = (props) => {
                     title:data.message,
                     confirmButtonText: 'Ok'
                 });
+                setDocument({name:document.name});
                 setIsEdit(false);
             }
         }).catch(err=>{
@@ -268,6 +274,7 @@ const ManageCharityEventDetails = (props) => {
         
     return (
         <React.Fragment>
+            {JSON.parse(sessionStorage.getItem("user")).role!=2?<Navigate to="/"/>:<></>}
             <BackSection onBackButtonClick={handleRedirectBack} title={isEdit?"Edit Charity Event":"View Charity Event"}/>
             {isLoading?<h1>Loading...</h1>:<>
             <form onSubmit={handleSubmit}>
@@ -314,8 +321,10 @@ const ManageCharityEventDetails = (props) => {
                         <span className="short-input">
                             <label >SUPPORTING DOCUMENT</label>
                             <input className="hidden" ref={fileUploadInput} onChange={event=>handleFileOnChange(event)} type="file" accept=".zip,.rar,.7zip" name="document"/>
+                            {isEdit?"":
                             <iframe className="hidden" src={document.content} title={document.name}></iframe>
-                            <input className={isEdit?"":"read-only"} ref={fileTextDisplay} onClick={isEdit?handleTextInputOnClick:handleViewFile} type="text" defaultValue={document.name} readOnly={!isEdit}/>
+                            }
+                            <input className={isEdit?"":"read-only"} ref={fileTextDisplay} onClick={handleTextInputOnClick} type="text" defaultValue={document.name} readOnly={!isEdit}/>
                         </span>
                         <p id="file-upload-reminder">* Please upload your charity event proposal together with supporting documents in zip files</p>
                     </div>

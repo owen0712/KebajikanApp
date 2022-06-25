@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
 import './create_charity_event.css';
 import BackSection from '../../../components/BackSection';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 const CreateCharityEvent = (props) => {
@@ -188,6 +188,7 @@ const CreateCharityEvent = (props) => {
         
     return (
         <React.Fragment>
+            {sessionStorage.getItem("user")==null?<Navigate to="/login"/>:<></>}
             <BackSection onBackButtonClick={props.isAdmin?handleRedirectBackAdmin:handleRedirectBackUser} title="Create Charity Event"/>
             <form onSubmit={event=>handleSubmit(event)}>
                 <div id="create-form-upper-part">

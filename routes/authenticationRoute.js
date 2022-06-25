@@ -73,7 +73,7 @@ router.post("/signin", (req, res) => {
           // else{
           //     res.json({message:'successfully signed in',user:{_id,firstname,lastname,email,college,contact,dob,userType}});
           // }
-          const token=jwt.sign({_id:savedUser._id},JWT_SECRET);
+          const token=JWT_SECRET;
           if(savedUser.role=="User"){
             savedUser.role=0;
           }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, Navigate } from 'react-router-dom';
 import './login.css';
 import logo from '../../../assets/img/login.png'
 import Swal from 'sweetalert2';
@@ -59,6 +59,7 @@ const Login = (props) => {
         
     return (
         <div id="login-section">
+            {sessionStorage.getItem("user")!=null?<Navigate to="/"/>:<></>}
             <div id="login-image">
                 <span>
                     <h2>WELCOME BACK!</h2>

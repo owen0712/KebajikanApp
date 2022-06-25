@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react'
 import './view_announcement_details.css';
 import BackSection from '../../../components/BackSection';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Navigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 const ViewAnnouncementDetails = (props) => {
@@ -139,6 +139,7 @@ const ViewAnnouncementDetails = (props) => {
         
     return (
         <React.Fragment>
+            {JSON.parse(sessionStorage.getItem("user")).role!=2?<Navigate to="/"/>:<></>}            
             <BackSection onBackButtonClick={handleRedirectBack} title={isEdit?"Edit Announcement":"View Announcement"}/>
             {isLoading?<h1>Loading...</h1>:<>
             <form id="announcement_form" onSubmit={event=>handleSubmit(event)}>

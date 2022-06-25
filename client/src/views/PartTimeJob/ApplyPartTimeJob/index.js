@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Navigate } from 'react-router-dom';
 import './apply_part_time_job.css';
 import BackSection from '../../../components/BackSection';
 import Dropdown from '../../../components/Dropdown';

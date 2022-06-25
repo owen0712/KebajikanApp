@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import './signup.css';
 import logo from '../../../assets/img/signup.png'
 import Swal from 'sweetalert2';
@@ -88,6 +88,7 @@ const SignUp = (props) => {
         
     return (
         <div id="signup-section">
+            {sessionStorage.getItem("user")!=null?<Navigate to="/"/>:<></>}
             <form id="sign-up-form" onSubmit={event=>handleSubmit(event)}>
                 <h1>SIGNUP</h1>
                 <span>

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
 import './create_announcement.css';
 import BackSection from '../../../components/BackSection';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 const CreateAnnouncement = (props) => {
@@ -88,6 +88,7 @@ const CreateAnnouncement = (props) => {
         
     return (
         <React.Fragment>
+            {JSON.parse(sessionStorage.getItem("user")).role!=2?<Navigate to="/"/>:<></>}
             <BackSection onBackButtonClick={handleRedirectBack} title="Create Announcement"/>
             <form id="announcement_form" onSubmit={event=>handleSubmit(event)}>
                 <span className="short-input">

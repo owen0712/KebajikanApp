@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import {useParams, useNavigate} from 'react-router-dom';
+import {useParams, useNavigate, Navigate} from 'react-router-dom';
 import './apply_help.css';
 import BackSection from '../../../components/BackSection';
 import Swal from 'sweetalert2';
@@ -279,7 +279,7 @@ const ApplyForHelp = (props) => {
                     title:data.message,
                     confirmButtonText: 'Ok'
                 }).then(
-                    navigate('/charity_event/view/'+id)
+                    navigate('/charity_event/view/'+event_id.event_id)
                 );
             }
         }).catch(err=>{
@@ -301,6 +301,7 @@ const ApplyForHelp = (props) => {
         
     return (
         <React.Fragment>
+            {sessionStorage.getItem("user")==null?<Navigate to="/login"/>:<></>}
             <BackSection title={event_name+"  Application Form"} onBackButtonClick={handleRedirectBack}/>
             {isLoading?<h1>Loading...</h1>:<>
             <form id="application-form" onSubmit={event=>handleSubmit(event)}>

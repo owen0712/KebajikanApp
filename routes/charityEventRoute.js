@@ -45,6 +45,17 @@ router.get('/charity_event/approved',(req,res)=>{
     });
 })
 
+router.get('/charity_event/view',(req,res)=>{
+    CharityEvent.find({ "status" : { "$in": ["In Progress", "Preregistration"] }})
+    .select("-document")
+    .sort('-created_on')
+    .then(events=>{
+        res.json({events:events});
+    }).catch(err=>{
+        res.json({error:err});
+    });
+})
+
 router.get('/charity_event/document/:id',(req,res)=>{
     CharityEvent.find({_id:req.params.id})
     .then(event=>{

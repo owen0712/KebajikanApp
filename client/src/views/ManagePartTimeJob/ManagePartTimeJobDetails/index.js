@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react'
-import {useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams, Navigate} from "react-router-dom";
 import {BackSection} from '../../../components';
 import './manage_part_time_job_details.css';
 import Swal from 'sweetalert2';
