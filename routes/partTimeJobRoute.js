@@ -5,10 +5,12 @@ const PartTimeJob = mongoose.model('PartTimeJob');
 
 router.post('/part_time_job',(req,res)=>{
     //62acb99f3e617b651832c980
-    const {title,required_student,description,location,allowance,closed_date,photo} = req.body;
-    if(!title||!required_student||!description||!location||!allowance||!closed_date||!photo){
+    const {title,required_student,description,location,allowance,closed_date,photo,user_id,role} = req.body;
+    if(!title||!required_student||!description||!location||!allowance||!closed_date||!photo||!user_id||!role){
         return res.json({error:'please fill all fields'});
     }
+    const status = (role==="Admin")?"Available":"Pending";
+    const successMessage = 'New part-time job successfully created'+((role==="Admin")?"created!":"proposed!");
     const newPartTimeJob = new PartTimeJob({
         title,
         required_student,
@@ -18,24 +20,35 @@ router.post('/part_time_job',(req,res)=>{
         allowance,
         closed_date,
         photo,
-        status:"Available",
+        status,
         //temporary testing
-        organizer_id:"62acb99f3e617b651832c980",
-        created_by:"62acb99f3e617b651832c980"
+        organizer_id:user_id,
+        created_by:user_id
     });
     newPartTimeJob.save().then(createdPartTimeJob=>{
-        res.json({message:'New part-time job successfully created'});
+        res.json({message:successMessage});
     }).catch(err=>{
         res.json({error:err});
     });
 });
 
 router.get('/part_time_job',(req,res)=>{
-    PartTimeJob.find()
+    PartTimeJob.find({status:{ "$in": ["Closed", "Available"] }})
     .select("-photo")
     .populate("organizer_id","name")
     .then(events=>{
         res.json({events:events});
+    }).catch(err=>{
+        res.json({error:err});
+    });
+});
+
+router.get('/part_time_job/organizer/:id',(req,res)=>{
+    PartTimeJob.find({organizer_id:req.params.id})
+    .select("-photo")
+    .populate("organizer_id","name")
+    .then(events=>{
+        res.json({events:events, type:"Part-Time Job"});
     }).catch(err=>{
         res.json({error:err});
     });

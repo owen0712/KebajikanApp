@@ -52,13 +52,13 @@ const ViewPartTimeJob = (props) => {
         navigate('/part_time_job/view/'+id);
     }
 
-    const errorHandler = (event) => {
-        event.currentTarget.onerror = null; 
-        event.currentTarget.src=props.fallbackSrc;
+    const handleProposeJob = () => {
+        navigate('/manage_part_time_job/create');
     }
+
     return (
         <React.Fragment>
-            {isLoading?<p>The content is loading</p>:<>
+            {isLoading?<h1>Loading...</h1>:<>
             <div id="carousel">
                 <ArrowLeftIcon/>
                 {
@@ -87,7 +87,7 @@ const ViewPartTimeJob = (props) => {
             </div>
             <div id="title-section">
                 <p>Part-Time Job</p>
-                <button><AddIcon/>Propose New Part-Time Job</button>
+                <button onClick={handleProposeJob}><AddIcon/>Propose New Part-Time Job</button>
             </div>
             <div id="job-list">
                 {events.map(event=>{

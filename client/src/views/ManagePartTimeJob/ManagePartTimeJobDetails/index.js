@@ -18,7 +18,7 @@ const ManagePartTimeJobDetails = (props) => {
     const imageUploadInput = useRef();
     const imageDisplay = useRef();
     const navigate = useNavigate();
-    const {id}  = useParams();
+    const job_id  = useParams();
 
     useEffect(()=>{
         fetchData();
@@ -26,7 +26,7 @@ const ManagePartTimeJobDetails = (props) => {
 
     const fetchData = () => {
         setIsLoading(true);
-        fetch('/part_time_job/'+id,{
+        fetch('/part_time_job/'+job_id.id,{
             method:'get',
             headers:{
                 'Content-Type':'application/json'
@@ -110,10 +110,12 @@ const ManagePartTimeJobDetails = (props) => {
 
     const handleSave = (event) =>{
         event.preventDefault();
-        fetch('/part_time_job/'+id,{
+        const jwt=sessionStorage.getItem("jwt");
+        fetch('/part_time_job/'+job_id.id,{
             method:'put',
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                'Authorization':"Bearer"+jwt
             },
             body:JSON.stringify({
                 title,
@@ -126,19 +128,26 @@ const ManagePartTimeJobDetails = (props) => {
             })
         }).then(res=>res.json()).then(data=>{
             if(data.error){
-                console.log(data.error);
+                Swal.fire({
+                    title: data.error,
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                });
             }
             else{
-                console.log(data.message);
                 Swal.fire({
                     icon: 'success',
-                    title: 'Part-time Job Edited Successfully!',
+                    title: data.message,
                     confirmButtonText: 'OK'
                 });
                 setIsEdit(false);
             }
         }).catch(err=>{
-            console.log(err);
+            Swal.fire({
+                title: err,
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
         })
     }
 
@@ -161,7 +170,7 @@ const ManagePartTimeJobDetails = (props) => {
 
     return (
         <React.Fragment>
-            {isLoading?<p>Loading...</p>:<>
+            {isLoading?<h1>Loading...</h1>:<>
             <BackSection title={isEdit?"Edit Part-Time Job Details":"View Part-Time Job Details"} onBackButtonClick={navigatePrev}/> 
             <form onSubmit={event=>handleSave(event)}>
                 <div id="upper-part">

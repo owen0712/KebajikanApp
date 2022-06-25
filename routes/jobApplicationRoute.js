@@ -6,8 +6,8 @@ const JobApplication = mongoose.model('JobApplication');
 router.post('/job_application/:id',(req,res)=>{
     console.log("jobApplication:",req.body);
     //62acb99f3e617b651832c980
-    const {name,email,identity_no,course,document} = req.body;
-    if(!name||!email||!identity_no||!course||!document){
+    const {name,email,identity_no,course,document,user_id,role} = req.body;
+    if(!name||!email||!identity_no||!course||!document||!user_id||!role){
         return res.json({error:'please fill all fields'});
     }
     const newPartTimeJobApplication = new JobApplication({
@@ -18,7 +18,7 @@ router.post('/job_application/:id',(req,res)=>{
         course,
         status:"Pending",
         //temporary testing
-        created_by:"62acb9307821dc5fe5e123cf",
+        created_by:user_id,
         document
     });
     newPartTimeJobApplication.save().then(createdPartTimeJobApplication=>{
@@ -75,7 +75,7 @@ router.put('/job_application/:id',(req,res)=>{
 
 router.delete('/job_application/:id',(req,res)=>{
     JobApplication.deleteOne({_id:req.params.id}).then(result=>{
-        res.json({message:"Successfully Deleted"});
+        res.json({message:"Successfully withdraw"});
     }).catch(err=>{
         res.json({error:err})
     })

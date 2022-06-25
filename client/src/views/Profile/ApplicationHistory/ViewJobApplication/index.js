@@ -28,7 +28,7 @@ const ViewJobApplication = (props) => {
     const [isEdit,setIsEdit] = useState(props.isEdit);
     const fileUploadInput = useRef();
     const fileTextDisplay = useRef();
-    const id = useParams();
+    const job_id = useParams();
 
     useEffect(()=>{
         fetchData();
@@ -77,7 +77,7 @@ const ViewJobApplication = (props) => {
 
     const fetchData = () => {
         setIsLoading(true);
-        fetch('/job_application/view/'+id.id,{
+        fetch('/job_application/view/'+job_id.id,{
             method:'get',
             headers:{
                 'Content-Type':'application/json'
@@ -104,7 +104,7 @@ const ViewJobApplication = (props) => {
 
     const handleSave = (e) => {
         e.preventDefault();
-        fetch('/job_application/'+id.id,{
+        fetch('/job_application/'+job_id.id,{
             method:'put',
             headers:{
                 'Content-Type':'application/json'
@@ -119,10 +119,13 @@ const ViewJobApplication = (props) => {
         }).then(res=>res.json()).then(data=>{
             console.log("Data",data);
             if(data.error){
-                console.log(data.error);
+                Swal.fire({
+                    title: data.error,
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                });
             }
             else{
-                console.log(data.message);
                 Swal.fire({
                     icon: 'success',
                     title: 'Successfully Updated!',
@@ -131,7 +134,11 @@ const ViewJobApplication = (props) => {
                 toggleCancel();
             }
         }).catch(err=>{
-            console.log(err);
+            Swal.fire({
+                title: err,
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
         })
     }
 
@@ -155,7 +162,7 @@ const ViewJobApplication = (props) => {
     return (
         <React.Fragment>
             <BackSection onBackButtonClick={navigatePrev} title={"View Job Application: "+jobTitle}/>
-            {isLoading?"":<>
+            {isLoading?<h1>Loading...</h1>:<>
             <div id="apply-job-layout">
                 <div id="apply-job-details-section">
                     <img src={event.photo.content}/>

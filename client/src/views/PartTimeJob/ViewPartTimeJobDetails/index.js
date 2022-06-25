@@ -9,7 +9,7 @@ const ViewPartTimeJobDetails = (props) => {
     const [event,setEvent] = useState([]); 
     const [isLoading,setIsLoading] = useState(true);
     const navigate = useNavigate();
-    const id = useParams();
+    const job_id = useParams();
 
     useEffect(()=>{
         fetchData();
@@ -17,7 +17,7 @@ const ViewPartTimeJobDetails = (props) => {
 
     const fetchData = () => {
         setIsLoading(true);
-        fetch('/part_time_job/'+id.id,{
+        fetch('/part_time_job/'+job_id.id,{
             method:'get',
             headers:{
                 'Content-Type':'application/json'
@@ -50,7 +50,7 @@ const ViewPartTimeJobDetails = (props) => {
     return (
         <React.Fragment>
             <BackSection onBackButtonClick={navigatePrev} title="View Part-Time Job Details"/>
-            {isLoading?"":<>
+            {isLoading?<h1>Loading...</h1>:<>
             <div id="job-details-section">
                 <img src={event.photo.content}/>
                 <span>

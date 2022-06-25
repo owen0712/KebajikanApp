@@ -71,20 +71,27 @@ const ManagePartTimeJob = (props) => {
                     }
                 }).then(res=>res.json()).then(data=>{
                     if(data.error){
-                        console.log(data.error);
+                        Swal.fire({
+                            title: data.error,
+                            icon: 'error',
+                            confirmButtonText: 'Ok'
+                        });
                     }
                     else{
-                        console.log(data.message);
                         Swal.fire({
                             title: data.message,
-                            text: 'Do you want to delete this part-time job?',
+                            text: 'Successfully delete this part-time job!',
                             icon: 'success',
                             confirmButtonText: 'Ok'
                         })
                     }
                     
                 }).catch(err=>{
-                    console.log(err);
+                    Swal.fire({
+                        title: err,
+                        icon: 'error',
+                        confirmButtonText: 'Ok'
+                    });
                 })
                 window.location.reload();
             }
@@ -98,7 +105,7 @@ const ManagePartTimeJob = (props) => {
 
     return (
         <React.Fragment>
-            {isLoading?<p>The content is loading</p>:<>
+            {isLoading?<h1>Loading...</h1>:<>
             <BackSection title="Part-Time Job" previousIsHome={true} createButtonName="Create New Part-Time Job" onBackButtonClick={navigatePrev} handleButtonCreate={handleCreate}/>
             <div id="#part-time-job-list-table-section">
                 <table>

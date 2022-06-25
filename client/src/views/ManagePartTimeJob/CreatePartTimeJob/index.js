@@ -16,6 +16,7 @@ const CreatePartTimeJob = (props) => {
     const imageUploadInput = useRef();
     const imageDisplay = useRef();
     const navigate = useNavigate();
+    const {role}=JSON.parse(sessionStorage.getItem("user"));
 
     const handleTitleOnChange = (event) =>{
         setTitle(event.target.value);
@@ -75,10 +76,13 @@ const CreatePartTimeJob = (props) => {
 
     const handleSubmit = (event) =>{
         event.preventDefault();
+        const {id,role}=JSON.parse(sessionStorage.getItem("user"));
+        const jwt=sessionStorage.getItem("jwt");
         fetch('/part_time_job',{
             method:'post',
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                'Authorization':"Bearer"+jwt
             },
             body:JSON.stringify({
                 title,
@@ -87,33 +91,45 @@ const CreatePartTimeJob = (props) => {
                 location,
                 allowance,
                 closed_date,
-                photo
+                photo,
+                user_id:id,
+                role
             })
         }).then(res=>res.json()).then(data=>{
             if(data.error){
-                console.log(data.error);
+                Swal.fire({
+                    title: data.error,
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                });
             }
             else{
-                console.log(data.message);
                 Swal.fire({
                     icon: 'success',
-                    title: 'Part-time Job Created Successfully!',
+                    title: data.message,
                     confirmButtonText: 'OK'
                 });
                 navigatePrev();
             }
         }).catch(err=>{
-            console.log(err);
+            Swal.fire({
+                title: err,
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
         })
     }
 
     const navigatePrev = () =>{
-        navigate('/manage_part_time_job');
+        if(role==="Admin")
+            navigate('/manage_part_time_job');
+        else
+            navigate('/part_time_job/view');
     }
 
     return (
         <React.Fragment>
-            <BackSection title="Create Part-Time Job" onBackButtonClick={navigatePrev}/> 
+            <BackSection title={(role==="Admin")?"Create Part-Time Job":"Propose Part-Time Job"} onBackButtonClick={navigatePrev}/> 
             <form onSubmit={event=>handleSubmit(event)}>
                 <div id="upper-part">
                     <div id="form-left-content">

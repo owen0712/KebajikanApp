@@ -20,7 +20,7 @@ const ApplyPartTimeJob = (props) => {
     const [jobTitle,setJobTitle] = useState(""); 
     const [isLoading,setIsLoading] = useState(true);
     const navigate = useNavigate();
-    const id = useParams();
+    const job_id = useParams();
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [course, setCourse] = useState("");
@@ -75,7 +75,7 @@ const ApplyPartTimeJob = (props) => {
 
     const fetchData = () => {
         setIsLoading(true);
-        fetch('/part_time_job/'+id.id,{
+        fetch('/part_time_job/'+job_id.id,{
             method:'get',
             headers:{
                 'Content-Type':'application/json'
@@ -96,35 +96,46 @@ const ApplyPartTimeJob = (props) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log("Job ID",id.id);
-        fetch('/job_application/'+id.id,{
+        const {id,role}=JSON.parse(sessionStorage.getItem("user"));
+        const jwt=sessionStorage.getItem("jwt");
+        fetch('/job_application/'+job_id.id,{
             method:'post',
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                'Authorization':"Bearer"+jwt
             },
             body:JSON.stringify({
                 name,
                 email,
                 identity_no,
                 course,
-                document
+                document,
+                user_id:id,
+                role
             })
         }).then(res=>res.json()).then(data=>{
             console.log("Data",data);
             if(data.error){
-                console.log(data.error);
+                Swal.fire({
+                    title: data.error,
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                });
             }
             else{
-                console.log(data.message);
                 Swal.fire({
                     icon: 'success',
-                    title: 'Job Applied Successfully!',
+                    title: data.message,
                     confirmButtonText: 'OK'
                 });
                 navigatePrev();
             }
         }).catch(err=>{
-            console.log(err);
+            Swal.fire({
+                title: err,
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
         })
     }
 
@@ -135,7 +146,7 @@ const ApplyPartTimeJob = (props) => {
     return (
         <React.Fragment>
             <BackSection onBackButtonClick={navigatePrev} title={"Apply Part-Time Job: "+jobTitle}/>
-            {isLoading?"":<>
+            {isLoading?<h1>Loading...</h1>:<>
             <div id="apply-job-layout">
                 <div id="apply-job-details-section">
                     <img src={event.photo.content}/>

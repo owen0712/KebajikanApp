@@ -16,7 +16,6 @@ const ApplicationHistoty = (props) =>{
     const [isDisplayEventApplication,setIsDisplayEventApplication] = useState(true);
     const [isDisplayJobApplication,setIsDisplayJobApplication] = useState(false);
     const [isDisplayProposalApplication,setIsDisplayProposalApplication] = useState(false);
-    const id = "62acb9307821dc5fe5e123cf";
 
     useEffect(()=>{
         fetchEventApplicationData();
@@ -25,6 +24,7 @@ const ApplicationHistoty = (props) =>{
 
     const fetchJobApplicationData=()=>{
         setIsLoading(true);
+        const {id}=JSON.parse(sessionStorage.getItem("user"));
         fetch('/job_application/'+id,{
             method:'get',
             headers:{
@@ -45,6 +45,7 @@ const ApplicationHistoty = (props) =>{
 
     const fetchEventApplicationData=()=>{
         setIsLoading(true);
+        const {id}=JSON.parse(sessionStorage.getItem("user"));
         fetch('/charity_application/'+id,{
             method:'get',
             headers:{
@@ -99,20 +100,28 @@ const ApplicationHistoty = (props) =>{
                     }
                 }).then(res=>res.json()).then(data=>{
                     if(data.error){
-                        console.log(data.error);
+                        Swal.fire({
+                            title: data.error,
+                            icon: 'error',
+                            confirmButtonText: 'Ok'
+                        });
                     }
                     else{
-                        console.log(data.message);
+                        
                         Swal.fire({
                             title: data.message,
-                            text: 'Do you want to withdraw this application?',
+                            text: 'Successfully withdraw this application!',
                             icon: 'success',
                             confirmButtonText: 'Ok'
                         })
                     }
                     
                 }).catch(err=>{
-                    console.log(err);
+                    Swal.fire({
+                        title: err,
+                        icon: 'error',
+                        confirmButtonText: 'Ok'
+                    });
                 })
                 window.location.reload();
             }
@@ -137,20 +146,28 @@ const ApplicationHistoty = (props) =>{
                     }
                 }).then(res=>res.json()).then(data=>{
                     if(data.error){
-                        console.log(data.error);
+                        Swal.fire({
+                            title: data.error,
+                            icon: 'error',
+                            confirmButtonText: 'Ok'
+                        });
                     }
                     else{
                         console.log(data.message);
                         Swal.fire({
                             title: data.message,
-                            text: 'Do you want to withdraw this application?',
+                            text: 'Successfully withdraw this application!',
                             icon: 'success',
                             confirmButtonText: 'Ok'
                         })
                     }
                     
                 }).catch(err=>{
-                    console.log(err);
+                    Swal.fire({
+                        title: err,
+                        icon: 'error',
+                        confirmButtonText: 'Ok'
+                    });
                 })
                 window.location.reload();
             }
@@ -257,7 +274,7 @@ const ApplicationHistoty = (props) =>{
                     {isDisplayEventApplication? renderEventApplication(): ""}
                     {isDisplayJobApplication? renderJobApplication(): ""}
                     {isDisplayProposalApplication? renderProposalApplication(): ""}
-                    {isLoading?<p>Loading...</p>:""}
+                    {isLoading?<h1>Loading...</h1>:""}
                     </div>
                 </div>
             </div>

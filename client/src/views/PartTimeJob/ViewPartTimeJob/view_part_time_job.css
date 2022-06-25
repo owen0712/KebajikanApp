@@ -38,6 +38,27 @@
 }
 
 .carousel-item{
+    width: 100%;
     display: flex;
     padding: 5px 10%;
+}
+
+.carousel-item img{
+    width: 50%;
+}
+
+#title-section button{
+    color: white;
+    display: inline-flex;
+    height: 30px;
+    border: 2px solid #192F59;
+    background-color: #192F59;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    margin: 10px;
+    line-height: 30px;
+    vertical-align: middle;
+    margin:24px 20px 24px auto;
+    cursor: pointer;
 }
