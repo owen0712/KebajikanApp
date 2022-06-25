@@ -35,16 +35,14 @@ h1{
 .announcement-card p{
     text-align: left;
     height: 40px;
-    margin: 10px 0px 0px 0px;
     color: #192F59;
     font-size: 18px;
     font-weight: 550;
-    text-overflow: ellipsis;
+    word-break: break-word;
     display: inline-block;
-    overflow: hidden;
     width: 98.5%;
-    white-space: nowrap; 
-}
+}   margin: 10px 0px 10px 0px;
+ 
 
 .announcement-card span,.announcement-card small{
     padding-left: 20px;
