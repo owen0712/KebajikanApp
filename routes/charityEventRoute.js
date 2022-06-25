@@ -37,6 +37,7 @@ router.post('/charity_event',(req,res)=>{
 router.get('/charity_event/approved',(req,res)=>{
     CharityEvent.find({ "status" : { "$in": ["Not Started", "In Progress", "Preregistration","Closed"] }})
     .select("-document")
+    .populate("organizer_id","-_id name")
     .sort('-created_on')
     .then(events=>{
         res.json({events:events});
