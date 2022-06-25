@@ -34,6 +34,7 @@ h1{
 
 .announcement-card p{
     text-align: left;
+    margin: 10px 0px 10px 0px;
     height: 40px;
     color: #192F59;
     font-size: 18px;
@@ -41,7 +42,7 @@ h1{
     word-break: break-word;
     display: inline-block;
     width: 98.5%;
-}   margin: 10px 0px 10px 0px;
+} 
  
 
 .announcement-card span,.announcement-card small{
