@@ -69,7 +69,7 @@ const ViewPartTimeJob = (props) => {
                                 <span>
                                     <h1 onClick={()=>handleView(data._id)}>{events[0].title}</h1>
                                     <p onClick={()=>handleView(data._id)}>Description: {data.description}</p>
-                                    <p onClick={()=>handleView(data._id)}>Target Amount: {data.amount}</p>
+                                    <p onClick={()=>handleView(data._id)}>Allowance: {data.allowance}</p>
                                     <button onClick={()=>handleApply(data._id)} className="apply-button">Apply</button>
                                 </span>
                             </div>
