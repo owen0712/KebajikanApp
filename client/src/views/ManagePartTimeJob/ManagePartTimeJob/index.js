@@ -105,6 +105,7 @@ const ManagePartTimeJob = (props) => {
 
     return (
         <React.Fragment>
+            {JSON.parse(sessionStorage.getItem("user")).role!=2?<Navigate to="/"/>:<></>}
             {isLoading?<h1>Loading...</h1>:<>
             <BackSection title="Part-Time Job" previousIsHome={true} createButtonName="Create New Part-Time Job" onBackButtonClick={navigatePrev} handleButtonCreate={handleCreate}/>
             <div id="#part-time-job-list-table-section">

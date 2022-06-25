@@ -145,6 +145,7 @@ const ApplyPartTimeJob = (props) => {
         
     return (
         <React.Fragment>
+            {sessionStorage.getItem("user")==null?<Navigate to="/login"/>:<></>}
             <BackSection onBackButtonClick={navigatePrev} title={"Apply Part-Time Job: "+jobTitle}/>
             {isLoading?<h1>Loading...</h1>:<>
             <div id="apply-job-layout">

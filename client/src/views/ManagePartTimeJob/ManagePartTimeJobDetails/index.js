@@ -170,6 +170,7 @@ const ManagePartTimeJobDetails = (props) => {
 
     return (
         <React.Fragment>
+            {JSON.parse(sessionStorage.getItem("user")).role!=2?<Navigate to="/"/>:<></>}
             {isLoading?<h1>Loading...</h1>:<>
             <BackSection title={isEdit?"Edit Part-Time Job Details":"View Part-Time Job Details"} onBackButtonClick={navigatePrev}/> 
             <form onSubmit={event=>handleSave(event)}>
