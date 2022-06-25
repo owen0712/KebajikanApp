@@ -51,13 +51,14 @@ function App() {
           <NavRoute key="home" path="/home" name="Home" component={Announcement} />
           <NavRoute key="login" name="Login Page" component={Login} /> */}
           <Route path='/' element={<ViewAnnouncement/>}/>
-          <Route path='/manage_part_time_job/create' element={<CreatePartTimeJob/>}/>
+          <Route path='/manage_part_time_job/create' element={<CreatePartTimeJob isAdmin={true}/>}/>
           <Route path='/manage_part_time_job' element={<ManagePartTimeJob/>}/>
           <Route path='/manage_part_time_job/view/:id' element={<ManagePartTimeJobDetails isEdit={false}/>}/>
           <Route path='/manage_part_time_job/edit/:id' element={<ManagePartTimeJobDetails isEdit={true}/>}/>
           <Route path='/part_time_job/apply/:id' element={<ApplyPartTimeJob/>}/>
           <Route path='/part_time_job/view' element={<ViewPartTimeJob/>}/>
           <Route path='/part_time_job/view/:id' element={<ViewPartTimeJobDetails/>}/>
+          <Route path='/part_time_job/create' element={<CreatePartTimeJob isAdmin={false}/>}/>
           <Route path='/manage_charity_event' element={<ViewCharityEventList/>}/>
           <Route path='/manage_charity_event/create' element={<CreateCharityEvent isAdmin={true}/>}/>
           <Route path='/manage_charity_event/view/:id' element={<ManageCharityEventDetails isEdit={false}/>}/>

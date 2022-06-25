@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import {useNavigate} from "react-router-dom";
+import {useNavigate, Navigate} from "react-router-dom";
 import {BackSection} from '../../../components';
 import Swal from 'sweetalert2';
 import './create_part_time_job.css';
@@ -16,7 +16,6 @@ const CreatePartTimeJob = (props) => {
     const imageUploadInput = useRef();
     const imageDisplay = useRef();
     const navigate = useNavigate();
-    const {role}=JSON.parse(sessionStorage.getItem("user"));
 
     const handleTitleOnChange = (event) =>{
         setTitle(event.target.value);
@@ -121,7 +120,7 @@ const CreatePartTimeJob = (props) => {
     }
 
     const navigatePrev = () =>{
-        if(role==2)
+        if(props.isAdmin)
             navigate('/manage_part_time_job');
         else
             navigate('/part_time_job/view');
@@ -129,7 +128,8 @@ const CreatePartTimeJob = (props) => {
 
     return (
         <React.Fragment>
-            <BackSection title={(role==2)?"Create Part-Time Job":"Propose Part-Time Job"} onBackButtonClick={navigatePrev}/> 
+            {sessionStorage.getItem("user")==null?<Navigate to="/login"/>:<></>}
+            <BackSection title={(props.isAdmin)?"Create Part-Time Job":"Propose Part-Time Job"} onBackButtonClick={navigatePrev}/> 
             <form onSubmit={event=>handleSubmit(event)}>
                 <div id="upper-part">
                     <div id="form-left-content">

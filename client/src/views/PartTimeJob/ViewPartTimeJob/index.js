@@ -53,7 +53,7 @@ const ViewPartTimeJob = (props) => {
     }
 
     const handleProposeJob = () => {
-        navigate('/manage_part_time_job/create');
+        navigate('/part_time_job/create');
     }
 
     return (
