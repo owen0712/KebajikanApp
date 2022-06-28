@@ -125,8 +125,11 @@ const ApplicationHistoty = (props) =>{
         navigate('/profile/application_history/job_application/view/'+id);
     }
     
-    const handleViewProposalApplication = (id) => {
-        navigate('/profile/application_history/proposal_application/view/'+id);
+    const handleViewProposalApplication = (id, type) => {
+        if(type=="Charity Event")
+            navigate('/profile/application_history/propose_charity_event/view/'+id);
+        else
+            navigate('/profile/application_history/propose_part_time_job/view/'+id);
     }
 
     const handleEditEventApplication = (id) => {
@@ -137,8 +140,11 @@ const ApplicationHistoty = (props) =>{
         navigate('/profile/application_history/job_application/edit/'+id);
     }
 
-    const handleEditProposalApplication = (id) => {
-        navigate('/profile/application_history/proposal_application/edit/'+id);
+    const handleEditProposalApplication = (id, type) => {
+        if(type=="Charity Event")
+            navigate('/profile/application_history/propose_charity_event/edit/'+id);
+        else
+            navigate('/profile/application_history/propose_part_time_job/edit/'+id);
     }
 
     const handleDeleteEventApplication = (id) =>{
@@ -233,8 +239,101 @@ const ApplicationHistoty = (props) =>{
         })
     }
 
-    const handleDeleteProposalApplication =(id)=>{
-        console.log("Delete",id);
+    const handleDeleteEventProposalApplication = (id) =>{
+        Swal.fire({
+            title: 'Delete Proposed Charity Event',
+            text: 'Do you want to delete this proposed charity event?',
+            icon: 'warning',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'Cancel',
+            showCancelButton: true
+        }).then(result=>{
+            if(result.isConfirmed){
+                const jwt=sessionStorage.getItem("jwt");
+                fetch('/charity_event/'+id,{
+                    method:'delete',
+                    headers:{
+                        'Content-Type':'application/json',
+                        'Authorization':"Bearer"+jwt
+                    }
+                }).then(res=>res.json()).then(data=>{
+                    if(data.error){
+                        Swal.fire({
+                            title: data.error,
+                            icon: 'error',
+                            confirmButtonText: 'Ok'
+                        })
+                    }
+                    else{
+                        Swal.fire({
+                            title: data.message,
+                            icon: 'success',
+                            confirmButtonText: 'Ok'
+                        })
+                    }
+                }).catch(err=>{
+                    Swal.fire({
+                        title: err,
+                        icon: 'error',
+                        confirmButtonText: 'Ok'
+                    })
+                })
+                window.location.reload();
+            }
+        })
+    }
+
+    const handleDeleteJobProposalApplication = (id) =>{
+        Swal.fire({
+            title: 'Delete Proposed Part-Time Job',
+            text: 'Do you want to delete this proposed part-time job?',
+            icon: 'warning',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'Cancel',
+            showCancelButton: true
+        }).then(result=>{
+            if(result.isConfirmed){
+                console.log(id)
+                fetch('/part_time_job/'+id,{
+                    method:'delete',
+                    headers:{
+                        'Content-Type':'application/json'
+                    }
+                }).then(res=>res.json()).then(data=>{
+                    if(data.error){
+                        Swal.fire({
+                            title: data.error,
+                            icon: 'error',
+                            confirmButtonText: 'Ok'
+                        });
+                    }
+                    else{
+                        Swal.fire({
+                            title: data.message,
+                            text: 'Successfully delete this proposed part-time job!',
+                            icon: 'success',
+                            confirmButtonText: 'Ok'
+                        })
+                    }
+                    
+                }).catch(err=>{
+                    Swal.fire({
+                        title: err,
+                        icon: 'error',
+                        confirmButtonText: 'Ok'
+                    });
+                })
+                window.location.reload();
+            }
+        })
+        
+    }
+
+    const handleDeleteProposalApplication =(id, type)=>{
+        if(type=="Charity Event")
+            handleDeleteEventProposalApplication(id);
+        else
+            handleDeleteJobProposalApplication(id);
     }
 
     const onDisplayEventApplication = ()=> {
@@ -341,11 +440,11 @@ const ApplicationHistoty = (props) =>{
                                 <td>{application.title}</td>
                                 <td>{application.type}</td>
                                 <td>{application.created_on.slice(0,10)}</td>
-                                <td><Status statusName={application.status}/></td>
+                                <td><Status statusName={(application.status!=="Rejected"&&application.status!=="Pending")?"Approved":application.status}/></td>
                                 <td className='button-list'>
-                                    <button className='button' onClick={()=>handleViewProposalApplication(application._id)}><RemoveRedEyeIcon/>View</button>
-                                    <button className='button' onClick={()=>handleEditProposalApplication(application._id)}><CreateIcon/>Edit</button>
-                                    <button className='danger-button' onClick={()=>handleDeleteProposalApplication(application._id)}><PersonRemoveIcon/>Withdraw</button>    
+                                    <button className='button' onClick={()=>handleViewProposalApplication(application._id, application.type)}><RemoveRedEyeIcon/>View</button>
+                                    <button className='button' onClick={()=>handleEditProposalApplication(application._id, application.type)}><CreateIcon/>Edit</button>
+                                    <button className='danger-button' onClick={()=>handleDeleteProposalApplication(application._id, application.type)}><PersonRemoveIcon/>Withdraw</button>    
                                 </td>
                             </tr>
                         })}

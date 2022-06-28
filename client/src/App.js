@@ -53,16 +53,16 @@ function App() {
           <Route path='/' element={<ViewAnnouncement/>}/>
           <Route path='/manage_part_time_job/create' element={<CreatePartTimeJob isAdmin={true}/>}/>
           <Route path='/manage_part_time_job' element={<ManagePartTimeJob/>}/>
-          <Route path='/manage_part_time_job/view/:id' element={<ManagePartTimeJobDetails isEdit={false}/>}/>
-          <Route path='/manage_part_time_job/edit/:id' element={<ManagePartTimeJobDetails isEdit={true}/>}/>
+          <Route path='/manage_part_time_job/view/:id' element={<ManagePartTimeJobDetails isAdmin={true} isEdit={false}/>}/>
+          <Route path='/manage_part_time_job/edit/:id' element={<ManagePartTimeJobDetails isAdmin={true} isEdit={true}/>}/>
           <Route path='/part_time_job/apply/:id' element={<ApplyPartTimeJob/>}/>
           <Route path='/part_time_job/view' element={<ViewPartTimeJob/>}/>
           <Route path='/part_time_job/view/:id' element={<ViewPartTimeJobDetails/>}/>
           <Route path='/part_time_job/create' element={<CreatePartTimeJob isAdmin={false}/>}/>
           <Route path='/manage_charity_event' element={<ViewCharityEventList/>}/>
           <Route path='/manage_charity_event/create' element={<CreateCharityEvent isAdmin={true}/>}/>
-          <Route path='/manage_charity_event/view/:id' element={<ManageCharityEventDetails isEdit={false}/>}/>
-          <Route path='/manage_charity_event/edit/:id' element={<ManageCharityEventDetails isEdit={true}/>}/>
+          <Route path='/manage_charity_event/view/:id' element={<ManageCharityEventDetails isAdmin={true} isEdit={false}/>}/>
+          <Route path='/manage_charity_event/edit/:id' element={<ManageCharityEventDetails isAdmin={true} isEdit={true}/>}/>
           <Route path='/charity_event/apply_help/:event_id' element={<ApplyForHelp/>}/>
           <Route path='/charity_event/view' element={<ViewCharityEvent/>}/>
           <Route path='/charity_event/view/:id' element={<ViewCharityEventDetails/>}/>
@@ -72,6 +72,10 @@ function App() {
           <Route path='/profile/application_history/job_application/edit/:id' element={<ViewJobApplication isEdit={true}/>}/>
           <Route path='/profile/application_history/event_application/view/:id' element={<ViewEventApplication isEdit={false}/>}/>
           <Route path='/profile/application_history/event_application/edit/:id' element={<ViewEventApplication isEdit={true}/>}/>
+          <Route path='/profile/application_history/propose_charity_event/view/:id' element={<ManageCharityEventDetails isAdmin={false} isEdit={false}/>}/>
+          <Route path='/profile/application_history/propose_charity_event/edit/:id' element={<ManageCharityEventDetails isAdmin={false} isEdit={true}/>}/>
+          <Route path='/profile/application_history/propose_part_time_job/view/:id' element={<ManagePartTimeJobDetails isAdmin={false} isEdit={false}/>}/>
+          <Route path='/profile/application_history/propose_part_time_job/edit/:id' element={<ManagePartTimeJobDetails isAdmin={false} isEdit={true}/>}/>
           <Route path='/profile' element={<ViewProfile/>}/>
           <Route path='/login' element={<Login handleLogin={handleLogin}/>}/>
           <Route path='/signup' element={<SignUp/>}/>

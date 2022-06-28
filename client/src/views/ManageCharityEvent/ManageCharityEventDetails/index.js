@@ -234,7 +234,10 @@ const ManageCharityEventDetails = (props) => {
     }
 
     const handleRedirectBack = () => {
-        navigate('/manage_charity_event');
+        if(props.isAdmin)
+            navigate('/manage_charity_event');
+        else
+            navigate('/profile/application_history');
     }
 
     const toggleCancel = () => {
@@ -274,7 +277,7 @@ const ManageCharityEventDetails = (props) => {
         
     return (
         <React.Fragment>
-            {JSON.parse(sessionStorage.getItem("user")).role!=2?<Navigate to="/"/>:<></>}
+            {sessionStorage.getItem("user")==null?<Navigate to="/login"/>:<></>}
             <BackSection onBackButtonClick={handleRedirectBack} title={isEdit?"Edit Charity Event":"View Charity Event"}/>
             {isLoading?<h1>Loading...</h1>:<>
             <form onSubmit={handleSubmit}>

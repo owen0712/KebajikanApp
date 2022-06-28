@@ -155,7 +155,10 @@ const ManagePartTimeJobDetails = (props) => {
     }
 
     const navigatePrev = () =>{
-        navigate('/manage_part_time_job');
+        if(props.isAdmin)
+            navigate('/manage_part_time_job');
+        else
+            navigate('/profile/application_history');
     }
 
     const resetState = () => {
@@ -173,7 +176,7 @@ const ManagePartTimeJobDetails = (props) => {
 
     return (
         <React.Fragment>
-            {JSON.parse(sessionStorage.getItem("user")).role!=2?<Navigate to="/"/>:<></>}
+            {sessionStorage.getItem("user")==null?<Navigate to="/login"/>:<></>}
             {isSubmitLoading?<Loading/>:<></>}
             {isLoading?<Loading/>:<>
             <BackSection title={isEdit?"Edit Part-Time Job Details":"View Part-Time Job Details"} onBackButtonClick={navigatePrev}/> 
