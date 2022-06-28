@@ -10,20 +10,34 @@ router.post('/job_application/:id',(req,res)=>{
     if(!name||!email||!identity_no||!course||!document||!user_id||!role){
         return res.json({error:'please fill all fields'});
     }
-    const newPartTimeJobApplication = new JobApplication({
-        job_id:req.params.id,
-        name,
-        email,
-        identity_no,
-        course,
-        status:"Pending",
-        //temporary testing
-        created_by:user_id,
-        document
-    });
-    newPartTimeJobApplication.save().then(createdPartTimeJobApplication=>{
-        console.log("Response",res)
-        res.json({message:'New Job Application successfully created'});
+    JobApplication.find({"created_by":user_id})
+    .find({"job_id":req.params.id})
+    .select("-document")
+    .then(events=>{
+        const isApplied = events.find(item=>item.status=="Pending");
+        if(isApplied){
+            res.json({error:"You had appplied this job before."});
+            isAppliedBefore=true;
+        }else{
+            const newPartTimeJobApplication = new JobApplication({
+                job_id:req.params.id,
+                name,
+                email,
+                identity_no,
+                course,
+                status:"Pending",
+                //temporary testing
+                created_by:user_id,
+                document
+            });
+            
+            newPartTimeJobApplication.save().then(createdPartTimeJobApplication=>{
+                console.log("Response",res)
+                res.json({message:'New Job Application successfully created'});
+            }).catch(err=>{
+                res.json({error:err});
+            });
+        }
     }).catch(err=>{
         res.json({error:err});
     });
