@@ -10,12 +10,10 @@ router.post('/job_application/:id',(req,res)=>{
     if(!name||!email||!identity_no||!course||!document||!user_id||!role){
         return res.json({error:'please fill all fields'});
     }
-    JobApplication.find({"created_by":user_id})
-    .find({"job_id":req.params.id})
+    JobApplication.find({"created_by":user_id, "job_id":req.params.id, "status":"Pending"})
     .select("-document")
     .then(events=>{
-        const isApplied = events.find(item=>item.status=="Pending");
-        if(isApplied){
+        if(events.length>0){
             res.json({error:"You had appplied this job before."});
             isAppliedBefore=true;
         }else{
