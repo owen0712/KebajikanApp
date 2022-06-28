@@ -4,6 +4,7 @@ import './apply_part_time_job.css';
 import BackSection from '../../../components/BackSection';
 import Dropdown from '../../../components/Dropdown';
 import Swal from 'sweetalert2';
+import { Loading } from '../../../components';
 
 const courseOption = [
     "Software Engineering", 
@@ -19,6 +20,7 @@ const ApplyPartTimeJob = (props) => {
     const [event,setEvent] = useState([]); 
     const [jobTitle,setJobTitle] = useState(""); 
     const [isLoading,setIsLoading] = useState(true);
+    const [isSubmitLoading,setIsSubmitLoading] = useState(false);
     const navigate = useNavigate();
     const job_id = useParams();
     const [name, setName] = useState("");
@@ -96,6 +98,7 @@ const ApplyPartTimeJob = (props) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        setIsSubmitLoading(true);
         const {id,role}=JSON.parse(sessionStorage.getItem("user"));
         const jwt=sessionStorage.getItem("jwt");
         fetch('/job_application/'+job_id.id,{
@@ -115,6 +118,7 @@ const ApplyPartTimeJob = (props) => {
             })
         }).then(res=>res.json()).then(data=>{
             console.log("Data",data);
+            setIsSubmitLoading(false);
             if(data.error){
                 Swal.fire({
                     title: data.error,
@@ -147,7 +151,8 @@ const ApplyPartTimeJob = (props) => {
         <React.Fragment>
             {sessionStorage.getItem("user")==null?<Navigate to="/login"/>:<></>}
             <BackSection onBackButtonClick={navigatePrev} title={"Apply Part-Time Job: "+jobTitle}/>
-            {isLoading?<h1>Loading...</h1>:<>
+            {isSubmitLoading?<Loading/>:<></>}
+            {isLoading?<Loading/>:<>
             <div id="apply-job-layout">
                 <div id="apply-job-details-section">
                     <img src={event.photo.content}/>

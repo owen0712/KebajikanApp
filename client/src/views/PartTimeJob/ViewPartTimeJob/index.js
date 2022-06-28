@@ -12,7 +12,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { Status, BackSection } from '../../../components';
+import { Status, BackSection, Loading } from '../../../components';
 
 const ViewPartTimeJob = (props) => {
 
@@ -58,7 +58,7 @@ const ViewPartTimeJob = (props) => {
 
     return (
         <React.Fragment>
-            {isLoading?<h1>Loading...</h1>:<>
+            {isLoading?<Loading/>:<>
             <div id="carousel">
                 <ArrowLeftIcon/>
                 {

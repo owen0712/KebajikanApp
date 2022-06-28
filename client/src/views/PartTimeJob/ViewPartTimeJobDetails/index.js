@@ -1,8 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './view_part_time_job_details.css';
-import BackSection from '../../../components/BackSection';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { Loading, BackSection } from '../../../components';
 
 const ViewPartTimeJobDetails = (props) => {
 
@@ -50,7 +50,7 @@ const ViewPartTimeJobDetails = (props) => {
     return (
         <React.Fragment>
             <BackSection onBackButtonClick={navigatePrev} title="View Part-Time Job Details"/>
-            {isLoading?<h1>Loading...</h1>:<>
+            {isLoading?<Loading/>:<>
             <div id="job-details-section">
                 <img src={event.photo.content}/>
                 <span>

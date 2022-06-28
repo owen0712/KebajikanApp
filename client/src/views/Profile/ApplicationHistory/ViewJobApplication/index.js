@@ -1,8 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './view-job-application.css';
-import BackSection from '../../../../components/BackSection';
-import Dropdown from '../../../../components/Dropdown';
+import { BackSection, Dropdown, Loading } from '../../../../components';
 import Swal from 'sweetalert2';
 
 const courseOption = [
@@ -19,6 +18,7 @@ const ViewJobApplication = (props) => {
     const [event,setEvent] = useState([]); 
     const [jobTitle,setJobTitle] = useState(""); 
     const [isLoading,setIsLoading] = useState(true);
+    const [isSubmitLoading,setIsSubmitLoading] = useState(false);
     const navigate = useNavigate();
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -104,6 +104,7 @@ const ViewJobApplication = (props) => {
 
     const handleSave = (e) => {
         e.preventDefault();
+        setIsSubmitLoading(true);
         const jwt=sessionStorage.getItem("jwt");
         fetch('/job_application/'+job_id.id,{
             method:'put',
@@ -120,6 +121,7 @@ const ViewJobApplication = (props) => {
             })
         }).then(res=>res.json()).then(data=>{
             console.log("Data",data);
+            setIsSubmitLoading(false);
             if(data.error){
                 Swal.fire({
                     title: data.error,
@@ -164,7 +166,8 @@ const ViewJobApplication = (props) => {
     return (
         <React.Fragment>
             <BackSection onBackButtonClick={navigatePrev} title={"View Job Application: "+jobTitle}/>
-            {isLoading?<h1>Loading...</h1>:<>
+            {isSubmitLoading?<Loading/>:<></>}
+            {isLoading?<Loading/>:<>
             <div id="apply-job-layout">
                 <div id="apply-job-details-section">
                     <img src={event.photo.content}/>

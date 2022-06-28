@@ -1,12 +1,13 @@
 import React, { useRef, useEffect, useState } from 'react'
 import {useNavigate, useParams, Navigate} from "react-router-dom";
-import {BackSection} from '../../../components';
+import {BackSection, Loading} from '../../../components';
 import './manage_part_time_job_details.css';
 import Swal from 'sweetalert2';
 
 const ManagePartTimeJobDetails = (props) => {
     
     const [isLoading,setIsLoading] = useState(true);
+    const [isSubmitLoading,setIsSubmitLoading] = useState(false);
     const [title, setTitle] = useState("");
     const [required_student, setRequiredStudent] = useState(0);
     const [description, setDescription] = useState("");
@@ -110,6 +111,7 @@ const ManagePartTimeJobDetails = (props) => {
 
     const handleSave = (event) =>{
         event.preventDefault();
+        setIsSubmitLoading(true);
         const jwt=sessionStorage.getItem("jwt");
         fetch('/part_time_job/'+job_id.id,{
             method:'put',
@@ -127,6 +129,7 @@ const ManagePartTimeJobDetails = (props) => {
                 photo
             })
         }).then(res=>res.json()).then(data=>{
+            setIsSubmitLoading(false);
             if(data.error){
                 Swal.fire({
                     title: data.error,
@@ -171,7 +174,8 @@ const ManagePartTimeJobDetails = (props) => {
     return (
         <React.Fragment>
             {JSON.parse(sessionStorage.getItem("user")).role!=2?<Navigate to="/"/>:<></>}
-            {isLoading?<h1>Loading...</h1>:<>
+            {isSubmitLoading?<Loading/>:<></>}
+            {isLoading?<Loading/>:<>
             <BackSection title={isEdit?"Edit Part-Time Job Details":"View Part-Time Job Details"} onBackButtonClick={navigatePrev}/> 
             <form onSubmit={event=>handleSave(event)}>
                 <div id="upper-part">
@@ -210,7 +214,8 @@ const ManagePartTimeJobDetails = (props) => {
                     <img ref={imageDisplay} alt="" src={photo.content} name="image" onClick={handleImageOnClick}/>
                 </span>
                 {isEdit?<div id="save-section"><button onClick={toggleCancel} id="cancel-button">Cancel</button><input type="submit" value="Save" id="save-button"/></div>:<button onClick={toggleEdit} id="create-button">Edit</button>}
-            </form></>}
+            </form>
+            </>}
         </React.Fragment>
     )
 }

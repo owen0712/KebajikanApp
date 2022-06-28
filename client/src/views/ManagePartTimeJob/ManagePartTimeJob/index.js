@@ -8,7 +8,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import Swal from 'sweetalert2';
-import { Status, BackSection } from '../../../components';
+import { Status, BackSection, Loading } from '../../../components';
 
 const ManagePartTimeJob = (props) => {
 
@@ -106,7 +106,7 @@ const ManagePartTimeJob = (props) => {
     return (
         <React.Fragment>
             {JSON.parse(sessionStorage.getItem("user")).role!=2?<Navigate to="/"/>:<></>}
-            {isLoading?<h1>Loading...</h1>:<>
+            {isLoading?<Loading/>:<>
             <BackSection title="Part-Time Job" previousIsHome={true} createButtonName="Create New Part-Time Job" onBackButtonClick={navigatePrev} handleButtonCreate={handleCreate}/>
             <div id="#part-time-job-list-table-section">
                 <table>

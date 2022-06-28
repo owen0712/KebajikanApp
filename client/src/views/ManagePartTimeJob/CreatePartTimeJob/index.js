@@ -1,11 +1,12 @@
 import React, { useRef, useState } from 'react'
 import {useNavigate, Navigate} from "react-router-dom";
-import {BackSection} from '../../../components';
+import {BackSection, Loading} from '../../../components';
 import Swal from 'sweetalert2';
 import './create_part_time_job.css';
 
 const CreatePartTimeJob = (props) => {
 
+    const [isSubmitLoading,setIsSubmitLoading] = useState(false);
     const [title, setTitle] = useState("");
     const [required_student, setRequiredStudent] = useState(0);
     const [description, setDescription] = useState("");
@@ -75,6 +76,7 @@ const CreatePartTimeJob = (props) => {
 
     const handleSubmit = (event) =>{
         event.preventDefault();
+        setIsSubmitLoading(true);
         const {id,role}=JSON.parse(sessionStorage.getItem("user"));
         const jwt=sessionStorage.getItem("jwt");
         fetch('/part_time_job',{
@@ -95,6 +97,7 @@ const CreatePartTimeJob = (props) => {
                 role
             })
         }).then(res=>res.json()).then(data=>{
+            setIsSubmitLoading(false);
             if(data.error){
                 Swal.fire({
                     title: data.error,
@@ -129,6 +132,7 @@ const CreatePartTimeJob = (props) => {
     return (
         <React.Fragment>
             {sessionStorage.getItem("user")==null?<Navigate to="/login"/>:<></>}
+            {isSubmitLoading?<Loading/>:<></>}
             <BackSection title={(props.isAdmin)?"Create Part-Time Job":"Propose Part-Time Job"} onBackButtonClick={navigatePrev}/> 
             <form onSubmit={event=>handleSubmit(event)}>
                 <div id="upper-part">

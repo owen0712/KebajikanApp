@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 import './view-event-application.css';
-import BackSection from '../../../../components/BackSection';
+import {Loading, BackSection} from '../../../../components';
 import Swal from 'sweetalert2';
 
 const ViewEventApplication = (props) => {
@@ -30,6 +30,7 @@ const ViewEventApplication = (props) => {
     const [isAgree,setIsAgree] = useState(false);
     const [event_name,setEventName] = useState(""); 
     const [isLoading,setIsLoading] = useState(true);
+    const [isSubmitLoading,setIsSubmitLoading] = useState(false);
     const [isEdit,setIsEdit] = useState(props.isEdit);
     const id = useParams();
     const navigate = useNavigate();
@@ -204,6 +205,7 @@ const ViewEventApplication = (props) => {
 
     const handleSave = (event) => {
         event.preventDefault();
+        setIsSubmitLoading(true);
         const jwt=sessionStorage.getItem("jwt");
         fetch('/charity_application/'+id.id,{
             method:'put',
@@ -235,6 +237,7 @@ const ViewEventApplication = (props) => {
                 photo
             })
         }).then(res=>res.json()).then(data=>{
+            setIsSubmitLoading(false);
             if(data.error){
                 console.log(data.error);
             }
@@ -272,7 +275,8 @@ const ViewEventApplication = (props) => {
     return (
         <React.Fragment>
             <BackSection onBackButtonClick={navigatePrev} title={"View "+event_name+"  Application Form"}/>
-            {isLoading?"":<>
+            {isSubmitLoading?<Loading/>:<></>}
+            {isLoading?<Loading/>:<>
             <form id="application-form" onSubmit={event=>handleSave(event)}>
                 <p className='section-header'>APPLICATION DETAILS</p>
                 <div id="apply-form-upper-part">

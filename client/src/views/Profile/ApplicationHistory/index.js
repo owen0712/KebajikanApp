@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {useNavigate} from 'react-router-dom';
 import './application-history.css';
-import { ProfileSideNavigation, Status } from '../../../components';
+import { ProfileSideNavigation, Status, Loading } from '../../../components';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import CreateIcon from '@mui/icons-material/Create';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
@@ -357,6 +357,7 @@ const ApplicationHistoty = (props) =>{
     
     return(
         <React.Fragment>
+            {isLoading?<Loading/>:""}
             <div id="application-history">
                 <ProfileSideNavigation activeIndex={2}/>
                 <div id="application-history-content">
@@ -369,7 +370,6 @@ const ApplicationHistoty = (props) =>{
                     {isDisplayEventApplication? renderEventApplication(): ""}
                     {isDisplayJobApplication? renderJobApplication(): ""}
                     {isDisplayProposalApplication? renderProposalApplication(): ""}
-                    {isLoading?<h1>Loading...</h1>:""}
                     </div>
                 </div>
             </div>
