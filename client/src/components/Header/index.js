@@ -1,23 +1,110 @@
 import React, { useEffect, useState } from "react";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
+import Popover from '@mui/material/Popover';
+import Typography from '@mui/material/Typography';
 import "./header.css";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
+import CircleIcon from '@mui/icons-material/Circle';
+import { useUser, useUserUpdate } from "../../contexts/UserContext";
 
 const Header = (props) => {
 
-  const [user,setUser] = useState(JSON.parse(sessionStorage.getItem("user")));
-  const isAuthenticated = props.isAuthenticated;
-  const handleLogout = props.handleLogout;
+  const [userNotifications,setUserNotifications] = useState([]);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const user = useUser();
+  const updateUser = useUserUpdate();
 
   useEffect(()=>{
-    setUser(JSON.parse(sessionStorage.getItem("user")));
-  },[isAuthenticated])
+    fetchNotification();
+  },[user])
+
+  useEffect(()=>{
+    fetchNotification();
+  },[anchorEl])
+
+  useEffect(()=>{
+    if(open){
+      updateReadNotification();
+    }
+  },[anchorEl])
+
+  const fetchNotification = () => {
+    if(user==null){
+      return;
+    }
+    fetch('/notification/unread/'+user.id,{
+      method:'get',
+      headers:{
+          'Content-Type':'application/json',
+          'Authorization':'Bearer'+user.token
+      }
+    }).then(res=>res.json()).then(data=>{
+        if(data.error){
+            Swal.fire({
+                title: data.error,
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
+        }
+        else{
+          console.log(data.userNotifications)
+          setUserNotifications(data.userNotifications);
+        }
+    }).catch(err=>{
+        Swal.fire({
+            title: err,
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        });
+    })
+  }
+
+  const updateReadNotification = () => {
+    if(user==null){
+      return;
+    }
+    fetch('/notification/read/'+user.id,{
+      method:'put',
+      headers:{
+          'Content-Type':'application/json',
+          'Authorization':'Bearer'+user.token
+      }
+    }).then(res=>res.json()).then(data=>{
+        if(data.error){
+            Swal.fire({
+                title: data.error,
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
+        }
+        else{
+          console.log(data.message)
+        }
+    }).catch(err=>{
+        Swal.fire({
+            title: err,
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        });
+    })
+  }
 
   const handleOnClick = () => {
-    sessionStorage.clear();
-    setUser(null);
-    handleLogout();
+    updateUser(null);
   }
+
+  const handleNotificationOnClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleOnClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
   
   return (
   <React.Fragment>
@@ -33,6 +120,33 @@ const Header = (props) => {
         user?
         <nav id="user-section">
         {user.role>0?<span><Link to='/admin' className="nav-item white-text">Administration</Link></span>:<></>}
+        
+        <NotificationsActiveIcon className="nav-item" id="notification-icon" onClick={handleNotificationOnClick}/>
+        <Popover
+          id={id}
+          open={open}
+          anchorEl={anchorEl}
+          sx={2}
+          onClose={handleOnClose}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+        >
+          <div className="notification-row"><hr/></div>
+          {userNotifications.map((userNotification)=>{
+            return <div className={"notification-row "+userNotification.status} key={userNotification._id}>
+            <span className="notification-content">
+            <h4>{userNotification.notification_id.title}</h4>
+            <p>{userNotification.notification_id.description}</p>
+            <small>{userNotification.created_on.slice(0,10)}</small>
+            </span>
+            {userNotification.status=="unread"?<span className="notification-unread-icon"><CircleIcon/></span>:<></>}
+            <hr/>
+            </div>
+          })}
+        </Popover>
+
         <span><Link to='/profile' className="nav-item white-text">{user.name}</Link></span>
         <AccountCircleIcon className="nav-item"/>
         <span><Link to='/login'  onClick={handleOnClick} className="nav-item white-text">Logout</Link></span>

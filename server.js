@@ -10,6 +10,8 @@ require('./models/partTimeJobModel');
 require('./models/charityApplicationModel');
 require('./models/jobApplicationModel');
 require('./models/announcementModel');
+require('./models/notificationModel');
+require('./models/userNotificationModel');
 
 const cors = require('cors');
 app.use(cors());
@@ -22,6 +24,7 @@ app.use(require('./routes/partTimeJobRoute'));
 app.use(require('./routes/charityApplicationRoute'));
 app.use(require('./routes/jobApplicationRoute'));
 app.use(require('./routes/announcementRoute'));
+app.use(require('./routes/notificationRoute'));
 
 if (process.env.NODE_ENV == 'production') {
     app.use(express.static('client/build'))

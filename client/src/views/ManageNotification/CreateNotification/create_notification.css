@@ -1,0 +1,21 @@
+#receipient-list{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#receipient-list .long-input{
+    display: flex;
+    background-color: #F6F8FB;
+    border-radius: 20px;
+    padding: 10px;
+}
+
+#receipient-list label{
+    background-color: #F6F8FB;
+    color:#192F59;
+    border-radius: 20px 0px 0px 20px;
+}
+
+#receipient-list label::before{
+    content:"";
+}

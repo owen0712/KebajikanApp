@@ -12,6 +12,52 @@
     text-decoration: none;
 }
 
+.notification-row{
+    min-width: 15%;
+    max-width: 95%;
+    color:#192F59;
+    font-weight: 500;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-left: 20px;
+}
+
+.notification-row span{
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.notification-row span > *{
+    margin: 5px;
+}
+
+.notification-content{
+    width: 90%;
+}
+
+.notification-unread-icon{
+    width: 10%;
+}
+
+.notification-unread-icon svg{
+    color: hsl(214, 100%, 59%);
+    width: 12px;
+    height: 12px;
+}
+
+.MuiPopover-paper{
+    width: 30%;
+}
+
+.unread small{
+    color: hsl(214, 100%, 59%);
+}
+
+.read{
+    color:#B0B3B8;    
+}
+
 .white-text{
     color: white;
 }
@@ -28,6 +74,7 @@
 .nav-item{
     padding: 6px 0;
     font-weight: bold;
+    cursor: pointer;
 }
 
 #user-section{

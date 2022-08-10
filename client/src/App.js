@@ -25,25 +25,19 @@ import CreateAnnouncement from './views/Announcement/CreateAnnouncement';
 import ViewAnnouncementList from './views/Announcement/ViewAnnouncementList';
 import ManageAnnouncementDetails from './views/Announcement/ManageAnnouncementDetails';
 import ViewAnnouncement from './views/Announcement/ViewAnnouncement';
-import { useState } from 'react';
+import CreateNotification from './views/ManageNotification/CreateNotification';
+import ManageNotificationDetails from './views/ManageNotification/ManageNotificationDetails';
+import ViewNotificationList from './views/ManageNotification/ViewNotificationList';
+import { UserProvider } from './contexts/UserContext.js';
 // import NavRoute from './core/navRoute';
 
 function App() {
 
-  const [isAuthenticated,setIsAuthenticated] = useState(false);
-
-  const handleLogin = () => {
-    setIsAuthenticated(true);
-  }
-
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-  }
-
   return (
     <div className="App">
       <BrowserRouter>
-        <Header isAuthenticated={isAuthenticated} handleLogout={handleLogout}/>
+      <UserProvider>
+        <Header/>
         <div id="body">
         <Routes>
           {/* <NavRoute key="404" exact path="/404" name="Page 404" component={Page404} />
@@ -77,7 +71,7 @@ function App() {
           <Route path='/profile/application_history/propose_part_time_job/view/:id' element={<ManagePartTimeJobDetails isAdmin={false} isEdit={false}/>}/>
           <Route path='/profile/application_history/propose_part_time_job/edit/:id' element={<ManagePartTimeJobDetails isAdmin={false} isEdit={true}/>}/>
           <Route path='/profile' element={<ViewProfile/>}/>
-          <Route path='/login' element={<Login handleLogin={handleLogin}/>}/>
+          <Route path='/login' element={<Login/>}/>
           <Route path='/signup' element={<SignUp/>}/>
           <Route path='/admin' element={<Admin/>}/>
           <Route path='/manage_announcement/create' element={<CreateAnnouncement/>}/>
@@ -85,9 +79,14 @@ function App() {
           <Route path='/manage_announcement/view/:id' element={<ManageAnnouncementDetails isEdit={false}/>}/>
           <Route path='/manage_announcement/edit/:id' element={<ManageAnnouncementDetails isEdit={true}/>}/>
           <Route path='/announcement/view' element={<ViewAnnouncement/>}/>
+          <Route path='/manage_notification/create' element={<CreateNotification/>}/>
+          <Route path='/manage_notification' element={<ViewNotificationList/>}/>
+          <Route path='/manage_notification/view/:id' element={<ManageNotificationDetails isEdit={false}/>}/>
+          <Route path='/manage_notification/edit/:id' element={<ManageNotificationDetails isEdit={true}/>}/>
         </Routes>
         </div>
         <Footer/>
+        </UserProvider>
       </BrowserRouter>
     </div>
   );
