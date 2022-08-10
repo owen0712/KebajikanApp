@@ -3,6 +3,8 @@ import { useParams, useNavigate, Navigate } from 'react-router-dom';
 import './manage_charity_event_details.css';
 import BackSection from '../../../components/BackSection';
 import Swal from 'sweetalert2';
+import { Loading } from '../../../components';
+import { useUser } from '../../../contexts/UserContext';
 
 const ManageCharityEventDetails = (props) => {
 
@@ -26,6 +28,7 @@ const ManageCharityEventDetails = (props) => {
     const fileTextDisplay = useRef();
     const {id} = useParams();;
     const navigate = useNavigate();
+    const user = useUser();
 
     useEffect(()=>{
         fetchData();
@@ -182,12 +185,11 @@ const ManageCharityEventDetails = (props) => {
             });
             return;
         }
-        const jwt=sessionStorage.getItem("jwt");
         fetch('/charity_event/'+id,{
             method:'put',
             headers:{
                 'Content-Type':'application/json',
-                'Authorization':"Bearer"+jwt
+                'Authorization':"Bearer"+user.token
             },
             body:JSON.stringify({
                 title,
@@ -277,9 +279,9 @@ const ManageCharityEventDetails = (props) => {
         
     return (
         <React.Fragment>
-            {sessionStorage.getItem("user")==null?<Navigate to="/login"/>:<></>}
+            {user==null?<Navigate to="/login"/>:<></>}
             <BackSection onBackButtonClick={handleRedirectBack} title={isEdit?"Edit Charity Event":"View Charity Event"}/>
-            {isLoading?<h1>Loading...</h1>:<>
+            {isLoading?<Loading/>:<>
             <form onSubmit={handleSubmit}>
                 <div id="create-form-upper-part">
                     <div id="form-left-content">

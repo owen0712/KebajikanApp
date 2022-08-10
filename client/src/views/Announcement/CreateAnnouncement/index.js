@@ -3,6 +3,7 @@ import './create_announcement.css';
 import BackSection from '../../../components/BackSection';
 import { useNavigate, Navigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { useUser } from '../../../contexts/UserContext';
 
 const CreateAnnouncement = (props) => {
 
@@ -12,6 +13,7 @@ const CreateAnnouncement = (props) => {
     const imageUploadInput = useRef();
     const imageDisplay = useRef();
     const navigate = useNavigate();
+    const user = useUser();
 
     const handleTitleOnChange = (event) => {
         setTitle(event.target.value);
@@ -45,19 +47,17 @@ const CreateAnnouncement = (props) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const {id}=JSON.parse(sessionStorage.getItem("user"));
-        const jwt=sessionStorage.getItem("jwt");
         fetch('/announcement',{
             method:'post',
             headers:{
                 'Content-Type':'application/json',
-                'Authorization':"Bearer"+jwt
+                'Authorization':"Bearer"+user.token
             },
             body:JSON.stringify({
                 title,
                 description,
                 attachment,
-                user_id:id
+                user_id:user.id
             })
         }).then(res=>res.json()).then(data=>{
             if(data.error){
@@ -88,7 +88,7 @@ const CreateAnnouncement = (props) => {
         
     return (
         <React.Fragment>
-            {JSON.parse(sessionStorage.getItem("user")).role!=2?<Navigate to="/"/>:<></>}
+            {user.role!=2?<Navigate to="/"/>:<></>}
             <BackSection onBackButtonClick={handleRedirectBack} title="Create Announcement"/>
             <form id="announcement_form" onSubmit={event=>handleSubmit(event)}>
                 <span className="short-input">

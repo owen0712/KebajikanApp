@@ -4,6 +4,7 @@ import './view_charity_event_details.css';
 import BackSection from '../../../components/BackSection';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Swal from 'sweetalert2';
+import { Loading } from '../../../components';
 
 const ViewCharityEventDetails = (props) => {
 
@@ -59,7 +60,7 @@ const ViewCharityEventDetails = (props) => {
     return (
         <React.Fragment>
             <BackSection title="View Charity Event Details" onBackButtonClick={handleRedirectBack}/>
-            {isLoading?<h1>Loading...</h1>:<>
+            {isLoading?<Loading/>:<>
             <div id="event-details-section">
                 <img src={event.photo.content}/>
                 <span>

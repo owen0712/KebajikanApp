@@ -7,7 +7,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import Swal from 'sweetalert2';
-import { BackSection, Status } from '../../../components';
+import { BackSection, Loading } from '../../../components';
+import { useUser } from '../../../contexts/UserContext';
 
 const ViewAnnouncementList = (props) => {
 
@@ -15,6 +16,7 @@ const ViewAnnouncementList = (props) => {
     const [announcements,setAnnouncements] = useState([]);
     const [pageNumber,setPageNumber] = useState(1);
     const [isLoading,setIsLoading] = useState(true);
+    const user = useUser();
 
     useEffect(()=>{
         fetchData();
@@ -71,7 +73,6 @@ const ViewAnnouncementList = (props) => {
             showCancelButton: true
         }).then(result=>{
             if(result.isConfirmed){
-                console.log(id)
                 fetch('/announcement/'+id,{
                     method:'delete',
                     headers:{
@@ -111,8 +112,8 @@ const ViewAnnouncementList = (props) => {
 
     return (
         <React.Fragment>
-            {JSON.parse(sessionStorage.getItem("user")).role!=2?<Navigate to="/"/>:<></>}
-            {isLoading?<h1>Loading...</h1>:<>
+            {user.role!=2?<Navigate to="/"/>:<></>}
+            {isLoading?<Loading/>:<>
             <BackSection title="View Announcement" onBackButtonClick={handleRedirectBack} previousIsHome={true} createButtonName="Create New Announcement" handleButtonCreate={handleCreate}/>
             <div id="#announcement-list-table-section">
                 <table>

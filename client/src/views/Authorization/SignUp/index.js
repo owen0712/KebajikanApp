@@ -74,7 +74,7 @@ const SignUp = (props) => {
             }
             else{
                 Swal.fire({
-                    icon: 'sucess',
+                    icon: 'success',
                     title: data.message,
                 }).then(navigate('/login'))
             }

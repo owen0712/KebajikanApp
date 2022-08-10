@@ -1,8 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react'
 import './view_announcement_details.css';
-import BackSection from '../../../components/BackSection';
+import {BackSection,Loading} from '../../../components';
 import { useParams, useNavigate, Navigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { useUser } from '../../../contexts/UserContext';
 
 const ViewAnnouncementDetails = (props) => {
 
@@ -15,6 +16,7 @@ const ViewAnnouncementDetails = (props) => {
     const imageDisplay = useRef();
     const navigate = useNavigate();
     const {id} = useParams();;
+    const user = useUser();
 
     useEffect(()=>{
         fetchData();
@@ -83,12 +85,11 @@ const ViewAnnouncementDetails = (props) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const jwt=sessionStorage.getItem("jwt");
         fetch('/announcement/'+id,{
             method:'put',
             headers:{
                 'Content-Type':'application/json',
-                'Authorization':"Bearer"+jwt
+                'Authorization':"Bearer"+user.token
             },
             body:JSON.stringify({
                 title,
@@ -139,9 +140,9 @@ const ViewAnnouncementDetails = (props) => {
         
     return (
         <React.Fragment>
-            {JSON.parse(sessionStorage.getItem("user")).role!=2?<Navigate to="/"/>:<></>}            
+            {user.role!=2?<Navigate to="/"/>:<></>}            
             <BackSection onBackButtonClick={handleRedirectBack} title={isEdit?"Edit Announcement":"View Announcement"}/>
-            {isLoading?<h1>Loading...</h1>:<>
+            {isLoading?<Loading/>:<>
             <form id="announcement_form" onSubmit={event=>handleSubmit(event)}>
                 <span className="short-input">
                     <label >TITLE</label>

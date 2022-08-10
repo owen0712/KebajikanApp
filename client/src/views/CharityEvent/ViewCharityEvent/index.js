@@ -5,6 +5,7 @@ import AddIcon from '@mui/icons-material/Add';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import Swal from 'sweetalert2';
+import { Loading } from '../../../components';
 
 const ViewCharityEvent = (props) => {
 
@@ -58,7 +59,7 @@ const ViewCharityEvent = (props) => {
         
     return (
         <React.Fragment>
-            {isLoading?<h1>Loading...</h1>:<>
+            {isLoading?<Loading/>:<>
             <div id="carousel">
                 <ArrowLeftIcon/>
                 <img src={events[0].photo.content} onClick={()=>handleView(events[0]._id)}/>

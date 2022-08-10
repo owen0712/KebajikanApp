@@ -3,6 +3,7 @@ import './create_charity_event.css';
 import BackSection from '../../../components/BackSection';
 import { useNavigate, Navigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { useUser } from '../../../contexts/UserContext';
 
 const CreateCharityEvent = (props) => {
 
@@ -22,6 +23,7 @@ const CreateCharityEvent = (props) => {
     const fileUploadInput = useRef();
     const fileTextDisplay = useRef();
     const navigate = useNavigate();
+    const user = useUser();
 
     const handleTitleOnChange = (event) => {
         setTitle(event.target.value);
@@ -129,13 +131,11 @@ const CreateCharityEvent = (props) => {
             });
             return;
         }
-        const {id,role}=JSON.parse(sessionStorage.getItem("user"));
-        const jwt=sessionStorage.getItem("jwt");
         fetch('/charity_event',{
             method:'post',
             headers:{
                 'Content-Type':'application/json',
-                'Authorization':"Bearer"+jwt
+                'Authorization':"Bearer"+user.token
             },
             body:JSON.stringify({
                 title,
@@ -149,8 +149,8 @@ const CreateCharityEvent = (props) => {
                 donation_end_date,
                 document,
                 photo,
-                user_id:id,
-                role
+                user_id:user.id,
+                role:user.role
             })
         }).then(res=>res.json()).then(data=>{
             if(data.error){
@@ -188,7 +188,7 @@ const CreateCharityEvent = (props) => {
         
     return (
         <React.Fragment>
-            {sessionStorage.getItem("user")==null?<Navigate to="/login"/>:<></>}
+            {user==null?<Navigate to="/login"/>:<></>}
             <BackSection onBackButtonClick={props.isAdmin?handleRedirectBackAdmin:handleRedirectBackUser} title="Create Charity Event"/>
             <form onSubmit={event=>handleSubmit(event)}>
                 <div id="create-form-upper-part">

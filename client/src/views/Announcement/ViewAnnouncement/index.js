@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./view_announcement.css";
 import Swal from "sweetalert2";
+import { Loading } from "../../../components";
 
 const ViewAnnouncement = (props) => {
   const [announcements, setAnnouncements] = useState([]);
@@ -43,7 +44,7 @@ const ViewAnnouncement = (props) => {
   return (
     <React.Fragment>
       {isLoading ? (
-        <h1>Loading...</h1>
+        <Loading/>
       ) : (
         <>
           <h1>ANNOUNCEMENT</h1>

@@ -1,9 +1,10 @@
 import React, { useRef, useState, useEffect } from 'react';
 import {useParams, useNavigate, Navigate} from 'react-router-dom';
 import './apply_help.css';
-import BackSection from '../../../components/BackSection';
+import { BackSection, Loading } from '../../../components';
 import Swal from 'sweetalert2';
 import Dropdown from '../../../components/Dropdown';
+import { useUser } from '../../../contexts/UserContext';
 
 const ApplyForHelp = (props) => {
 
@@ -37,6 +38,7 @@ const ApplyForHelp = (props) => {
     const fileUploadInput = useRef();
     const fileTextDisplay = useRef();
     const navigate = useNavigate();
+    const user = useUser();
 
     const maritalStatusOption = [
         "Single",
@@ -73,7 +75,7 @@ const ApplyForHelp = (props) => {
         fetch('/charity_event/name/'+event_id.event_id,{
             method:'get',
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
             }
         }).then(res=>res.json()).then(data=>{
             if(data.error){
@@ -232,13 +234,11 @@ const ApplyForHelp = (props) => {
             });
             return;
         }
-        const {id,role}=JSON.parse(sessionStorage.getItem("user"));
-        const jwt=sessionStorage.getItem("jwt");
         fetch('/charity_application/'+event_id.event_id,{
             method:'post',
             headers:{
                 'Content-Type':'application/json',
-                'Authorization':"Bearer"+jwt
+                'Authorization':"Bearer"+user.token
             },
             body:JSON.stringify({
                 name,
@@ -262,8 +262,8 @@ const ApplyForHelp = (props) => {
                 no_dependent,
                 document,
                 photo,
-                user_id:id,
-                role
+                user_id:user.id,
+                role:user.role
             })
         }).then(res=>res.json()).then(data=>{
             if(data.error){
@@ -292,7 +292,7 @@ const ApplyForHelp = (props) => {
     }
 
     const handleRedirectBack = () => {
-        navigate('/charity_event/view')
+        navigate('/charity_event/view/'+event_id.event_id)
     }
 
     const handleIsAgreeOnChange = (event) => {
@@ -301,9 +301,9 @@ const ApplyForHelp = (props) => {
         
     return (
         <React.Fragment>
-            {sessionStorage.getItem("user")==null?<Navigate to="/login"/>:<></>}
+            {user==null?<Navigate to="/login"/>:<></>}
             <BackSection title={event_name+"  Application Form"} onBackButtonClick={handleRedirectBack}/>
-            {isLoading?<h1>Loading...</h1>:<>
+            {isLoading?<Loading/>:<>
             <form id="application-form" onSubmit={event=>handleSubmit(event)}>
                 <p className='section-header'>APPLICATION DETAILS</p>
                 <div id="apply-form-upper-part">

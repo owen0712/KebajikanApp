@@ -5,8 +5,10 @@ const bcrypt = require("bcryptjs");
 const User = mongoose.model("User");
 const jwt=require("jsonwebtoken")
 const {JWT_SECRET}=require('../config/keys');
-const e = require("express");
 
+// @route   POST /signup
+// @desc    Sign Up
+// @access  Public
 router.post("/signup", (req, res) => {
   console.log(req.body);
   const {
@@ -27,33 +29,38 @@ router.post("/signup", (req, res) => {
       if (savedUser) {
         return res.json({ error: "User already exist" });
       }
-      bcrypt.hash(password, 12).then((hashedpassword) => {
-        const user = new User({
-          name,
-          email,
-          birthdate,
-          phone_number,
-          identity_no,
-          profile_pic,
-          password: hashedpassword,
-          role,
-        });
-
-        user
-          .save()
-          .then((user) => {
-            res.json({ message: "New user successfully saved" });
-          })
-          .catch((err) => {
-            res.json({ error: err });
+      bcrypt.genSalt(10).then(salt=>{
+        bcrypt.hash(password, salt).then((hashedpassword) => {
+          const user = new User({
+            name,
+            email,
+            birthdate,
+            phone_number,
+            identity_no,
+            profile_pic,
+            password: hashedpassword,
+            role,
           });
+  
+          user.save()
+            .then((user) => {
+              res.json({ message: "New user successfully saved" });
+            })
+            .catch((err) => {
+              res.json({ error: err });
+            });
+        });
       });
+      
     })
     .catch((err) => {
       res.json({ error: err });
     });
 });
 
+// @route   POST /signin
+// @desc    Sign In
+// @access  Public
 router.post("/signin", (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
@@ -66,14 +73,8 @@ router.post("/signin", (req, res) => {
       }
       bcrypt.compare(password, savedUser.password).then((isMatch) => {
         if (isMatch) {
-          // const{_id,firstname,lastname,email,college,contact,dob,userType}=savedUser
-          // if(userType==='User'){
-          //     res.json({message:'successfully signed in',user:{_id,firstname,lastname,email,college,contact,dob}});
-          // }
-          // else{
-          //     res.json({message:'successfully signed in',user:{_id,firstname,lastname,email,college,contact,dob,userType}});
-          // }
-          const token=JWT_SECRET;
+          const _id = savedUser._id;
+          const token= jwt.sign({_id},JWT_SECRET,{expiresIn:'360000'});
           if(savedUser.role=="User"){
             savedUser.role=0;
           }
@@ -83,7 +84,7 @@ router.post("/signin", (req, res) => {
           else if(savedUser.role=="Admin"){
             savedUser.role=2;
           }
-          res.json({ token, user:{id:savedUser._id,name:savedUser.name,role:savedUser.role}, message: "Successfully signed in" });
+          res.json({ user:{id:savedUser._id,name:savedUser.name,role:savedUser.role,token}, message: "Successfully signed in" });
         } else {
           return res.json({ error: "Invalid email or password" });
         }

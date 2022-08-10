@@ -5,7 +5,8 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import CreateIcon from '@mui/icons-material/Create';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Swal from 'sweetalert2';
-import { BackSection, Status } from '../../../components';
+import { BackSection, Status, Loading } from '../../../components';
+import { useUser } from '../../../contexts/UserContext';
 
 const ViewCharityEventList = (props) => {
 
@@ -13,6 +14,7 @@ const ViewCharityEventList = (props) => {
     const [events,setEvents] = useState([]);
     const [pageNumber,setPageNumber] = useState(1);
     const [isLoading,setIsLoading] = useState(true);
+    const user = useUser();
 
     useEffect(()=>{
         fetchData();
@@ -68,12 +70,11 @@ const ViewCharityEventList = (props) => {
             showCancelButton: true
         }).then(result=>{
             if(result.isConfirmed){
-                const jwt=sessionStorage.getItem("jwt");
                 fetch('/charity_event/'+id,{
                     method:'delete',
                     headers:{
                         'Content-Type':'application/json',
-                        'Authorization':"Bearer"+jwt
+                        'Authorization':"Bearer"+user.token
                     }
                 }).then(res=>res.json()).then(data=>{
                     if(data.error){
@@ -108,8 +109,8 @@ const ViewCharityEventList = (props) => {
 
     return (
         <React.Fragment>
-            {JSON.parse(sessionStorage.getItem("user")).role!=2?<Navigate to="/"/>:<></>}
-            {isLoading?<h1>Loading...</h1>:<>
+            {user.role!=2?<Navigate to="/"/>:<></>}
+            {isLoading?<Loading/>:<>
             <BackSection title="View Charity Event" onBackButtonClick={handleRedirectBack} previousIsHome={true} createButtonName="Create New Charity Event" handleButtonCreate={handleCreate}/>
             <div id="#charity-event-list-table-section">
                 <table>

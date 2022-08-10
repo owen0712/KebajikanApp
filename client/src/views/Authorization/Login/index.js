@@ -3,13 +3,15 @@ import { useNavigate, Link, Navigate } from 'react-router-dom';
 import './login.css';
 import logo from '../../../assets/img/login.png'
 import Swal from 'sweetalert2';
+import { useUser, useUserUpdate } from '../../../contexts/UserContext';
 
 const Login = (props) => {
 
     const [email,setEmail] = useState("");
     const [password,setPassword] = useState("");
     const navigate = useNavigate();
-    const handleLogin = props.handleLogin;
+    const user = useUser();
+    const updateUser = useUserUpdate();
 
     const handleEmailOnChange = (event) => {
         setEmail(event.target.value);
@@ -38,9 +40,7 @@ const Login = (props) => {
                 })
             }
             else{
-                sessionStorage.setItem("jwt",data.token)
-                sessionStorage.setItem("user",JSON.stringify(data.user))
-                handleLogin();
+                updateUser(data.user);
                 Swal.fire({
                     icon:"success",
                     title:data.message
