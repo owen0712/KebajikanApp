@@ -3,6 +3,9 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const CharityEvent = mongoose.model('CharityEvent');
 
+// @route   POST /charity_event
+// @desc    Create New Charity Event
+// @access  Private
 router.post('/charity_event',(req,res)=>{
     const {title,purpose,description,location,amount,preregister_start_date,preregister_end_date,donation_start_date,donation_end_date,photo,document,user_id,role} = req.body;
     if(!title||!purpose||!description||!location||!amount||!preregister_start_date||!preregister_end_date||!donation_start_date||!donation_end_date||!photo||!document||!user_id||!role){
@@ -34,6 +37,9 @@ router.post('/charity_event',(req,res)=>{
     });
 });
 
+// @route   POST /charity_event/approved
+// @desc    Retrieve Approved Charity Event
+// @access  Private
 router.get('/charity_event/approved',(req,res)=>{
     CharityEvent.find({ "status" : { "$in": ["Not Started", "In Progress", "Preregistration","Closed"] }})
     .select("-document")
@@ -46,6 +52,9 @@ router.get('/charity_event/approved',(req,res)=>{
     });
 })
 
+// @route   GET /charity_event/view
+// @desc    Retrieve Available Charity Event
+// @access  Public
 router.get('/charity_event/view',(req,res)=>{
     CharityEvent.find({ "status" : { "$in": ["In Progress", "Preregistration"] }})
     .select("-document")
@@ -57,6 +66,9 @@ router.get('/charity_event/view',(req,res)=>{
     });
 })
 
+// @route   GET /charity_event/document/:id
+// @desc    Retrieve Charity Event's Document
+// @access  Private
 router.get('/charity_event/document/:id',(req,res)=>{
     CharityEvent.find({_id:req.params.id})
     .then(event=>{
@@ -79,6 +91,9 @@ router.get('/charity_event',(req,res)=>{
     });
 });
 
+// @route   GET /charity_event/organizer/:id
+// @desc    Retrieve User Proposed Charity Event
+// @access  Private
 router.get('/charity_event/organizer/:id',(req,res)=>{
     CharityEvent.find({organizer_id:req.params.id})
     .select("-photo")
@@ -91,6 +106,9 @@ router.get('/charity_event/organizer/:id',(req,res)=>{
     });
 });
 
+// @route   GET /charity_event/:id
+// @desc    Retrieve Specific Charity Event
+// @access  Public
 router.get('/charity_event/:id',(req,res)=>{
     CharityEvent.find({_id:req.params.id})
     .populate("organizer_id","name")
@@ -102,6 +120,9 @@ router.get('/charity_event/:id',(req,res)=>{
     });
 })
 
+// @route   GET /charity_event/name/:id
+// @desc    Retrieve Charity Event Name
+// @access  Public
 router.get('/charity_event/name/:id',(req,res)=>{
     CharityEvent.find({_id:req.params.id}).then(event=>{
         res.json({name:event[0].title});
@@ -110,6 +131,9 @@ router.get('/charity_event/name/:id',(req,res)=>{
     });
 })
 
+// @route   PUT /charity_event/:id
+// @desc    Update Charity Event
+// @access  Private
 router.put('/charity_event/:id',(req,res)=>{
     const {title,purpose,description,location,amount,preregister_start_date,preregister_end_date,donation_start_date,donation_end_date,photo,document,receipeint} = req.body;
     if(!title||!purpose||!description||!location||!amount||!preregister_start_date||!preregister_end_date||!donation_start_date||!donation_end_date||!photo||!document){
@@ -123,6 +147,9 @@ router.put('/charity_event/:id',(req,res)=>{
     })
 });
 
+// @route   PUT /charity_event/status/:id
+// @desc    Update Charity Event Status
+// @access  Private
 router.put('/charity_event/status/:id',(req,res)=>{
     const {status} = req.body;
     if(!status){
@@ -136,6 +163,9 @@ router.put('/charity_event/status/:id',(req,res)=>{
     })
 });
 
+// @route   DELETE /charity_event/:id
+// @desc    Delete Charity Event
+// @access  Private
 router.delete('/charity_event/:id',(req,res)=>{
     CharityEvent.deleteOne({_id:req.params.id}).then(result=>{
         res.json({message:"Successfully Deleted"});

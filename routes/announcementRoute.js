@@ -3,6 +3,9 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const Announcement = mongoose.model('Announcement');
 
+// @route   GET /announcement
+// @desc    Retrieve Announcement
+// @access  Private
 router.get('/announcement',(req,res)=>{
     Announcement.find()
     .sort("-created_on")
@@ -13,6 +16,9 @@ router.get('/announcement',(req,res)=>{
     });
 });
 
+// @route   GET /announcement/list
+// @desc    Retrieve Announcement
+// @access  Public
 router.get('/announcement/list',(req,res)=>{
     Announcement.find()
     .select('-attachment')
@@ -24,7 +30,9 @@ router.get('/announcement/list',(req,res)=>{
     });
 });
 
-
+// @route   GET /announcement/:id
+// @desc    Retrieve Specific Announcement
+// @access  Private
 router.get('/announcement/:id',(req,res)=>{
     Announcement.find({_id:req.params.id})
     .then(announcement=>{
@@ -34,6 +42,9 @@ router.get('/announcement/:id',(req,res)=>{
     });
 });
 
+// @route   POST /announcement
+// @desc    Create New Announcement
+// @access  Private
 router.post('/announcement',(req,res)=>{
     const {title,description,attachment,user_id} = req.body;
     if(!title||!description||!attachment||!user_id){
@@ -52,6 +63,9 @@ router.post('/announcement',(req,res)=>{
     });
 });
 
+// @route   PUT /announcement/:id
+// @desc    Update Announcement
+// @access  Private
 router.put('/announcement/:id',(req,res)=>{
     const {title,description,attachment} = req.body;
     if(!title||!description){
@@ -65,8 +79,10 @@ router.put('/announcement/:id',(req,res)=>{
     })
 });
 
+// @route   DELETE /announcement/:id
+// @desc    Delete Announcement
+// @access  Private
 router.delete('/announcement/:id',(req,res)=>{
-    
     Announcement.deleteOne({_id:req.params.id}).then(result=>{
         res.json({message:"Successfully Deleted"});
     }).catch(err=>{
