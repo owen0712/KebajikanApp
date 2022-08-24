@@ -28,6 +28,12 @@ import ViewAnnouncement from './views/Announcement/ViewAnnouncement';
 import CreateNotification from './views/ManageNotification/CreateNotification';
 import ManageNotificationDetails from './views/ManageNotification/ManageNotificationDetails';
 import ViewNotificationList from './views/ManageNotification/ViewNotificationList';
+import CreateItemDonationAppointment from './views/ItemDonation/CreateItemDonationAppointment';
+import ManageItemDonationAppointment from './views/ItemDonation/ManageItemDonationAppointment';
+import CreateItemDonation from './views/ItemDonation/CreateItemDonation';
+import ManageItemDonation from './views/ItemDonation/ManageItemDonation';
+import CreateMoneyDonation from './views/MoneyDonation/CreateMoneyDonation';
+import DonationHistory from './views/Profile/DonationHistory';
 import { UserProvider } from './contexts/UserContext.js';
 // import NavRoute from './core/navRoute';
 
@@ -83,6 +89,14 @@ function App() {
           <Route path='/manage_notification' element={<ViewNotificationList/>}/>
           <Route path='/manage_notification/view/:id' element={<ManageNotificationDetails isEdit={false}/>}/>
           <Route path='/manage_notification/edit/:id' element={<ManageNotificationDetails isEdit={true}/>}/>
+          <Route path='/charity_event/appointment/:id' element={<CreateItemDonationAppointment/>}/>
+          <Route path='/charity_event/appointment/view/:id' element={<ManageItemDonationAppointment isEdit={false}/>}/>
+          <Route path='/charity_event/appointment/edit/:id' element={<ManageItemDonationAppointment isEdit={true}/>}/>
+          <Route path='/charity_event/donate_item/fill/:id' element={<CreateItemDonation/>}/>
+          <Route path='/charity_event/donate_item/view/:id' element={<ManageItemDonation isEdit={false}/>}/>
+          <Route path='/charity_event/donate_item/edit/:id' element={<ManageItemDonation isEdit={true}/>}/>
+          <Route path='/charity_event/donate_money/:id' element={<CreateMoneyDonation/>}/>
+          <Route path='/profile/donation_history' element={<DonationHistory/>}/>
         </Routes>
         </div>
         <Footer/>

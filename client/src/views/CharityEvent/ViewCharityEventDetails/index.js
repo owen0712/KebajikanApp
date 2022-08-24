@@ -71,7 +71,7 @@ const ViewCharityEventDetails = (props) => {
                     <p>Duration: {event.status=="In Progress"?`${event.donation_start_date.slice(0,10)} - ${event.donation_end_date.slice(0,10)}`:`${event.preregister_start_date.slice(0,10)} - ${event.preregister_end_date.slice(0,10)}`}</p>
                     {event.status=="In Progress"?<>
                     <button onClick={()=>handleClick("donate_money",event._id)} className={"donate-button"}>Donate Money</button>
-                    <button onClick={()=>handleClick("donate_item",event._id)} className={"donate-button"}>Donate Item</button>
+                    <button onClick={()=>handleClick("appointment",event._id)} className={"donate-button"}>Donate Item</button>
                     </>:
                     <button onClick={()=>handleClick("apply_help",event._id)} className="preregistration-button">Apply For Help</button>
                     }

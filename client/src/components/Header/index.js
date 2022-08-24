@@ -49,7 +49,6 @@ const Header = (props) => {
             });
         }
         else{
-          console.log(data.userNotifications)
           setUserNotifications(data.userNotifications);
         }
     }).catch(err=>{

@@ -1,0 +1,42 @@
+#donation-right-content svg{
+    color: #192F59;
+    margin: 0 5px 0 0;
+}
+
+#secure-message{
+    display: flex;
+    justify-content: center;
+}
+
+#donation_form .amount-list{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.amount-button{
+    color: #192F59;
+    display: inline-flex;
+    width: 20%;
+    height: 6vh;
+    border: 2px solid #F6F8FB;
+    background-color: #F6F8FB;
+    border-radius: 15px;
+    font-weight: bold;
+    margin: 10px;
+    line-height: 25px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+#tnc-section{
+    color: #192F59;
+}
+
+#secure-message{
+    padding: 20px;
+    color: #192F59;
+}

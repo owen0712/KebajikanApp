@@ -68,7 +68,7 @@ const ViewCharityEvent = (props) => {
                     <p onClick={()=>handleView(events[0]._id)}>Purpose: {events[0].purpose}</p>
                     <p onClick={()=>handleView(events[0]._id)}>Description: {events[0].description}</p>
                     <p onClick={()=>handleView(events[0]._id)}>Target Amount: {events[0].amount}</p>
-                    <button onClick={events[0].status=="In Progress"?()=>handleClick("donate",events[0]._id):()=>handleClick("apply_help",events[0]._id)} className={events[0].status=="In Progress"?"donate-button":"preregistration-button"}>{events[0].status=="In Progress"?"Donate":"Apply For Help"}</button>
+                    <button onClick={events[0].status=="In Progress"?()=>handleClick("view",events[0]._id):()=>handleClick("apply_help",events[0]._id)} className={events[0].status=="In Progress"?"donate-button":"preregistration-button"}>{events[0].status=="In Progress"?"Donate":"Apply For Help"}</button>
                 </span>
                 <ArrowRightIcon/>
             </div>

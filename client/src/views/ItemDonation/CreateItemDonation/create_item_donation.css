@@ -1,0 +1,78 @@
+#donation-right-content{
+    width: 49%;
+    display: inline-block;
+    margin-left: 25px;
+    vertical-align: top;
+}
+
+#donation-left-content{
+    width: 49%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.item-list-board {
+    width: 96%;
+    margin: 0px;
+    display: block;
+    padding: 10px 10px;
+}
+
+.item-list-board div{
+    border: 3px solid #192f59;
+    width: 100.5%;
+    padding: 10px 0;
+}
+
+.item-list-board svg{
+    color: #192f59;
+    margin: 0 10px 0 10px;
+}
+
+.item-list-board p{
+    background-color: #192f59;
+    color: white;
+    margin: 0;
+    width: 95.2%;
+    padding: 15px 20px;
+    font-weight: bold;
+}
+
+.add-item-section *{
+    background-color: transparent;
+    color: #192f59;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.item-list-board .add-item-section {
+    border-bottom: 2px solid #192f59;
+}
+
+.add-item-section label::before{
+    content: "";
+}
+
+.add-item-section label{
+    width: fit-content;
+}
+
+.item-list-board .item-list{
+    color: #192f59;
+    background-color: transparent;
+    border-top: 2px solid #192f59;
+}
+
+.item-list table{
+    background-color: transparent;
+    color: #192f59;;
+    table-layout: fixed;
+    max-height: 50vh;
+    overflow: scroll;
+}
+
+.item-list td{
+    display: table-cell;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

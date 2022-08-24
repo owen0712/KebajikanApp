@@ -1,0 +1,61 @@
+const mongoose = require('mongoose');
+const {ObjectId} = mongoose.Schema.Types;
+
+const donationSchema = new mongoose.Schema({
+    name:{
+        type:String,
+        required:true
+    },
+    email:{
+        type:String,
+        required:true
+    },
+    phone_number:{
+        type:String,
+        required:true
+    },
+    charity_event_id:{
+        type:ObjectId,
+        ref:"CharityEvent",
+        required:true
+    },
+    category:{
+        type:String,
+        required:true
+    },
+    description:{
+        type:String,
+        required:true
+    },
+    amount:{
+        type:Number
+    },
+    items:{
+        type:[Object]
+    },
+    donor_id:{
+        type:ObjectId,
+        ref:"User",
+        required:true
+    },
+    status:{
+        type:String,
+        required:true
+    },
+    created_on:{
+        type:Date,
+        default:Date.now,
+        required:true
+    },
+    evidence:{
+        type:Object,
+        required:true
+    },
+    appointment_id:{
+        type:ObjectId,
+        ref:"Appointment",
+        required:true
+    }
+})
+
+mongoose.model('Donation',donationSchema);

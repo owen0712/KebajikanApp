@@ -1,0 +1,20 @@
+#donation-history{
+    display: flex;
+}
+
+#donation-history .title{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: calc(100%/5);
+}
+
+#donation-history table{
+    table-layout: fixed;
+    width: 90%;
+    background-color: transparent;
+}
+
+.button-row button{
+    display: inline-flex;
+}

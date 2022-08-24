@@ -1,0 +1,16 @@
+#appointment-right-content{
+    width: 49%;
+    display: inline-block;
+    margin-left: 25px;
+    vertical-align: middle;
+}
+
+#appointment-left-content{
+    width: 49%;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.short-input label{
+    width: 15vw;
+}

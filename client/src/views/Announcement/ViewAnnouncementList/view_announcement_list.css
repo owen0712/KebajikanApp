@@ -70,22 +70,22 @@
     background-color: #E2ECFF;
 }
 
+#charity-event-list-table-section table{
+    table-layout: fixed;
+}
+
 .title{
     padding: 10px;
     text-overflow: ellipsis;
-    display: inline-block;
     overflow: hidden;
     word-break: keep-all;
-    width: 350px;
     white-space: nowrap; 
 }
 
 .description{
     padding: 10px;
     text-overflow: ellipsis;
-    display: inline-block;
     overflow: hidden;
     word-break: keep-all;
-    width: 460px;
     white-space: nowrap; 
 }

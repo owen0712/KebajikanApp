@@ -12,6 +12,8 @@ require('./models/jobApplicationModel');
 require('./models/announcementModel');
 require('./models/notificationModel');
 require('./models/userNotificationModel');
+require('./models/appointmentModel');
+require('./models/donationModel');
 
 const cors = require('cors');
 app.use(cors());
@@ -25,6 +27,8 @@ app.use(require('./routes/charityApplicationRoute'));
 app.use(require('./routes/jobApplicationRoute'));
 app.use(require('./routes/announcementRoute'));
 app.use(require('./routes/notificationRoute'));
+app.use(require('./routes/appointmentRoute'));
+app.use(require('./routes/donationRoute'));
 
 if (process.env.NODE_ENV == 'production') {
     app.use(express.static('client/build'))
@@ -42,6 +46,8 @@ mongoose.connection.on('connected', () => {
 mongoose.connection.on('error', (err) => {
     console.log('err connecting', err)
 })
+
+require('./cronjob/updateCharityEvent');
 
 app.listen(PORT, () => {
     console.log("server is running on port", PORT)
