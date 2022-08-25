@@ -30,6 +30,54 @@ const Header = (props) => {
     }
   },[anchorEl])
 
+  useEffect(()=>{
+    const refresh_token=sessionStorage.getItem("refresh_token");
+    if(user==null&&refresh_token){
+      fetch('/refresh/token',{
+        method:'get',
+        headers:{
+            'Content-Type':'application/json',
+            'Authorization':'Bearer'+refresh_token
+        }
+      }).then(res=>res.json()).then(data=>{
+          if(data.error){
+              console.log(data.error);
+          }
+          else{
+            updateUser(data.user);
+            return;
+          }
+      }).catch(err=>{
+          console.log(err);
+      })
+    }
+    if(user&&refresh_token){
+      refreshToken(refresh_token);
+    }
+  },[])
+
+  const refreshToken = (refresh_token) => {
+    setTimeout(() => {
+      fetch('/refresh/token',{
+        method:'get',
+        headers:{
+            'Content-Type':'application/json',
+            'Authorization':'Bearer'+refresh_token
+        }
+      }).then(res=>res.json()).then(data=>{
+          if(data.error){
+              console.log(data.error);
+          }
+          else{
+            updateUser(data.user);
+            return;
+          }
+      }).catch(err=>{
+          console.log(err);
+      })
+    }, 179000);
+  }
+
   const fetchNotification = () => {
     if(user==null){
       return;
@@ -38,7 +86,7 @@ const Header = (props) => {
       method:'get',
       headers:{
           'Content-Type':'application/json',
-          'Authorization':'Bearer'+user.token
+          'Authorization':'Bearer'+user.access_token
       }
     }).then(res=>res.json()).then(data=>{
         if(data.error){
@@ -68,7 +116,7 @@ const Header = (props) => {
       method:'put',
       headers:{
           'Content-Type':'application/json',
-          'Authorization':'Bearer'+user.token
+          'Authorization':'Bearer'+user.access_token
       }
     }).then(res=>res.json()).then(data=>{
         if(data.error){

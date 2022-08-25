@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
 const UserContext = React.createContext();
 const UserUpdateContext = React.createContext();
@@ -16,6 +16,10 @@ export const UserProvider = ( {children} ) => {
 
     const updateUser = (newUser) => {
         setUser(newUser);
+        if(newUser==null){
+            sessionStorage.removeItem("refresh_token");
+        }
+        sessionStorage.setItem("refresh_token",newUser.refresh_token);
     }
 
     return (

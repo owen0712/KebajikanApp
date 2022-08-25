@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const Appointment = mongoose.model("Appointment");
 const Donation = mongoose.model("Donation");
 const jwt=require("jsonwebtoken")
-const {JWT_SECRET}=require('../config/keys');
+const {JWT_SECRET_ACCESS}=require('../config/keys');
 
 // @route   POST /appointment/:id
 // @desc    Create New Appointment

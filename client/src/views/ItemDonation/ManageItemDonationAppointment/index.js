@@ -91,7 +91,7 @@ const ManageItemDonationAppointment = (props) => {
             method:'put',
             headers:{
                 'Content-Type':'application/json',
-                'Authorization':"Bearer"+user.token
+                'Authorization':"Bearer"+user.access_token
             },
             body:JSON.stringify({
                 date,
@@ -154,7 +154,7 @@ const ManageItemDonationAppointment = (props) => {
                 <p>Purpose: {event.purpose}</p>
                 <p>Description: {event.description}</p>
                 <p>Target Amount: RM{event.amount}</p>
-                <p>Duration: {event.donation_start_date.slice(0,10)} - {event.donation_end_date.slice(1,10)}</p>
+                <p>Duration: {event.donation_start_date.slice(0,10)} - {event.donation_end_date.slice(0,10)}</p>
             </div>
             <div id="appointment-right-content">
                 <form id="announcement_form" onSubmit={event=>handleSubmit(event)}>

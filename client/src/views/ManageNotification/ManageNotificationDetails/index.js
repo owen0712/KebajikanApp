@@ -103,7 +103,7 @@ const ManageNotificationDetails = (props) => {
             method:'put',
             headers:{
                 'Content-Type':'application/json',
-                'Authorization':"Bearer"+user.token
+                'Authorization':"Bearer"+user.access_token
             },
             body:JSON.stringify({
                 title,
