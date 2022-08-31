@@ -3,40 +3,64 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const Donation = mongoose.model("Donation");
 const jwt=require("jsonwebtoken")
-const {JWT_SECRET, STRIPE_SECRET}=require('../config/keys');
+const {JWT_SECRET_ACCESS, STRIPE_SECRET, DOMAIN}=require('../config/keys');
 const stripe = require('stripe')(STRIPE_SECRET);
+const requiredLogin = require('../middlewares/requiredLogin')
 
 // @route   POST /donation/money/:id
 // @desc    Create New Money Donation
 // @access  Private
-router.post('/donation/money/:id',(req,res)=>{
-    // const {date,time,location,name,email,phone_number,user_id} = req.body;
-    // console.log(req.body)
-    // if(!date||!time||!location||!name||!email||!phone_number||!user_id){
-    //     return res.json({error:'please fill all fields'});
-    // }
+router.post('/donation/money/:id',requiredLogin,(req,res)=>{
+    const {name, email, phone_number, amount} = req.body;
+    if(!name,!email,!phone_number,!amount){
+        return res.json({error:'please fill all fields'});
+    }
 
-    // const newAppointment = new Appointment({
-    //     charity_event_id:req.params.id,
-    //     date,
-    //     time,
-    //     location,
-    //     name,
-    //     email,
-    //     phone_number,
-    //     donor_id:user_id
-    // });
-    // newAppointment.save().then(createdAppointment=>{
-    //     res.json({message:'New appointment successfully created'});
-    // }).catch(err=>{
-    //       res.json({error:err});
-    // });
+    const newDonation = new Donation({
+        name,
+        email,
+        phone_number,
+        charity_event_id:req.params.id,
+        category:"Money",
+        description:"-",
+        donor_id:req.user._id,
+        status:"Pending",
+        evidence:"",
+        amount
+    })
+    
+    newDonation.save().then(createdDonation=>{
+        stripe.checkout.sessions.create({
+            payment_method_types: ['card','fpx'],
+            line_items: [
+              {
+                "price_data":{
+                    "currency":"myr",
+                    "unit_amount":amount*100,
+                    "product_data":{
+                        "name":"Money Donation",
+                        "description":"Money Donation",
+                    }
+                },
+                "quantity": 1,
+              },
+            ],
+            mode: 'payment',
+            customer_email:email,
+            success_url: `${DOMAIN}/charity_event/donate_money/success/${createdDonation._id}`,
+            cancel_url: `${DOMAIN}/charity_event/donate_money/failed/${createdDonation._id}`,
+        }).then(session=>{
+            res.json({url:session.url});
+        }).catch(err=>{
+            console.log(err);
+        })
+    })
 });
 
 // @route   GET /donation
 // @desc    Retrieve All Donation
 // @access  Private
-router.get('/donation',(req,res)=>{
+router.get('/donation',requiredLogin,(req,res)=>{
     Donation.find()
     .sort('-created_on')
     .then(donations=>{
@@ -49,7 +73,7 @@ router.get('/donation',(req,res)=>{
 // @route   GET /donation/user/:id
 // @desc    Retrieve Spcific User's Donation
 // @access  Private
-router.get('/donation/user/:id',(req,res)=>{
+router.get('/donation/user/:id',requiredLogin,(req,res)=>{
     Donation.find({donor_id:req.params.id})
     .populate("charity_event_id","title")
     .sort('-created_on')
@@ -63,7 +87,7 @@ router.get('/donation/user/:id',(req,res)=>{
 // @route   GET /donation/:id
 // @desc    Retrieve Specific Donation
 // @access  Private
-router.get('/donation/:id',(req,res)=>{
+router.get('/donation/:id',requiredLogin,(req,res)=>{
     Donation.find({_id:req.params.id})
     .populate("charity_event_id")
     .populate("appointment_id")
@@ -77,7 +101,7 @@ router.get('/donation/:id',(req,res)=>{
 // @route   PUT /donation/status/:id
 // @desc    Update Donation Status
 // @access  Private
-router.put('/donation/status/:id',(req,res)=>{
+router.put('/donation/status/:id',requiredLogin,(req,res)=>{
     const {status} = req.body;
     if(!status){
         return res.json({error:'Invalid status'});

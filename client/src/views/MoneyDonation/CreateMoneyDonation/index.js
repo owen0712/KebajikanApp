@@ -32,7 +32,8 @@ const CreateMoneyDonation = (props) => {
         fetch('/charity_event/'+event_id.id,{
             method:'get',
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                'Authorization':'Bearer'+user.access_token
             }
         }).then(res=>res.json()).then(data=>{
             if(data.error){
@@ -154,7 +155,7 @@ const CreateMoneyDonation = (props) => {
                     </span>
                     <span className="short-input">
                         <label >AMOUNT(RM)</label>
-                        <input ref={amountInputRef} type="number" name="amount" min="1" onChange={event=>handleAmountOnChange(event)}/>
+                        <input ref={amountInputRef} type="number" name="amount" min="2" onChange={event=>handleAmountOnChange(event)}/>
                     </span>
                     <div className='amount-list'>
                         {

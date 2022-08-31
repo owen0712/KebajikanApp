@@ -1,4 +1,5 @@
 module.exports={
+    DOMAIN:'http://localhost:3000',
     MONGOURI:"mongodb+srv://root:root@cluster0.2zn2m.mongodb.net/kebajikan_app?retryWrites=true&w=majority",
     JWT_SECRET_ACCESS:"=Ylb1Llpg3e1hnYsluyNaJ2Fkdsd2gjn9C9Au54cHTZg",
     JWT_SECRET_REFRESH:"=Ylb1Llpg3e1hnYsluyNaJ2Fkdsd2gjn9C9Au54cHTZg",

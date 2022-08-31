@@ -33,6 +33,7 @@ import ManageItemDonationAppointment from './views/ItemDonation/ManageItemDonati
 import CreateItemDonation from './views/ItemDonation/CreateItemDonation';
 import ManageItemDonation from './views/ItemDonation/ManageItemDonation';
 import CreateMoneyDonation from './views/MoneyDonation/CreateMoneyDonation';
+import MoneyDonationResult from './views/MoneyDonation/MoneyDonationResult';
 import DonationHistory from './views/Profile/DonationHistory';
 import { UserProvider } from './contexts/UserContext.js';
 // import NavRoute from './core/navRoute';
@@ -96,6 +97,8 @@ function App() {
           <Route path='/charity_event/donate_item/view/:id' element={<ManageItemDonation isEdit={false}/>}/>
           <Route path='/charity_event/donate_item/edit/:id' element={<ManageItemDonation isEdit={true}/>}/>
           <Route path='/charity_event/donate_money/:id' element={<CreateMoneyDonation/>}/>
+          <Route path='/charity_event/donate_money/success/:id' element={<MoneyDonationResult isSuccess={true}/>}/>
+          <Route path='/charity_event/donate_money/failed/:id' element={<MoneyDonationResult isSuccess={false}/>}/>
           <Route path='/profile/donation_history' element={<DonationHistory/>}/>
         </Routes>
         </div>
