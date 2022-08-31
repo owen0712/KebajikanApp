@@ -35,6 +35,12 @@ const userSchema = new mongoose.Schema({
     },
     profile_pic:{
         type:Object
+    },
+    refresh_token:{
+        type:String
+    },
+    access_token:{
+        type:String
     }
 })
 

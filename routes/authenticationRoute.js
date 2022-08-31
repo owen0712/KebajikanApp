@@ -11,7 +11,6 @@ const checkToken = require('../middlewares/checkToken');
 // @desc    Sign Up
 // @access  Public
 router.post("/signup", (req, res) => {
-  console.log(req.body);
   const {
     name,
     email,
@@ -86,7 +85,12 @@ router.post("/signin", (req, res) => {
           else if(savedUser.role=="Admin"){
             savedUser.role=2;
           }
-          res.json({ user:{id:savedUser._id,name:savedUser.name,role:savedUser.role,access_token,refresh_token}, message: "Successfully signed in" });
+          User.findByIdAndUpdate(_id,{access_token,refresh_token},{new:false},(err,result)=>{
+            if(err){
+                console.log(err);
+            }
+            res.json({ user:{id:savedUser._id,name:savedUser.name,role:savedUser.role,access_token,refresh_token}, message: "Successfully signed in" });
+          })
         } else {
           return res.json({ error: "Invalid email or password" });
         }
@@ -99,7 +103,7 @@ router.post("/signin", (req, res) => {
 
 // @route   GET /refresh/user
 // @desc    Get User Details If Refresh Token Valid
-// @access  Public
+// @access  Private
 router.get("/refresh/token", checkToken, (req, res) => {
   const user = req.user;
   if(user.role=="User"){
@@ -113,7 +117,12 @@ router.get("/refresh/token", checkToken, (req, res) => {
   }
   const access_token= jwt.sign({_id:user._id},JWT_SECRET_ACCESS,{expiresIn:'10m'});
   const refresh_token= jwt.sign({_id:user._id},JWT_SECRET_REFRESH,{expiresIn:'1h'});
-  res.json({ user:{id:user._id,name:user.name,role:user.role,access_token,refresh_token}});
+  User.findByIdAndUpdate(user._id,{access_token,refresh_token},{new:false},(err,result)=>{
+    if(err){
+        console.log(err);
+    }
+    res.json({ user:{id:user._id,name:user.name,role:user.role,access_token,refresh_token} });
+  })
 });
 
 module.exports = router;
