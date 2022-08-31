@@ -38,7 +38,6 @@ const ViewAnnouncementList = (props) => {
                 });
             }
             else{
-                console.log(announcements)
                 setAnnouncements(data.announcements)
                 setIsLoading(false);
             }
@@ -87,7 +86,6 @@ const ViewAnnouncementList = (props) => {
                         })
                     }
                     else{
-                        console.log(data.message);
                         Swal.fire({
                             title: data.message,
                             icon: 'success',

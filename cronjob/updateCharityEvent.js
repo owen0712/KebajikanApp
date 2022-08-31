@@ -23,7 +23,6 @@ cron.schedule("* 0 * * * *",()=>{
         events.forEach((event)=>{
             const status = checkEventStatus(event);
             if(status){
-                console.log("Need Updated");
                 CharityEvent.findByIdAndUpdate(event._id,{status},{new:false},(err,result)=>{
                     if(err){
                         console.log(err);

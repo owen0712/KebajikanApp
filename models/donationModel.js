@@ -53,9 +53,8 @@ const donationSchema = new mongoose.Schema({
     },
     appointment_id:{
         type:ObjectId,
-        ref:"Appointment",
-        required:true
-    }
-})
+        ref:"Appointment"
+    }       
+})  
 
 mongoose.model('Donation',donationSchema);

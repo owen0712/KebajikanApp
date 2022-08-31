@@ -34,7 +34,8 @@ const ManageItemDonation = (props) => {
         fetch('/donation/'+id.id,{
             method:'get',
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                'Authorization':'Bearer'+user.access_token
             }
         }).then(res=>res.json()).then(data=>{
             if(data.error){
@@ -45,7 +46,6 @@ const ManageItemDonation = (props) => {
                 })
             }
             else{
-                console.log(data.donation)
                 setEvent(data.donation.charity_event_id);
                 setName(data.donation.name);
                 setEmail(data.donation.email);

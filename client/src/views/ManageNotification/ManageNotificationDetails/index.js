@@ -44,7 +44,6 @@ const ManageNotificationDetails = (props) => {
 
     const fetchData = () =>{
         setIsLoading(true);
-        console.log(id);
         fetch('/notification/'+id,{
             method:'get',
             headers:{

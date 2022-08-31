@@ -29,7 +29,8 @@ const CreateItemDonationAppointment = (props) => {
         fetch('/charity_event/'+event_id.id,{
             method:'get',
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                'Authorization':'Bearer'+user.access_token
             }
         }).then(res=>res.json()).then(data=>{
             if(data.error){
