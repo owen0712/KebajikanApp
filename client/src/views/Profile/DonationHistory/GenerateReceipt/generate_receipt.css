@@ -1,0 +1,19 @@
+#receipt-section table{
+    color: #192F59;
+    border-spacing: 0px;
+    border: 0.8px solid #192F59;
+    padding: 0px;
+}
+
+#receipt-section td{
+    padding: 1%;
+    border: 2px solid #192F59;
+    margin: 0px;
+    word-wrap: break-word
+}
+
+#receipt-section .title{
+    background-color: #192F59;
+    color: white;
+    margin: 0px;
+}

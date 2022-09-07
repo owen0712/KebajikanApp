@@ -4,8 +4,10 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const User = mongoose.model("User");
 const jwt=require("jsonwebtoken")
-const {JWT_SECRET_ACCESS,JWT_SECRET_REFRESH}=require('../config/keys');
+const {JWT_SECRET_ACCESS,JWT_SECRET_REFRESH,DOMAIN}=require('../config/keys');
 const checkToken = require('../middlewares/checkToken');
+const sendMail = require('../utils/nodemailer');
+const getAvatarImage = require('../utils/imagereader');
 
 // @route   POST /signup
 // @desc    Sign Up
@@ -29,6 +31,7 @@ router.post("/signup", (req, res) => {
       if (savedUser) {
         return res.json({ error: "User already exist" });
       }
+      const avatar = profile_pic?profile_pic:getAvatarImage();
       bcrypt.genSalt(10).then(salt=>{
         bcrypt.hash(password, salt).then((hashedpassword) => {
           const user = new User({
@@ -37,13 +40,19 @@ router.post("/signup", (req, res) => {
             birthdate,
             phone_number,
             identity_no,
-            profile_pic,
+            profile_pic:avatar,
             password: hashedpassword,
             role,
           });
   
           user.save()
             .then((user) => {
+              const subject = 'Kebajikan App Registration Verfication';
+              const content = `<p>Please click the link below to activate your account</p> <a href='${DOMAIN}/activate/${user._id}'>Click here</a>`
+              const result=sendMail({destinationEmail:email,subject,content})
+              if(!result){
+                return res.json({message:"Failed"});
+              }
               res.json({ message: "New user successfully saved" });
             })
             .catch((err) => {
@@ -70,6 +79,9 @@ router.post("/signin", (req, res) => {
     .then((savedUser) => {
       if (!savedUser) {
         return res.json({ error: "Invalid email or password" });
+      }
+      if(savedUser.status=="Not Active"){
+        return res.json({ error: "Please activate your account" });
       }
       bcrypt.compare(password, savedUser.password).then((isMatch) => {
         if (isMatch) {

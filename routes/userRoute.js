@@ -3,6 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const bcrypt = require('bcryptjs');
+const requiredLogin = require('../middlewares/requiredLogin');
 
 router.get('/user',(req,res)=>{
     User.find({},{_id:1,name:1})
@@ -15,37 +16,39 @@ router.get('/user',(req,res)=>{
     });
 })
 
+router.get('/user/:id',requiredLogin,(req,res)=>{
+    const {profile_pic,name,email,phone_number,identity_no,birthdate,status} = req.user;
+    if(!req.user){
+        return res.json({error:"Invalid user"});
+    }
+    return res.json({user:{profile_pic,name,email,phone_number,identity_no,birthdate,status}});
+})
+
 router.put('/user/:id',(req,res)=>{
-    const {name,email,birthdate,phone_number}=req.body;
-    if(!name||!email||!birthdate||!phone_number){
+    const {name,email,birthdate,phone_number,profile_pic}=req.body;
+    if(!name||!email||!birthdate||!phone_number||!profile_pic){
         return res.status(422).json({error:'please make sure all fields are filled'});
     }
     User.findByIdAndUpdate(req.params.id,{$set:req.body},{new:false},(err,result)=>{
         if(err){
             return res.status(422).json({error:"Update failed"});
         }
-        const {_id,userType} = result;
-        if(userType==='User'){
-            res.json({message:'Update Successfully',user:{_id,name,email,birthdate,phone_number}});
-        }
-        else{
-            res.json({message:'Update Successfully',user:{_id,name,email,birthdate,phone_number}});
-        }
+        res.json({message:'Update Successfully'});
     })
 })
 
 router.put('/password/:id',(req,res)=>{
-    const {originalpassword,newpassword}=req.body;
-    if(!originalpassword||!newpassword){
+    const {current_password,new_password}=req.body;
+    if(!current_password||!new_password){
         return res.json({error:'Please make sure all fields are filled'});
     }
     User.findOne({_id:req.params.id}).then(savedUser=>{
         if(!savedUser){
             return res.json({error:'User is not existed'});
         }
-        bcrypt.compare(originalpassword,savedUser.password).then(isMatch=>{
+        bcrypt.compare(current_password,savedUser.password).then(isMatch=>{
             if(isMatch){
-                bcrypt.hash(newpassword,12).then(hashedpassword=>{
+                bcrypt.hash(new_password,12).then(hashedpassword=>{
                     User.findByIdAndUpdate(req.params.id,{$set:{password:hashedpassword}},{new:false},(err,result)=>{
                         if(err){
                             return res.json({error:"Update failed"});
@@ -62,5 +65,21 @@ router.put('/password/:id',(req,res)=>{
         res.json({error:err});
     })
 })
+
+// @route   PUT /user/status/:id
+// @desc    Update Status For Specific User
+// @access  Private
+router.put('/user/status/:id',(req,res)=>{
+    const {status} = req.body;
+    if(!status){
+        return res.json({error:'Invalid status'});
+    }
+    User.findByIdAndUpdate(req.params.id,req.body,{new:false},(err,result)=>{
+        if(err){
+            return res.json({error:err})
+        }
+        res.json({message:"Successfully updated"})
+    })
+});
 
 module.exports=router

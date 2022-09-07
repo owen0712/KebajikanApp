@@ -2,10 +2,11 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const Announcement = mongoose.model('Announcement');
+const requiredLogin = require('../middlewares/requiredLogin');
 
 // @route   GET /announcement
 // @desc    Retrieve Announcement
-// @access  Private
+// @access  Public
 router.get('/announcement',(req,res)=>{
     Announcement.find()
     .sort("-created_on")
@@ -18,8 +19,8 @@ router.get('/announcement',(req,res)=>{
 
 // @route   GET /announcement/list
 // @desc    Retrieve Announcement
-// @access  Public
-router.get('/announcement/list',(req,res)=>{
+// @access  Private
+router.get('/announcement/list',requiredLogin,(req,res)=>{
     Announcement.find()
     .select('-attachment')
     .sort("-created_on")
@@ -33,7 +34,7 @@ router.get('/announcement/list',(req,res)=>{
 // @route   GET /announcement/:id
 // @desc    Retrieve Specific Announcement
 // @access  Private
-router.get('/announcement/:id',(req,res)=>{
+router.get('/announcement/:id',requiredLogin,(req,res)=>{
     Announcement.find({_id:req.params.id})
     .then(announcement=>{
         res.json({announcement:announcement[0]});
@@ -45,7 +46,7 @@ router.get('/announcement/:id',(req,res)=>{
 // @route   POST /announcement
 // @desc    Create New Announcement
 // @access  Private
-router.post('/announcement',(req,res)=>{
+router.post('/announcement',requiredLogin,(req,res)=>{
     const {title,description,attachment,user_id} = req.body;
     if(!title||!description||!attachment||!user_id){
         return res.json({error:'please fill all fields'});
@@ -66,9 +67,9 @@ router.post('/announcement',(req,res)=>{
 // @route   PUT /announcement/:id
 // @desc    Update Announcement
 // @access  Private
-router.put('/announcement/:id',(req,res)=>{
+router.put('/announcement/:id',requiredLogin,(req,res)=>{
     const {title,description,attachment} = req.body;
-    if(!title||!description){
+    if(!title||!description||!attachement){
         return res.json({error:'please fill all fields'});
     }
     Announcement.findByIdAndUpdate(req.params.id,req.body,{new:false},(err,result)=>{
@@ -82,7 +83,7 @@ router.put('/announcement/:id',(req,res)=>{
 // @route   DELETE /announcement/:id
 // @desc    Delete Announcement
 // @access  Private
-router.delete('/announcement/:id',(req,res)=>{
+router.delete('/announcement/:id',requiredLogin,(req,res)=>{
     Announcement.deleteOne({_id:req.params.id}).then(result=>{
         res.json({message:"Successfully Deleted"});
     }).catch(err=>{

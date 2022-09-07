@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
     },
     status:{
         type:String,
-        default:"Active",
+        default:"Not Active",
         required:true
     },
     identity_no:{

@@ -19,15 +19,30 @@ const ViewAnnouncementDetails = (props) => {
     const user = useUser();
 
     useEffect(()=>{
-        fetchData();
-    },[])
+        let timer = null;
+        if(user==null){
+            timer = setTimeout(()=>{
+                navigate('/login')
+            },5000)
+        }
+        if(user){
+            if(user.role!=2){
+                navigate('/');
+            }
+            fetchData();
+        }
+        return () => {
+            clearTimeout(timer);
+        }
+    },[user])
 
     const fetchData = () =>{
         setIsLoading(true);
         fetch('/announcement/'+id,{
             method:'get',
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                'Authorization':'Bearer'+user.access_token
             }
         }).then(res=>res.json()).then(data=>{
             if(data.error){
@@ -139,8 +154,7 @@ const ViewAnnouncementDetails = (props) => {
     };
         
     return (
-        <React.Fragment>
-            {user.role!=2?<Navigate to="/"/>:<></>}            
+        <React.Fragment>         
             <BackSection onBackButtonClick={handleRedirectBack} title={isEdit?"Edit Announcement":"View Announcement"}/>
             {isLoading?<Loading/>:<>
             <form id="announcement_form" onSubmit={event=>handleSubmit(event)}>

@@ -3,6 +3,7 @@ import { useNavigate, Navigate } from 'react-router-dom';
 import './signup.css';
 import logo from '../../../assets/img/signup.png'
 import Swal from 'sweetalert2';
+import { useUser } from '../../../contexts/UserContext';
 
 const SignUp = (props) => {
 
@@ -14,6 +15,7 @@ const SignUp = (props) => {
     const [password,setPassword] = useState("");
     const [confirm_password,setConfirmPassword] = useState("");
     const navigate = useNavigate();
+    const user = useUser();
 
     const handleNameOnChange = (event) => {
         setName(event.target.value);
@@ -88,7 +90,7 @@ const SignUp = (props) => {
         
     return (
         <div id="signup-section">
-            {sessionStorage.getItem("user")!=null?<Navigate to="/"/>:<></>}
+            {user!=null?<Navigate to="/"/>:<></>}
             <form id="sign-up-form" onSubmit={event=>handleSubmit(event)}>
                 <h1>SIGNUP</h1>
                 <span>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {useNavigate, Navigate} from 'react-router-dom';
+import {useNavigate,} from 'react-router-dom';
 import './view_announcement_list.css';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import CreateIcon from '@mui/icons-material/Create';
@@ -19,15 +19,30 @@ const ViewAnnouncementList = (props) => {
     const user = useUser();
 
     useEffect(()=>{
-        fetchData();
-    },[])
+        let timer = null;
+        if(user==null){
+            timer = setTimeout(()=>{
+                navigate('/login')
+            },5000)
+        }
+        if(user){
+            if(user.role!=2){
+                navigate('/');
+            }
+            fetchData();
+        }
+        return () => {
+            clearTimeout(timer);
+        }
+    },[user])
 
     const fetchData = () =>{
         setIsLoading(true);
         fetch('/announcement/list',{
             method:'get',
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                'Authorization':'Bearer'+user.access_token
             }
         }).then(res=>res.json()).then(data=>{
             if(data.error){
@@ -110,7 +125,6 @@ const ViewAnnouncementList = (props) => {
 
     return (
         <React.Fragment>
-            {user.role!=2?<Navigate to="/"/>:<></>}
             {isLoading?<Loading/>:<>
             <BackSection title="View Announcement" onBackButtonClick={handleRedirectBack} previousIsHome={true} createButtonName="Create New Announcement" handleButtonCreate={handleCreate}/>
             <div id="#announcement-list-table-section">

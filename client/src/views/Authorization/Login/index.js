@@ -59,7 +59,7 @@ const Login = (props) => {
         
     return (
         <div id="login-section">
-            {sessionStorage.getItem("user")!=null?<Navigate to="/"/>:<></>}
+            {user!=null?<Navigate to="/"/>:<></>}
             <div id="login-image">
                 <span>
                     <h2>WELCOME BACK!</h2>

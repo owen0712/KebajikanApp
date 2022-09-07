@@ -124,7 +124,6 @@ const Header = (props) => {
           id={id}
           open={open}
           anchorEl={anchorEl}
-          sx={2}
           onClose={handleOnClose}
           anchorOrigin={{
             vertical: 'bottom',

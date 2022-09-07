@@ -35,6 +35,9 @@ import ManageItemDonation from './views/ItemDonation/ManageItemDonation';
 import CreateMoneyDonation from './views/MoneyDonation/CreateMoneyDonation';
 import MoneyDonationResult from './views/MoneyDonation/MoneyDonationResult';
 import DonationHistory from './views/Profile/DonationHistory';
+import GenerateReceipt from './views/Profile/DonationHistory/GenerateReceipt';
+import ChangePassword from './views/Profile/ChangePassword';
+import EmailVerification from './views/Authorization/EmailVerification';
 import { UserProvider } from './contexts/UserContext.js';
 // import NavRoute from './core/navRoute';
 
@@ -99,7 +102,10 @@ function App() {
           <Route path='/charity_event/donate_money/:id' element={<CreateMoneyDonation/>}/>
           <Route path='/charity_event/donate_money/success/:id' element={<MoneyDonationResult isSuccess={true}/>}/>
           <Route path='/charity_event/donate_money/failed/:id' element={<MoneyDonationResult isSuccess={false}/>}/>
+          <Route path='/charity_event/generate_receipt/:id' element={<GenerateReceipt/>}/>
           <Route path='/profile/donation_history' element={<DonationHistory/>}/>
+          <Route path='/profile/password' element={<ChangePassword/>}/>
+          <Route path='/activate/:id' element={<EmailVerification/>}/>
         </Routes>
         </div>
         <Footer/>

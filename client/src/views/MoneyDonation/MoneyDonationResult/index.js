@@ -18,19 +18,19 @@ const MoneyDonationResult = (props) => {
     const user = useUser();
 
     useEffect(()=>{
+        let timer = null;
         if(user==null){
-            return;
+            timer = setTimeout(()=>{
+                navigate('/login')
+            },5000)
         }
-        updateData();
-        fetchData();
-    },[])
-
-    useEffect(()=>{
-        if(user==null){
-            return;
+        if(user){
+            updateData();
+            fetchData();
         }
-        updateData();
-        fetchData();
+        return () => {
+            clearTimeout(timer);
+        }
     },[user])
 
     const updateData = () => {
@@ -105,7 +105,6 @@ const MoneyDonationResult = (props) => {
 
     return (
         <React.Fragment>
-            {/* {user==null?<Navigate to="/login"/>:<></>} */}
             {isLoading?<Loading/>:<>
             <BackSection onBackButtonClick={handleRedirectBack} title={isSuccess?"Successful Money Donation":"Failed Money Donation"}/>
                 {isSuccess?<div className='success'>
@@ -123,7 +122,7 @@ const MoneyDonationResult = (props) => {
                 </div>}
                 <div id="donation-button-row">
                 {isSuccess?
-                <button className='button' id="generate-receipt-button">Generate Receipt</button>
+                <button className='button' id="generate-receipt-button" onClick={handleGenerateReceiptOnClick}>Generate Receipt</button>
                 :<></>
                 }
                 <button className='button' id="donate-button" onClick={handleDonateAgainOnClick}>Donate Again</button>

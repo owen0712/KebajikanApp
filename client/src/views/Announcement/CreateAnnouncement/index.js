@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import './create_announcement.css';
 import BackSection from '../../../components/BackSection';
 import { useNavigate, Navigate } from 'react-router-dom';
@@ -14,6 +14,23 @@ const CreateAnnouncement = (props) => {
     const imageDisplay = useRef();
     const navigate = useNavigate();
     const user = useUser();
+
+    useEffect(()=>{
+        let timer = null;
+        if(user==null){
+            timer = setTimeout(()=>{
+                navigate('/login')
+            },5000)
+        }
+        if(user){
+            if(user.role!=2){
+                navigate('/');
+            }
+        }
+        return () => {
+            clearTimeout(timer);
+        }
+    },[user])
 
     const handleTitleOnChange = (event) => {
         setTitle(event.target.value);
@@ -88,7 +105,6 @@ const CreateAnnouncement = (props) => {
         
     return (
         <React.Fragment>
-            {user.role!=2?<Navigate to="/"/>:<></>}
             <BackSection onBackButtonClick={handleRedirectBack} title="Create Announcement"/>
             <form id="announcement_form" onSubmit={event=>handleSubmit(event)}>
                 <span className="short-input">

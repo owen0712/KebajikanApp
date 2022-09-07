@@ -15,8 +15,19 @@ const DonationHistory = (props) =>{
     const user = useUser();
 
     useEffect(()=>{
-        fetchData();
-    },[])
+        let timer = null;
+        if(user==null){
+            timer = setTimeout(()=>{
+                navigate('/login')
+            },5000)
+        }
+        if(user){
+            fetchData();
+        }
+        return () => {
+            clearTimeout(timer);
+        }
+    },[user])
 
     const fetchData=()=>{
         setIsLoading(true);
@@ -65,6 +76,10 @@ const DonationHistory = (props) =>{
         navigate('/charity_event/donate_item/fill/'+id);
     }
 
+    const handleViewReceipt = (id) => {
+        navigate('/charity_event/generate_receipt/'+id);
+    }
+
     return(
         <React.Fragment>
             {user==null?<Navigate to="/login"/>:<></>}
@@ -90,27 +105,26 @@ const DonationHistory = (props) =>{
                                 <td>{donation.created_on.slice(0,10)}</td>
                                 <td><Status statusName={donation.status}/></td>
                                 <td className='button-row'>
-                                    {donation.status=="Pending"?
+                                    {donation.status=="Pending"&&
                                     <>
                                     <button className='button' onClick={()=>handleViewAppointment(donation.appointment_id)}><RemoveRedEyeIcon/>View</button>
                                     <button className='button' onClick={()=>handleEditAppointment(donation.appointment_id)}><CreateIcon/>Edit</button>   
-                                    </>
-                                    :""
-                                    }
-                                    {donation.status=="Appointment"?
+                                    </>}
+                                    {donation.status=="Appointment"&&
                                     <>
                                     <button className='button' onClick={()=>handleViewAppointment(donation.appointment_id)}><RemoveRedEyeIcon/>View</button>
                                     <button className='button' onClick={()=>handleFillItemDonation(donation._id)}><CreateIcon/>Fill</button>   
-                                    </>
-                                    :""
-                                    }
-                                    {donation.status=="Not Verified"?
+                                    </>}
+                                    {donation.status=="Not Verified"&&
                                     <>
                                     <button className='button' onClick={()=>handleViewDonationHistory(donation._id)}><RemoveRedEyeIcon/>View</button>
                                     <button className='button' onClick={()=>handleEditDonationHistory(donation._id)}><CreateIcon/>Edit</button>   
-                                    </>
-                                    :""
-                                    }
+                                    </>}
+                                    {donation.status=="Verified"&&
+                                    <>
+                                    <button className='button' onClick={()=>handleViewReceipt(donation._id)}><RemoveRedEyeIcon/>View</button>
+                                    <button className='button' disabled><CreateIcon/>Edit</button>   
+                                    </>}
                                 </td>
                             </tr>
                         })}

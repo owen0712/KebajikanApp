@@ -1,5 +1,10 @@
 module.exports={
     MONGOURI:process.env.MONGOURI,
-    JWT_SECRET:process.env.JWT_SEC,
-    STRIPE_SECRET:process.env.STRIPE_SECRET
+    STRIPE_SECRET:process.env.STRIPE_SECRET,
+    DOMAIN:process.env.DOMAIN,
+    JWT_SECRET_ACCESS:process.env.JWT_SECRET_ACCESS,
+    JWT_SECRET_REFRESH:process.env.JWT_SECRET_REFRESH,
+    STRIPE_SECRET:process.env.STRIPE_SECRET,
+    NODEMAILER_EMAIL:process.env.NODEMAILER_EMAIL,
+    NODEMAILER_PASSWORD:process.env.NODEMAILER_PASSWORD
 }

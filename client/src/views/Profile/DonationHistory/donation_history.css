@@ -12,9 +12,27 @@
 #donation-history table{
     table-layout: fixed;
     width: 90%;
-    background-color: transparent;
+    background-color: white;
+    border: 3px solid  #192f59;
+    border-radius: 10px;
+    padding: 0;
+    border-spacing: 0;
+}
+
+#donation-history td,#donation-history th{
+    margin: 0px;
+    padding: 20px 5px 20px 5px;
 }
 
 .button-row button{
     display: inline-flex;
+}
+
+.button-row button:disabled{
+    color: rgba(25, 47, 89, 0.5);
+    border: 1px solid  rgba(50, 50, 50, 0.5);
+}
+
+button:disabled svg{
+    color: rgba(25, 47, 89, 0.5);
 }

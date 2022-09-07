@@ -72,8 +72,8 @@ router.get('/appointment/:id',(req,res)=>{
     });
 });
 
-// @route   PUT /apppointment/status/:id
-// @desc    Update Status For Specific Apppointment
+// @route   PUT /apppointment/:id
+// @desc    Update Specific Apppointment
 // @access  Private
 router.put('/appointment/:id',(req,res)=>{
     const {date,time,location,name,email,phone_number} = req.body;

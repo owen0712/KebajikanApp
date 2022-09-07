@@ -1,0 +1,53 @@
+#profile-section{
+    display: flex;
+}
+
+#profile-content-section{
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    align-content: center;
+    width: 100%;
+}
+
+#profile-right-section{
+    width: 76%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#profile-left-section{
+    width: 20%;
+    text-align: center;
+    margin-right: 30px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#profile-left-section img{
+    height: 35vh;
+}
+
+#profile-left-section .button{
+    display: inline-flex;
+    justify-content: center;
+    border: 1px solid #192F59;
+    color: white;
+    background-color: #192F59;
+    border-radius: 20px;
+    height: 5vh;
+    width:10vw;
+    cursor: pointer;
+    line-height: 30px;
+    font-size: 15px;
+}
+
+#profile-right-section label{
+    width: 15vw;
+}
+
+#profile-content-section .full-input{
+    width: 100%;
+    margin-bottom: 30px;
+    margin-top: 10px;
+}
