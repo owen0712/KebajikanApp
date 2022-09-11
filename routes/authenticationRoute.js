@@ -3,11 +3,12 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const User = mongoose.model("User");
-const jwt=require("jsonwebtoken")
+const jwt=require("jsonwebtoken");
 const {JWT_SECRET_ACCESS,JWT_SECRET_REFRESH,DOMAIN}=require('../config/keys');
 const checkToken = require('../middlewares/checkToken');
 const sendMail = require('../utils/nodemailer');
 const getAvatarImage = require('../utils/imagereader');
+const requiredLogin = require('../middlewares/requiredLogin');
 
 // @route   POST /signup
 // @desc    Sign Up
@@ -112,6 +113,51 @@ router.post("/signin", (req, res) => {
       res.json({ error: err });
     });
 });
+
+// @route   POST /forgot_password
+// @desc    Forgot Password
+// @access  Private
+router.post('/forgot_password',(req,res)=>{
+  const {email}=req.body;
+  if(!email){
+      return res.json({error:'Please make sure all fields are filled'});
+  }
+  User.findOne({email:email}).then(savedUser=>{
+      if(!savedUser){
+          return res.json({error:'User is not existed'});
+      }
+      const access_token= jwt.sign({_id:savedUser._id},JWT_SECRET_ACCESS,{expiresIn:'10m'});
+      const subject = 'Kebajikan App User Reset Password';
+      const content = `<p>Please click the link below to reset your password</p> <a href='${DOMAIN}/reset_password/${access_token}'>Click here</a>`;
+      const result = sendMail({destinationEmail:email,subject,content})
+      if(!result){
+          return res.json({error:"Error occurred!Please try again!"});
+      }
+      return res.json({message:"Reset password email successfully sent!"});
+  }).catch(err=>{
+      res.json({error:err});
+  })
+})
+
+// @route   POST /reset_password
+// @desc    Reset Password
+// @access  Private
+router.post('/reset_password',requiredLogin,(req,res)=>{
+  const {password,confirm_password}=req.body;
+  if(!password||!confirm_password){
+      return res.json({error:'Please make sure all fields are filled'});
+  }
+  bcrypt.genSalt(10).then(salt=>{
+    bcrypt.hash(password, salt).then((hashedpassword) => {
+      User.findByIdAndUpdate(req.user._id,{password:hashedpassword},{new:false},(err,result)=>{
+        if(err){
+            return res.json({error:err})
+        }
+        return res.json({message:"Password reset successfully!"});
+      })
+    });
+  });
+})
 
 // @route   GET /refresh/user
 // @desc    Get User Details If Refresh Token Valid

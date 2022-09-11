@@ -38,6 +38,8 @@ import DonationHistory from './views/Profile/DonationHistory';
 import GenerateReceipt from './views/Profile/DonationHistory/GenerateReceipt';
 import ChangePassword from './views/Profile/ChangePassword';
 import EmailVerification from './views/Authorization/EmailVerification';
+import ForgotPassword from './views/Authorization/ForgotPassword';
+import ResetPassword from './views/Authorization/ResetPassword';
 import { UserProvider } from './contexts/UserContext.js';
 // import NavRoute from './core/navRoute';
 
@@ -105,6 +107,8 @@ function App() {
           <Route path='/charity_event/generate_receipt/:id' element={<GenerateReceipt/>}/>
           <Route path='/profile/donation_history' element={<DonationHistory/>}/>
           <Route path='/profile/password' element={<ChangePassword/>}/>
+          <Route path='/forgot_password' element={<ForgotPassword/>}/>
+          <Route path='/reset_password/:token' element={<ResetPassword/>}/>
           <Route path='/activate/:id' element={<EmailVerification/>}/>
         </Routes>
         </div>

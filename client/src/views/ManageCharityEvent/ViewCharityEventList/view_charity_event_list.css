@@ -27,7 +27,7 @@
 }
 
 .button-list{
-    display: block;
+    display: flex;
     justify-content: center;
     width:93%;
 }
@@ -114,4 +114,12 @@ td .status{
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap; 
+}
+
+.organizer,.progress,.date{
+    width: 10%;
+}
+
+.event-status{
+    width: 15%;
 }

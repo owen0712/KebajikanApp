@@ -5,6 +5,9 @@ const User = mongoose.model('User');
 const bcrypt = require('bcryptjs');
 const requiredLogin = require('../middlewares/requiredLogin');
 
+// @route   GET /user
+// @desc    Retrieve All User
+// @access  Private
 router.get('/user',(req,res)=>{
     User.find({},{_id:1,name:1})
     .sort('-role')
@@ -16,6 +19,9 @@ router.get('/user',(req,res)=>{
     });
 })
 
+// @route   GET /user/:id
+// @desc    Retrieve User Details
+// @access  Private
 router.get('/user/:id',requiredLogin,(req,res)=>{
     const {profile_pic,name,email,phone_number,identity_no,birthdate,status} = req.user;
     if(!req.user){
@@ -24,7 +30,10 @@ router.get('/user/:id',requiredLogin,(req,res)=>{
     return res.json({user:{profile_pic,name,email,phone_number,identity_no,birthdate,status}});
 })
 
-router.put('/user/:id',(req,res)=>{
+// @route   PUT /user/:id
+// @desc    Update User Details
+// @access  Private
+router.put('/user/:id',requiredLogin,(req,res)=>{
     const {name,email,birthdate,phone_number,profile_pic}=req.body;
     if(!name||!email||!birthdate||!phone_number||!profile_pic){
         return res.status(422).json({error:'please make sure all fields are filled'});
@@ -37,7 +46,10 @@ router.put('/user/:id',(req,res)=>{
     })
 })
 
-router.put('/password/:id',(req,res)=>{
+// @route   PUT /password/:id
+// @desc    Update Password For Specific User
+// @access  Private
+router.put('/password/:id',requiredLogin,(req,res)=>{
     const {current_password,new_password}=req.body;
     if(!current_password||!new_password){
         return res.json({error:'Please make sure all fields are filled'});

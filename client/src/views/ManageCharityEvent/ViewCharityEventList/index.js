@@ -17,8 +17,26 @@ const ViewCharityEventList = (props) => {
     const user = useUser();
 
     useEffect(()=>{
-        fetchData();
-    },[])
+        let timer = null;
+        if(user==null){
+            timer = setTimeout(()=>{
+                navigate('/login')
+            },5000)
+        }
+        if(user){
+            if(user.role==2){
+                fetchData();
+            }
+            else{
+                timer = setTimeout(()=>{
+                    navigate('/login')
+                },5000)
+            }
+        }
+        return () => {
+            clearTimeout(timer);
+        }
+    },[user])
 
     const fetchData = () =>{
         setIsLoading(true);
@@ -109,7 +127,6 @@ const ViewCharityEventList = (props) => {
 
     return (
         <React.Fragment>
-            {user.role!=2?<Navigate to="/"/>:<></>}
             {isLoading?<Loading/>:<>
             <BackSection title="View Charity Event" onBackButtonClick={handleRedirectBack} previousIsHome={true} createButtonName="Create New Charity Event" handleButtonCreate={handleCreate}/>
             <div id="#charity-event-list-table-section">
@@ -117,10 +134,10 @@ const ViewCharityEventList = (props) => {
                     <thead>
                         <tr>
                             <th className="title">CHARITY EVENT NAME</th>
-                            <th>ORGANIZER</th>
-                            <th>PROGRESS</th>
-                            <th>DATE CREATED</th>
-                            <th>STATUS</th>
+                            <th className="organizer">ORGANIZER</th>
+                            <th className="progress">PROGRESS</th>
+                            <th className="date">DATE CREATED</th>
+                            <th className="event-status">STATUS</th>
                             <th></th>
                         </tr>
                     </thead>
