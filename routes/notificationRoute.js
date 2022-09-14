@@ -3,11 +3,12 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const Notification = mongoose.model('Notification');
 const UserNotification = mongoose.model('UserNotification');
+const requiredLogin = require('../middlewares/requiredLogin');
 
 // @route   POST /notification
 // @desc    Push New Notification
 // @access  Private
-router.post('/notification',(req,res)=>{
+router.post('/notification',requiredLogin,(req,res)=>{
     const {title,description,recipients,user_id} = req.body;
     if(!title||!description||!recipients||!user_id){
         return res.json({error:'please fill all fields'});
@@ -37,8 +38,9 @@ router.post('/notification',(req,res)=>{
 // @route   GET /notification
 // @desc    Retrieve Notification
 // @access  Private
-router.get('/notification',(req,res)=>{
+router.get('/notification',requiredLogin,(req,res)=>{
     Notification.find()
+    .sort("-created_on")
     .then(notifications=>{
         res.json({notifications:notifications});
     }).catch(err=>{
@@ -49,7 +51,7 @@ router.get('/notification',(req,res)=>{
 // @route   GET /notification/:id
 // @desc    Retrieve Specific Notification
 // @access  Private
-router.get('/notification/:id',(req,res)=>{
+router.get('/notification/:id',requiredLogin,(req,res)=>{
     Notification.find({_id:req.params.id})
     .populate('receiver','name')
     .then(notification=>{
@@ -62,7 +64,7 @@ router.get('/notification/:id',(req,res)=>{
 // @route   GET /notification/unread/:id
 // @desc    Retrieve User Notification
 // @access  Private
-router.get('/notification/unread/:id',(req,res)=>{
+router.get('/notification/unread/:id',requiredLogin,(req,res)=>{
     UserNotification.find({user_id:req.params.id})
     .populate('notification_id',['title','description','created_on'])
     .sort('-created_on')
@@ -76,7 +78,7 @@ router.get('/notification/unread/:id',(req,res)=>{
 // @route   PUT /notification/read/:id
 // @desc    Update User Viewed Notification
 // @access  Private
-router.put('/notification/read/:id',(req,res)=>{
+router.put('/notification/read/:id',requiredLogin,(req,res)=>{
     UserNotification.find({user_id:req.params.id,status:"unread"})
     .then(notifications=>{
         notifications.forEach((notification)=>{
@@ -95,7 +97,7 @@ router.put('/notification/read/:id',(req,res)=>{
 // @route   PUT /notification/:id
 // @desc    Update Notification
 // @access  Private
-router.put('/notification/:id',(req,res)=>{
+router.put('/notification/:id',requiredLogin,(req,res)=>{
     const {title,description,recipients} = req.body;
     if(!title||!description){
         return res.json({error:'Please fill all required field'});
@@ -145,7 +147,7 @@ router.put('/notification/:id',(req,res)=>{
 // @route   DELETE /notification/:id
 // @desc    Delete Notification
 // @access  Private
-router.delete('/notification/:id',(req,res)=>{
+router.delete('/notification/:id',requiredLogin,(req,res)=>{
     Notification.deleteOne({_id:req.params.id}).then(result=>{
         UserNotification.deleteMany({notification_id:req.params.id})
         .then(result=>{    

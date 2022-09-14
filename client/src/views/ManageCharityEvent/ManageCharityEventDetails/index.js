@@ -31,8 +31,26 @@ const ManageCharityEventDetails = (props) => {
     const user = useUser();
 
     useEffect(()=>{
-        fetchData();
-    },[])
+        let timer = null;
+        if(user==null){
+            timer = setTimeout(()=>{
+                navigate('/login')
+            },5000)
+        }
+        if(user){
+            if(user.role==2){
+                fetchData();
+            }
+            else{
+                timer = setTimeout(()=>{
+                    navigate('/login')
+                },5000)
+            }
+        }
+        return () => {
+            clearTimeout(timer);
+        }
+    },[user])
 
     const fetchData = () =>{
         setIsLoading(true);
@@ -255,7 +273,8 @@ const ManageCharityEventDetails = (props) => {
         fetch('/charity_event/document/'+id,{
             method:'get',
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                'Authorization':'Bearer'+user.access_token
             }
         }).then(res=>res.json()).then(data=>{
             if(data.error){
@@ -279,7 +298,6 @@ const ManageCharityEventDetails = (props) => {
         
     return (
         <React.Fragment>
-            {user==null?<Navigate to="/login"/>:<></>}
             <BackSection onBackButtonClick={handleRedirectBack} title={isEdit?"Edit Charity Event":"View Charity Event"}/>
             {isLoading?<Loading/>:<>
             <form onSubmit={handleSubmit}>

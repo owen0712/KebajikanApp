@@ -6,13 +6,16 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import CreateIcon from '@mui/icons-material/Create';
 import Swal from 'sweetalert2';
 import { useUser } from '../../../contexts/UserContext';
+import Pagination from '@mui/material/Pagination';
 
 const DonationHistory = (props) =>{
     const navigate = useNavigate();
     const [donations,setDonations] = useState([]);
-    const [pageNumber,setPageNumber] = useState(1);
+    const [displayedDonations,setDisplayDonations] = useState([]);
+    const [page,setPage] = useState(0);
     const [isLoading,setIsLoading] = useState(false);
     const user = useUser();
+    const ROW_PER_PAGE = 6;
 
     useEffect(()=>{
         let timer = null;
@@ -28,6 +31,10 @@ const DonationHistory = (props) =>{
             clearTimeout(timer);
         }
     },[user])
+
+    useEffect(()=>{
+        setDisplayedDonation();
+    },[page,donations])
 
     const fetchData=()=>{
         setIsLoading(true);
@@ -46,6 +53,7 @@ const DonationHistory = (props) =>{
             }
             else{
                 setDonations(data.donations);
+                setPage(1);
                 setIsLoading(false);
             }
         }).catch(err=>{
@@ -80,56 +88,74 @@ const DonationHistory = (props) =>{
         navigate('/charity_event/generate_receipt/'+id);
     }
 
+    const handlePageOnChange = (event, value) => {
+        setPage(value);
+    }
+
+    const setDisplayedDonation = () =>{
+        const firstRow = (page-1) * ROW_PER_PAGE + 1;
+        const lastRow =  page * ROW_PER_PAGE;
+        if(lastRow>=donations.length){
+            setDisplayDonations(donations.slice(firstRow-1));
+        }
+        setDisplayDonations(donations.slice(firstRow-1,lastRow));
+    }
+
     return(
         <React.Fragment>
             {user==null?<Navigate to="/login"/>:<></>}
             {isLoading?<Loading/>:""}
             <div id="donation-history">
                 <ProfileSideNavigation activeIndex={3}/>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>RECORD TITLE</th>
-                            <th>CATEGORY</th>
-                            <th>DONATION DATE</th>
-                            <th>STATUS</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                        donations.map(donation=>{
-                            return <tr key={donation._id}>
-                                <td className="title">{donation.charity_event_id.title}</td>
-                                <td>{donation.category}</td>
-                                <td>{donation.created_on.slice(0,10)}</td>
-                                <td><Status statusName={donation.status}/></td>
-                                <td className='button-row'>
-                                    {donation.status=="Pending"&&
-                                    <>
-                                    <button className='button' onClick={()=>handleViewAppointment(donation.appointment_id)}><RemoveRedEyeIcon/>View</button>
-                                    <button className='button' onClick={()=>handleEditAppointment(donation.appointment_id)}><CreateIcon/>Edit</button>   
-                                    </>}
-                                    {donation.status=="Appointment"&&
-                                    <>
-                                    <button className='button' onClick={()=>handleViewAppointment(donation.appointment_id)}><RemoveRedEyeIcon/>View</button>
-                                    <button className='button' onClick={()=>handleFillItemDonation(donation._id)}><CreateIcon/>Fill</button>   
-                                    </>}
-                                    {donation.status=="Not Verified"&&
-                                    <>
-                                    <button className='button' onClick={()=>handleViewDonationHistory(donation._id)}><RemoveRedEyeIcon/>View</button>
-                                    <button className='button' onClick={()=>handleEditDonationHistory(donation._id)}><CreateIcon/>Edit</button>   
-                                    </>}
-                                    {donation.status=="Verified"&&
-                                    <>
-                                    <button className='button' onClick={()=>handleViewReceipt(donation._id)}><RemoveRedEyeIcon/>View</button>
-                                    <button className='button' disabled><CreateIcon/>Edit</button>   
-                                    </>}
-                                </td>
+                <div id="donation-history-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>RECORD TITLE</th>
+                                <th>CATEGORY</th>
+                                <th>DONATION DATE</th>
+                                <th>STATUS</th>
+                                <th></th>
                             </tr>
-                        })}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {
+                            displayedDonations.map(donation=>{
+                                return <tr key={donation._id}>
+                                    <td className="title">{donation.charity_event_id.title}</td>
+                                    <td>{donation.category}</td>
+                                    <td>{donation.created_on.slice(0,10)}</td>
+                                    <td><Status statusName={donation.status}/></td>
+                                    <td className='button-row'>
+                                        {donation.status=="Pending"&&
+                                        <>
+                                        <button className='button' onClick={()=>handleViewAppointment(donation.appointment_id)}><RemoveRedEyeIcon/>View</button>
+                                        <button className='button' onClick={()=>handleEditAppointment(donation.appointment_id)}><CreateIcon/>Edit</button>   
+                                        </>}
+                                        {donation.status=="Appointment"&&
+                                        <>
+                                        <button className='button' onClick={()=>handleViewAppointment(donation.appointment_id)}><RemoveRedEyeIcon/>View</button>
+                                        <button className='button' onClick={()=>handleFillItemDonation(donation._id)}><CreateIcon/>Fill</button>   
+                                        </>}
+                                        {donation.status=="Not Verified"&&
+                                        <>
+                                        <button className='button' onClick={()=>handleViewDonationHistory(donation._id)}><RemoveRedEyeIcon/>View</button>
+                                        <button className='button' onClick={()=>handleEditDonationHistory(donation._id)}><CreateIcon/>Edit</button>   
+                                        </>}
+                                        {donation.status=="Verified"&&
+                                        <>
+                                        <button className='button' onClick={()=>handleViewReceipt(donation._id)}><RemoveRedEyeIcon/>View</button>
+                                        <button className='button' disabled><CreateIcon/>Edit</button>   
+                                        </>}
+                                    </td>
+                                </tr>
+                            })}
+                        </tbody>
+                    </table>
+                    <div id="donation-list-pagination">
+                        <Pagination count={donations.length<=ROW_PER_PAGE?1:parseInt(donations.length/ROW_PER_PAGE)+1} page={page} onChange={handlePageOnChange} />
+                    </div>
+                </div>
             </div>
         </React.Fragment>
     )

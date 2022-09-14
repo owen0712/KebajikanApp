@@ -41,9 +41,22 @@ h1{
     word-break: break-word;
     display: inline-block;
     width: 98.5%;
-}   margin: 10px 0px 10px 0px;
- 
+}
 
 .announcement-card span,.announcement-card small{
     padding-left: 20px;
+}
+
+#announcement-list-pagination nav{
+    display: flex !important;
+    padding: 10px;
+    justify-content: flex-end !important;
+}
+
+#announcement-list-pagination button{
+    font-weight: bold;
+}
+
+#announcement-list-pagination svg{
+    color: #192F59;
 }

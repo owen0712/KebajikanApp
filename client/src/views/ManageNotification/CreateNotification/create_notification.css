@@ -1,6 +1,7 @@
 #receipient-list{
     margin-left: auto;
     margin-right: auto;
+    width: 100%;
 }
 
 #receipient-list .long-input{
@@ -18,4 +19,22 @@
 
 #receipient-list label::before{
     content:"";
+}
+
+#recipient-list-pagination {
+    width: 100%;
+}
+
+#recipient-list-pagination nav{
+    display: flex;
+    padding: 10px;
+    justify-content: flex-end;
+}
+
+#recipient-list-pagination button{
+    font-weight: bold;
+}
+
+#recipient-list-pagination svg{
+    color: #192F59;
 }

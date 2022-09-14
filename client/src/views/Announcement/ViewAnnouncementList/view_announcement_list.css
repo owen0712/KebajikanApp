@@ -89,3 +89,18 @@
     word-break: keep-all;
     white-space: nowrap; 
 }
+
+#announcement-list-table-section nav{
+    display: flex;
+    background-color: white;
+    padding: 10px;
+    justify-content: flex-end;
+}
+
+#announcement-list-table-section button{
+    font-weight: bold;
+}
+
+#announcement-list-pagination svg{
+    color: #192F59;
+}

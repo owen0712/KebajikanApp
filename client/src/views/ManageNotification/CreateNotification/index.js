@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import './create_notification.css';
 import BackSection from '../../../components/BackSection';
-import { useNavigate, Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useUser } from '../../../contexts/UserContext';
+import { Loading } from '../../../components';
+import Pagination from '@mui/material/Pagination';
 
 const CreateNotification = (props) => {
 
@@ -12,8 +14,11 @@ const CreateNotification = (props) => {
     const [recipients,setRecipients] = useState([]);
     const [recipientList,setRecipientList] = useState([]);
     const [isLoading,setIsLoading] = useState(true);
+    const [displayedRecipients,setDisplayRecipients] = useState([]);
+    const [page,setPage] = useState(0);
     const navigate = useNavigate();
     const user = useUser();
+    const ROW_PER_PAGE = 5;
 
     const handleTitleOnChange = (event) => {
         setTitle(event.target.value);
@@ -33,15 +38,38 @@ const CreateNotification = (props) => {
     }
 
     useEffect(()=>{
-        fetchData();
-    },[])
+        let timer = null;
+        if(user==null){
+            timer = setTimeout(()=>{
+                navigate('/login')
+            },5000)
+        }
+        if(user){
+            if(user.role==2){
+                fetchData();
+            }
+            else{
+                timer = setTimeout(()=>{
+                    navigate('/login')
+                },5000)
+            }
+        }
+        return () => {
+            clearTimeout(timer);
+        }
+    },[user])
+
+    useEffect(()=>{
+        setDisplayedRecipient();
+    },[page,recipientList])
 
     const fetchData = () =>{
         setIsLoading(true);
         fetch('/user',{
             method:'get',
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                'Authorization':'Bearer'+user.access_token
             }
         }).then(res=>res.json()).then(data=>{
             if(data.error){
@@ -53,6 +81,7 @@ const CreateNotification = (props) => {
             }
             else{
                 setRecipientList(data.users);
+                setPage(1);
                 setIsLoading(false);
             }
         }).catch(err=>{
@@ -104,12 +133,25 @@ const CreateNotification = (props) => {
     const handleRedirectBack = () => {
         navigate('/manage_notification');
     }
+
+    const handlePageOnChange = (event, value) => {
+        setPage(value);
+    }
+
+    const setDisplayedRecipient = () =>{
+        const firstRow = (page-1) * ROW_PER_PAGE + 1;
+        const lastRow =  page * ROW_PER_PAGE;
+        if(lastRow>=recipientList.length){
+            setDisplayRecipients(recipientList.slice(firstRow-1));
+        }
+        setDisplayRecipients(recipientList.slice(firstRow-1,lastRow));
+    }
         
     return (
         <React.Fragment>
-            {user.role!=2?<Navigate to="/"/>:<></>}
-            <BackSection onBackButtonClick={handleRedirectBack} title="Create Notification"/>
-                <form id="announcement_form" onSubmit={event=>handleSubmit(event)}>
+            {isLoading?<Loading/>:<>
+                <BackSection onBackButtonClick={handleRedirectBack} title="Create Notification"/>
+                <form id="notification_form" onSubmit={event=>handleSubmit(event)}>
                     <span className="short-input">
                         <label >TITLE</label>
                         <input type="text" name="title" onChange={event=>handleTitleOnChange(event)}/>
@@ -122,20 +164,22 @@ const CreateNotification = (props) => {
                         <label >RECEIVER LIST</label>
                         <div id="receipient-list">
                             {
-                                isLoading?<h1>Loading...</h1>:
-                                recipientList.map(recipient=>{
+                                displayedRecipients.map(recipient=>{
                                     return <span key={recipient._id} className="long-input">
                                     <label>{recipient.name}</label>
-                                    <input type="checkbox" onChange={event=>handleCheckBoxOnChange(event,recipient._id)}></input>
+                                    <input type="checkbox" onChange={event=>handleCheckBoxOnChange(event,recipient._id)} checked={recipients.includes(recipient._id)}></input>
                                     </span>
                                 })
-
-                                
                             }
+                        </div>
+                        <div id="recipient-list-pagination">
+                            <Pagination count={recipientList.length<=ROW_PER_PAGE?1:parseInt(recipientList.length/ROW_PER_PAGE)+1} page={page} onChange={handlePageOnChange} />
                         </div>
                     </span>                 
                     <input type="submit" value="Create" id="create-button"/>
                 </form>
+            </>}
+            
         </React.Fragment>
     )
 }

@@ -7,14 +7,17 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Swal from 'sweetalert2';
 import { BackSection, Status, Loading } from '../../../components';
 import { useUser } from '../../../contexts/UserContext';
+import Pagination from '@mui/material/Pagination';
 
 const ViewCharityEventList = (props) => {
 
     const navigate = useNavigate();
     const [events,setEvents] = useState([]);
-    const [pageNumber,setPageNumber] = useState(1);
+    const [displayedEvents,setDisplayEvents] = useState([]);
+    const [page,setPage] = useState(0);
     const [isLoading,setIsLoading] = useState(true);
     const user = useUser();
+    const ROW_PER_PAGE = 6;
 
     useEffect(()=>{
         let timer = null;
@@ -38,12 +41,17 @@ const ViewCharityEventList = (props) => {
         }
     },[user])
 
+    useEffect(()=>{
+        setDisplayedEvent();
+    },[page,events])
+
     const fetchData = () =>{
         setIsLoading(true);
         fetch('/charity_event/approved',{
             method:'get',
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                'Authorization':'Bearer'+user.access_token
             }
         }).then(res=>res.json()).then(data=>{
             if(data.error){
@@ -54,7 +62,8 @@ const ViewCharityEventList = (props) => {
                 });
             }
             else{
-                setEvents(data.events)
+                setEvents(data.events);
+                setPage(1);
                 setIsLoading(false);
             }
         }).catch(err=>{
@@ -76,6 +85,10 @@ const ViewCharityEventList = (props) => {
 
     const handleEdit = (id) => {
         navigate('/manage_charity_event/edit/'+id);
+    }
+
+    const handlePageOnChange = (event, value) => {
+        setPage(value);
     }
 
     const handleDelete = (id) =>{
@@ -125,6 +138,15 @@ const ViewCharityEventList = (props) => {
         navigate('/admin');
     }
 
+    const setDisplayedEvent = () =>{
+        const firstRow = (page-1) * ROW_PER_PAGE + 1;
+        const lastRow =  page * ROW_PER_PAGE;
+        if(lastRow>=events.length){
+            setDisplayEvents(events.slice(firstRow-1));
+        }
+        setDisplayEvents(events.slice(firstRow-1,lastRow));
+    }
+
     return (
         <React.Fragment>
             {isLoading?<Loading/>:<>
@@ -143,7 +165,7 @@ const ViewCharityEventList = (props) => {
                     </thead>
                     <tbody>
                         {
-                        events.map(event=>{
+                        displayedEvents.map(event=>{
                             return <tr key={event._id}>
                                 <td className="title">{event.title}</td>
                                 <td>{event.organizer_id.name}</td>
@@ -159,12 +181,9 @@ const ViewCharityEventList = (props) => {
                         })}
                     </tbody>
                 </table>
-                {/* <div id="charity-event-list-pagination">
-                    <ArrowLeftIcon/>
-                    <input type="number" defaultValue={pageNumber}/>
-                    <p>/{events.length/7}</p>
-                    <ArrowRightIcon/>
-                </div> */}
+                <div id="event-list-pagination">
+                    <Pagination count={events.length<=ROW_PER_PAGE?1:parseInt(events.length/ROW_PER_PAGE)+1} page={page} onChange={handlePageOnChange} />
+                </div>
             </div>
             </>}            
         </React.Fragment>

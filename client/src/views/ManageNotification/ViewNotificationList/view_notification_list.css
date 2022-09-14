@@ -1,0 +1,14 @@
+#notification-list-pagination nav{
+    display: flex;
+    background-color: white;
+    padding: 10px;
+    justify-content: flex-end;
+}
+
+#notification-list-pagination button{
+    font-weight: bold;
+}
+
+#notification-list-pagination svg{
+    color: #192F59;
+}

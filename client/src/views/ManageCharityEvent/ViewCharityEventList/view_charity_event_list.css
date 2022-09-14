@@ -123,3 +123,18 @@ td .status{
 .event-status{
     width: 15%;
 }
+
+#event-list-pagination nav{
+    display: flex;
+    background-color: white;
+    padding: 10px;
+    justify-content: flex-end;
+}
+
+#event-list-pagination button{
+    font-weight: bold;
+}
+
+#event-list-pagination svg{
+    color: #192F59;
+}

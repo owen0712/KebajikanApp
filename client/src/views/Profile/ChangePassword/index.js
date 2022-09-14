@@ -86,7 +86,7 @@ const ChangePassword = (props) =>{
         <React.Fragment>
             {isLoading?<Loading/>:<>
                 <div id='password-section'>
-                    <ProfileSideNavigation activeIndex={0}/>
+                    <ProfileSideNavigation activeIndex={1}/>
                     <div id='password-content-section'>
                         <span className="full-input">
                             <label >CURRENT PASSWORD</label>

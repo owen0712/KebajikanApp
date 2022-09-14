@@ -1,6 +1,7 @@
 #carousel{
     display: flex;
-    margin: 20px;
+    padding: 20px;
+    background-color: white;
 }
 
 #carousel img{
@@ -24,6 +25,12 @@
 
 #carousel h1{
     text-align: left;
+}
+
+#carousel *{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 #title-section{
@@ -81,7 +88,8 @@
 }
 
 #event-list{
-    margin: 20px auto;
+    margin: 0 auto;
+    background-color: white;
 }
 
 .card{
@@ -96,7 +104,7 @@
 }
 
 .card p,#carousel p{
-    text-overflow: clip;
+    text-overflow: ellipsis;
     overflow: hidden;
     word-break: break-all;
     width: 95%;
@@ -104,7 +112,7 @@
 }
 
 .card h4,#carousel h4{
-    text-overflow: clip;
+    text-overflow: ellipsis;
     overflow: hidden;
     word-break: break-all;
     width: 95%;

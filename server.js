@@ -14,6 +14,8 @@ require('./models/notificationModel');
 require('./models/userNotificationModel');
 require('./models/appointmentModel');
 require('./models/donationModel');
+require('./models/chatRecordModel');
+require('./models/chatRelationModel');
 
 const cors = require('cors');
 app.use(cors());
@@ -29,6 +31,7 @@ app.use(require('./routes/announcementRoute'));
 app.use(require('./routes/notificationRoute'));
 app.use(require('./routes/appointmentRoute'));
 app.use(require('./routes/donationRoute'));
+app.use(require('./routes/chatRoute'));
 
 if (process.env.NODE_ENV == 'production') {
     app.use(express.static('client/build'))

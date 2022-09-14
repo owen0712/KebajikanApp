@@ -69,7 +69,7 @@ router.post('/announcement',requiredLogin,(req,res)=>{
 // @access  Private
 router.put('/announcement/:id',requiredLogin,(req,res)=>{
     const {title,description,attachment} = req.body;
-    if(!title||!description||!attachement){
+    if(!title||!description||!attachment){
         return res.json({error:'please fill all fields'});
     }
     Announcement.findByIdAndUpdate(req.params.id,req.body,{new:false},(err,result)=>{

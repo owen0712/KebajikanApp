@@ -4,6 +4,8 @@ import BackSection from '../../../components/BackSection';
 import { useParams, useNavigate, Navigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useUser } from '../../../contexts/UserContext';
+import { Loading } from '../../../components';
+import Pagination from '@mui/material/Pagination';
 
 const ManageNotificationDetails = (props) => {
 
@@ -13,9 +15,13 @@ const ManageNotificationDetails = (props) => {
     const [recipientList,setRecipientList] = useState([]);
     const [isLoading,setIsLoading] = useState(true);
     const [isEdit,setIsEdit] = useState(props.isEdit);
+    const [displayedRecipients,setDisplayRecipients] = useState([]);
+    const [displayedRecipientList,setDisplayRecipientList] = useState([]);
+    const [page,setPage] = useState(0);
     const navigate = useNavigate();
     const {id} = useParams();
     const user = useUser();
+    const ROW_PER_PAGE = 5;
 
     const handleTitleOnChange = (event) => {
         setTitle(event.target.value);
@@ -39,15 +45,34 @@ const ManageNotificationDetails = (props) => {
     }
 
     useEffect(()=>{
-        fetchData();
-    },[])
+        let timer = null;
+        if(user==null){
+            timer = setTimeout(()=>{
+                navigate('/login')
+            },5000)
+        }
+        if(user){
+            if(user.role!=2){
+                navigate('/');
+            }
+            fetchData();
+        }
+        return () => {
+            clearTimeout(timer);
+        }
+    },[user])
+
+    useEffect(()=>{
+        setDisplayedRecipient();
+    },[page,recipientList,recipients,isEdit])
 
     const fetchData = () =>{
         setIsLoading(true);
         fetch('/notification/'+id,{
             method:'get',
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                'Authorization':'Bearer'+user.access_token
             }
         }).then(res=>res.json()).then(data=>{
             if(data.error){
@@ -60,7 +85,7 @@ const ManageNotificationDetails = (props) => {
             else{
                 setTitle(data.notification.title);
                 setDescription(data.notification.description);
-                setRecipients(data.notification.receiver)
+                setRecipients(data.notification.receiver);
                 setIsLoading(false);
             }
         }).catch(err=>{
@@ -85,6 +110,7 @@ const ManageNotificationDetails = (props) => {
             }
             else{
                 setRecipientList(data.users);
+                setPage(1);
                 setIsLoading(false);
             }
         }).catch(err=>{
@@ -145,11 +171,31 @@ const ManageNotificationDetails = (props) => {
         fetchData();
     };
 
+    const handlePageOnChange = (event, value) => {
+        setPage(value);
+    }
+
+    const setDisplayedRecipient = () =>{
+        const firstRow = (page-1) * ROW_PER_PAGE + 1;
+        const lastRow =  page * ROW_PER_PAGE;
+        if(isEdit){
+            if(lastRow>=recipientList.length){
+                setDisplayRecipientList(recipientList.slice(firstRow-1));
+            }
+            setDisplayRecipientList(recipientList.slice(firstRow-1,lastRow));
+        }
+        else{
+            if(lastRow>=recipients.length){
+                setDisplayRecipients(recipients.slice(firstRow-1));
+            }
+            setDisplayRecipients(recipients.slice(firstRow-1,lastRow));
+        }
+    }
         
     return (
         <React.Fragment>
-            {user.role!=2?<Navigate to="/"/>:<></>}
-            <BackSection onBackButtonClick={handleRedirectBack} title={isEdit?"Edit Notification":"View Notification"}/>
+            {isLoading?<Loading/>:<>
+                <BackSection onBackButtonClick={handleRedirectBack} title={isEdit?"Edit Notification":"View Notification"}/>
                 <form id="notification_form" onSubmit={event=>handleSubmit(event)}>
                     <span className="short-input">
                         <label >TITLE</label>
@@ -164,19 +210,16 @@ const ManageNotificationDetails = (props) => {
                         <label >RECEIVER LIST</label>
                         <div id="receipient-list">
                             {
-                                isLoading?<h1>Loading...</h1>:
-                                recipientList.map(recipient=>{
+                                displayedRecipientList.map(recipient=>{
                                     return <span key={recipient._id} className="long-input">
                                     <label>{recipient.name}</label>
-                                    {recipients.filter(e => e.name === recipient.name).length > 0?
-                                    <input type="checkbox" onChange={event=>handleCheckBoxOnChange(event,{_id:recipient._id,name:recipient.name})} defaultChecked={true}></input>
-                                    :<input type="checkbox" onChange={event=>handleCheckBoxOnChange(event,{_id:recipient._id,name:recipient.name})}></input>
-                                    }
+                                    <input type="checkbox" onChange={event=>handleCheckBoxOnChange(event,{_id:recipient._id,name:recipient.name})} defaultChecked={recipients.filter(e => e.name === recipient.name).length > 0}></input>
                                     </span>
                                 })
-
-                                
                             }
+                        </div>
+                        <div id="recipient-list-pagination">
+                            <Pagination count={recipientList.length<=ROW_PER_PAGE?1:parseInt(recipientList.length/ROW_PER_PAGE)+1} page={page} onChange={handlePageOnChange} />
                         </div>
                     </span>
                     :
@@ -184,13 +227,15 @@ const ManageNotificationDetails = (props) => {
                         <label >RECEIVER LIST</label>
                         <div id="receipient-list">
                             {
-                                isLoading?<h1>Loading...</h1>:
-                                recipients.map(recipient=>{
+                                displayedRecipients.map(recipient=>{
                                     return <span key={recipient._id} className="long-input">
                                     <label>{recipient.name}</label>
                                     </span>
                                 })
                             }
+                        </div>
+                        <div id="recipient-list-pagination">
+                            <Pagination count={recipients.length<=ROW_PER_PAGE?1:parseInt(recipients.length/ROW_PER_PAGE)+1} page={page} onChange={handlePageOnChange} />
                         </div>
                     </span>}                 
                     {isEdit?<div id="save-section">
@@ -200,6 +245,8 @@ const ManageNotificationDetails = (props) => {
                         <button onClick={toggleEdit} id="create-button">Edit</button>
                     }
                 </form>
+            </>}
+            
         </React.Fragment>
     )
 }

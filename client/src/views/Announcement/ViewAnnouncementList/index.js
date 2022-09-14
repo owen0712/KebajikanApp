@@ -4,19 +4,20 @@ import './view_announcement_list.css';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import CreateIcon from '@mui/icons-material/Create';
 import DeleteIcon from '@mui/icons-material/Delete';
-import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import Swal from 'sweetalert2';
 import { BackSection, Loading } from '../../../components';
 import { useUser } from '../../../contexts/UserContext';
+import Pagination from '@mui/material/Pagination';
 
 const ViewAnnouncementList = (props) => {
 
     const navigate = useNavigate();
     const [announcements,setAnnouncements] = useState([]);
-    const [pageNumber,setPageNumber] = useState(1);
+    const [displayedAnnouncements,setDisplayAnnouncements] = useState([]);
+    const [page,setPage] = useState(0);
     const [isLoading,setIsLoading] = useState(true);
     const user = useUser();
+    const ROW_PER_PAGE = 6;
 
     useEffect(()=>{
         let timer = null;
@@ -36,6 +37,10 @@ const ViewAnnouncementList = (props) => {
         }
     },[user])
 
+    useEffect(()=>{
+        setDisplayedAnnouncement();
+    },[page,announcements])
+
     const fetchData = () =>{
         setIsLoading(true);
         fetch('/announcement/list',{
@@ -53,7 +58,8 @@ const ViewAnnouncementList = (props) => {
                 });
             }
             else{
-                setAnnouncements(data.announcements)
+                setAnnouncements(data.announcements);
+                setPage(1);
                 setIsLoading(false);
             }
         }).catch(err=>{
@@ -77,6 +83,10 @@ const ViewAnnouncementList = (props) => {
         navigate('/manage_announcement/edit/'+id);
     }
 
+    const handlePageOnChange = (event, value) => {
+        setPage(value);
+    }
+
     const handleDelete = (id) =>{
         Swal.fire({
             title: 'Delete Announcement',
@@ -90,7 +100,8 @@ const ViewAnnouncementList = (props) => {
                 fetch('/announcement/'+id,{
                     method:'delete',
                     headers:{
-                        'Content-Type':'application/json'
+                        'Content-Type':'application/json',
+                        'Authorization':'Bearer'+user.access_token
                     }
                 }).then(res=>res.json()).then(data=>{
                     if(data.error){
@@ -123,11 +134,20 @@ const ViewAnnouncementList = (props) => {
         navigate('/admin');
     }
 
+    const setDisplayedAnnouncement = () =>{
+        const firstRow = (page-1) * ROW_PER_PAGE + 1;
+        const lastRow =  page * ROW_PER_PAGE;
+        if(lastRow>=announcements.length){
+            setDisplayAnnouncements(announcements.slice(firstRow-1));
+        }
+        setDisplayAnnouncements(announcements.slice(firstRow-1,lastRow));
+    }
+
     return (
         <React.Fragment>
             {isLoading?<Loading/>:<>
             <BackSection title="View Announcement" onBackButtonClick={handleRedirectBack} previousIsHome={true} createButtonName="Create New Announcement" handleButtonCreate={handleCreate}/>
-            <div id="#announcement-list-table-section">
+            <div id="announcement-list-table-section">
                 <table>
                     <thead>
                         <tr>
@@ -138,7 +158,7 @@ const ViewAnnouncementList = (props) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {announcements.map(announcement=>{
+                        {displayedAnnouncements.map(announcement=>{
                             return <tr key={announcement._id}>
                                 <td className='title'>{announcement.title}</td>
                                 <td className='description'>{announcement.description}</td>
@@ -152,12 +172,9 @@ const ViewAnnouncementList = (props) => {
                         })}
                     </tbody>
                 </table>
-                {/* <div id="charity-event-list-pagination">
-                    <ArrowLeftIcon/>
-                    <input type="number" defaultValue={pageNumber}/>
-                    <p>/{events.length/7}</p>
-                    <ArrowRightIcon/>
-                </div> */}
+                <div id="announcement-list-pagination">
+                    <Pagination count={announcements.length<=ROW_PER_PAGE?1:parseInt(announcements.length/ROW_PER_PAGE)+1} page={page} onChange={handlePageOnChange} />
+                </div>
             </div>
             </>}            
         </React.Fragment>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {useNavigate, Navigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import './view_notification_list.css';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import CreateIcon from '@mui/icons-material/Create';
@@ -7,25 +7,48 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Swal from 'sweetalert2';
 import { BackSection } from '../../../components';
 import { useUser } from '../../../contexts/UserContext';
+import Pagination from '@mui/material/Pagination';
+import { Loading } from '../../../components';
 
 const ViewNotificationList = (props) => {
 
     const navigate = useNavigate();
     const [notifications,setNotifications] = useState([]);
-    const [pageNumber,setPageNumber] = useState(1);
+    const [displayedNotifications,setDisplayNotifications] = useState([]);
+    const [page,setPage] = useState(0);
     const [isLoading,setIsLoading] = useState(true);
     const user = useUser();
+    const ROW_PER_PAGE = 6;
 
     useEffect(()=>{
-        fetchData();
-    },[])
+        let timer = null;
+        if(user==null){
+            timer = setTimeout(()=>{
+                navigate('/login')
+            },5000)
+        }
+        if(user){
+            if(user.role!=2){
+                navigate('/');
+            }
+            fetchData();
+        }
+        return () => {
+            clearTimeout(timer);
+        }
+    },[user])
+
+    useEffect(()=>{
+        setDisplayedNotification();
+    },[page,notifications])
 
     const fetchData = () =>{
         setIsLoading(true);
         fetch('/notification',{
             method:'get',
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                'Authorization':'Bearer'+user.access_token
             }
         }).then(res=>res.json()).then(data=>{
             if(data.error){
@@ -36,7 +59,8 @@ const ViewNotificationList = (props) => {
                 });
             }
             else{
-                setNotifications(data.notifications)
+                setNotifications(data.notifications);
+                setPage(1);
                 setIsLoading(false);
             }
         }).catch(err=>{
@@ -60,6 +84,10 @@ const ViewNotificationList = (props) => {
         navigate('/manage_notification/edit/'+id);
     }
 
+    const handlePageOnChange = (event, value) => {
+        setPage(value);
+    }
+
     const handleDelete = (id) =>{
         Swal.fire({
             title: 'Delete Notification',
@@ -73,7 +101,8 @@ const ViewNotificationList = (props) => {
                 fetch('/notification/'+id,{
                     method:'delete',
                     headers:{
-                        'Content-Type':'application/json'
+                        'Content-Type':'application/json',
+                        'Authorization':'Bearer'+user.access_token
                     }
                 }).then(res=>res.json()).then(data=>{
                     if(data.error){
@@ -107,10 +136,18 @@ const ViewNotificationList = (props) => {
         navigate('/admin');
     }
 
+    const setDisplayedNotification = () =>{
+        const firstRow = (page-1) * ROW_PER_PAGE + 1;
+        const lastRow =  page * ROW_PER_PAGE;
+        if(lastRow>=notifications.length){
+            setDisplayNotifications(notifications.slice(firstRow-1));
+        }
+        setDisplayNotifications(notifications.slice(firstRow-1,lastRow));
+    }
+
     return (
         <React.Fragment>
-            {user.role!=2?<Navigate to="/"/>:<></>}
-            {isLoading?<h1>Loading...</h1>:<>
+            {isLoading?<Loading/>:<>
             <BackSection title="View Notification" onBackButtonClick={handleRedirectBack} previousIsHome={true} createButtonName="Create New Notification" handleButtonCreate={handleCreate}/>
             <div id="#announcement-list-table-section">
                 <table>
@@ -123,7 +160,7 @@ const ViewNotificationList = (props) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {notifications.map(notification=>{
+                        {displayedNotifications.map(notification=>{
                             return <tr key={notification._id}>
                                 <td className='title'>{notification.title}</td>
                                 <td className='description'>{notification.description}</td>
@@ -137,12 +174,9 @@ const ViewNotificationList = (props) => {
                         })}
                     </tbody>
                 </table>
-                {/* <div id="charity-event-list-pagination">
-                    <ArrowLeftIcon/>
-                    <input type="number" defaultValue={pageNumber}/>
-                    <p>/{events.length/7}</p>
-                    <ArrowRightIcon/>
-                </div> */}
+                <div id="notification-list-pagination">
+                    <Pagination count={notifications.length<=ROW_PER_PAGE?1:parseInt(notifications.length/ROW_PER_PAGE)+1} page={page} onChange={handlePageOnChange} />
+                </div>
             </div>
             </>}            
         </React.Fragment>
