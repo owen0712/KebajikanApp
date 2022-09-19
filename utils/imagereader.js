@@ -6,4 +6,11 @@ const getAvatarImage = () => {
     const file = fs.readFileSync(image, {encoding: 'base64'});
     return "data:image/png;base64,"+file;
 }
-module.exports = getAvatarImage;
+
+const getUMLogo = () => {
+    const image = path.join(__dirname, '../assets/universiti_malaya_logo.png');
+    const file = fs.readFileSync(image, {encoding: 'base64'});
+    return "data:image/png;base64,"+file;
+}
+
+module.exports = {getAvatarImage,getUMLogo};

@@ -131,7 +131,7 @@ const ManageCharityEventDetails = (props) => {
     const handleTextInputOnClick = () => {
         if(!isEdit){
             handleViewFile();
-            setDocument({name:document.name});
+            setDocument(prev=>({...prev,name:document.name}));
             return;
         }
         fileUploadInput.current.click();
@@ -286,6 +286,7 @@ const ManageCharityEventDetails = (props) => {
             }
             else{
                 setDocument(data.document);
+                console.log(data.document)
             }
         }).catch(err=>{
             Swal.fire({

@@ -6,7 +6,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    width: calc(100%/5);
+    width: 15vw;
 }
 
 #donation-history table{
@@ -22,7 +22,7 @@
 
 #donation-history td,#donation-history th{
     margin: 0px;
-    padding: 15px 10px 15px 5px;
+    padding: 15px 10px 15px 20px;
 }
 
 .button-row button{
@@ -54,4 +54,16 @@ button:disabled svg{
 
 #donation-history-content{
     width: 90%;
+}
+
+#donation-history .category{
+    width: 8vw;
+}
+
+#donation-history .date{
+    width: 10vw;
+}
+
+#donation-history .donation-status{
+    width: 10vw;
 }

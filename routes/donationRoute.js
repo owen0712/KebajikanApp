@@ -2,10 +2,11 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const Donation = mongoose.model("Donation");
-const jwt=require("jsonwebtoken")
-const {JWT_SECRET_ACCESS, STRIPE_SECRET, DOMAIN}=require('../config/keys');
+const {STRIPE_SECRET, DOMAIN}=require('../config/keys');
 const stripe = require('stripe')(STRIPE_SECRET);
-const requiredLogin = require('../middlewares/requiredLogin')
+const requiredLogin = require('../middlewares/requiredLogin');
+const {generateReceipt} = require('../utils/pdfgenerator');
+const path = require('path');
 
 // @route   POST /donation/money/:id
 // @desc    Create New Money Donation
@@ -56,6 +57,32 @@ router.post('/donation/money/:id',requiredLogin,(req,res)=>{
         })
     })
 });
+
+// @route   POST /receipt/:id
+// @desc    Generate Receipt
+// @access  Private
+router.post('/receipt/:id',(req,res)=>{
+    Donation.findOne({_id:req.params.id})
+    .populate('donor_id')
+    .populate('charity_event_id')
+    .then(donation=>{
+        generateReceipt(donation);
+        res.json({status:"OK"})
+    }).catch(err=>{
+        res.json({error:err});
+    });
+})
+
+// @route   GET /receipt/:id
+// @desc    Retrieve Receipt
+// @access  Private
+router.get('/receipt/:id',(req,res)=>{
+    res.download(`${path.resolve(__dirname, '..')}/receipt/${req.params.id}.pdf`,(err)=>{
+        if(err){
+            console.log(err)
+        }
+    });
+})
 
 // @route   GET /donation
 // @desc    Retrieve All Donation

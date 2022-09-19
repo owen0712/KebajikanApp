@@ -65,9 +65,37 @@ const GenerateReceipt = (props) => {
         })
     }
 
-    const handleButtonOnClick = () => {
-        fetch('/donation/'+id.id,{
+    const retrieveReceipt = () => {
+        fetch('/receipt/'+id.id,{
             method:'get',
+            headers:{
+                'Content-Type':'application/json',
+                'Authorization':'Bearer'+user.access_token
+            }
+        }).then(res=>res.blob()).then(data=>{
+            if(data.error){
+                Swal.fire({
+                    title: data.error,
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                })
+            }
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(data);
+            link.download = `${id.id}-${new Date().toISOString().slice(0,10)}.pdf`;
+            link.click();
+        }).catch(err=>{
+            Swal.fire({
+                title: err,
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            })
+        })
+    }
+
+    const handleButtonOnClick = () => {
+        fetch('/receipt/'+id.id,{
+            method:'post',
             headers:{
                 'Content-Type':'application/json',
                 'Authorization':'Bearer'+user.access_token
@@ -81,8 +109,9 @@ const GenerateReceipt = (props) => {
                 })
             }
             else{
-                setDonation(data.donation);
-                setIsLoading(false);
+                setTimeout(()=>{
+                    retrieveReceipt();
+                },2000);
             }
         }).catch(err=>{
             Swal.fire({
@@ -100,7 +129,7 @@ const GenerateReceipt = (props) => {
     return (
         <React.Fragment>
             {isLoading?<Loading/>:<>
-            <BackSection onBackButtonClick={handleRedirectBack} title="View Receeipt"/>
+            <BackSection onBackButtonClick={handleRedirectBack} title="View Receipt"/>
             <div id='receipt-section'>
                 <table>
                     <tbody>
@@ -131,10 +160,10 @@ const GenerateReceipt = (props) => {
                             <>
                             {donation.items.map((item,index)=>{
                                 return <tr key={index}>
-                                    <td>1</td>
+                                    <td>{index+1}</td>
                                     <td>{item.description}</td>
-                                    <td>{item.quantity}</td>
                                     <td>-</td>
+                                    <td>{item.quantity}</td>
                                     <td>-</td>
                                 </tr>
                             })}

@@ -111,10 +111,10 @@ const DonationHistory = (props) =>{
                     <table>
                         <thead>
                             <tr>
-                                <th>RECORD TITLE</th>
-                                <th>CATEGORY</th>
-                                <th>DONATION DATE</th>
-                                <th>STATUS</th>
+                                <th className="title">RECORD TITLE</th>
+                                <th className="category">CATEGORY</th>
+                                <th className="date">DONATION DATE</th>
+                                <th className="donation-status">STATUS</th>
                                 <th></th>
                             </tr>
                         </thead>
