@@ -1,0 +1,76 @@
+#main-upper-part {
+    padding: 15px 20px 0 20px;
+    background-color: white;
+    justify-content: center;
+    display: flex;
+}
+
+#main-upper-part div{
+    width: 45%;
+}
+
+#main-upper-part #title{
+    padding: 50px 20px;
+}
+
+#main-upper-part p{
+    display: block;
+    width: 100%;
+    font-size: 70px;
+    color: black;
+    font-weight: bold;
+    margin: 10px;
+}
+
+#main-upper-part img{
+    width: 40vw;
+    height: 70vh;
+    border: 0px;
+}
+
+#main-content-part h2{
+    text-align: left;
+    background-color: #192F59;
+    color: white;
+    width: fit-content;
+    padding: 10px 20px;
+    border-radius: 0 35px 35px 0;
+}
+
+#main-content-part .row{
+    background-color: white;
+    padding: 20px 0;
+}
+
+#main-content-part .card{
+    width: 25%;
+    background-color: #F6F8FB;
+    border-radius: 10px;
+    display: inline-block;
+    margin: 20px;
+    padding: 35px;
+    box-shadow: 4px 4px rgb(0,0,0,.2);
+    cursor: pointer;
+}
+
+#main-content-part .title{
+    font-weight: bold;
+    padding: 0;
+}
+
+#main-content-part .description{
+    padding: 0;
+}
+
+#main-content-part .apply-button,#main-content-part .donate-button,#main-content-part .preregistration-button{
+    margin: 0px auto;
+}
+
+#main-content-part .button{
+    border: #B248AD solid 2px;
+    color: #B248AD;
+    margin: 10px auto;
+    font-size: 20px;
+    padding: 12px 28px;
+    height: 50px;
+}

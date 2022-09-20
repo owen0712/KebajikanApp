@@ -40,6 +40,7 @@ import ChangePassword from './views/Profile/ChangePassword';
 import EmailVerification from './views/Authorization/EmailVerification';
 import ForgotPassword from './views/Authorization/ForgotPassword';
 import ResetPassword from './views/Authorization/ResetPassword';
+import Main from './views/Main';
 import { UserProvider } from './contexts/UserContext.js';
 // import NavRoute from './core/navRoute';
 
@@ -56,7 +57,7 @@ function App() {
           <NavRoute key="500" exact path="/500" name="Page 500" component={Page500} />
           <NavRoute key="home" path="/home" name="Home" component={Announcement} />
           <NavRoute key="login" name="Login Page" component={Login} /> */}
-          <Route path='/' element={<ViewAnnouncement/>}/>
+          <Route path='/' element={<Main/>}/>
           <Route path='/manage_part_time_job/create' element={<CreatePartTimeJob isAdmin={true}/>}/>
           <Route path='/manage_part_time_job' element={<ManagePartTimeJob/>}/>
           <Route path='/manage_part_time_job/view/:id' element={<ManagePartTimeJobDetails isAdmin={true} isEdit={false}/>}/>
