@@ -61,7 +61,7 @@ router.post('/donation/money/:id',requiredLogin,(req,res)=>{
 // @route   POST /receipt/:id
 // @desc    Generate Receipt
 // @access  Private
-router.post('/receipt/:id',(req,res)=>{
+router.post('/receipt/:id',requiredLogin,(req,res)=>{
     Donation.findOne({_id:req.params.id})
     .populate('donor_id')
     .populate('charity_event_id')
@@ -76,7 +76,7 @@ router.post('/receipt/:id',(req,res)=>{
 // @route   GET /receipt/:id
 // @desc    Retrieve Receipt
 // @access  Private
-router.get('/receipt/:id',(req,res)=>{
+router.get('/receipt/:id',requiredLogin,(req,res)=>{
     res.download(`${path.resolve(__dirname, '..')}/receipt/${req.params.id}.pdf`,(err)=>{
         if(err){
             console.log(err)
@@ -144,7 +144,7 @@ router.put('/donation/status/:id',requiredLogin,(req,res)=>{
 // @route   PUT /donation/item/:id
 // @desc    Update Item Donation Details
 // @access  Private
-router.put('/donation/item/:id',(req,res)=>{
+router.put('/donation/item/:id',requiredLogin,(req,res)=>{
     const {name,email,phone_number,items} = req.body;
     if(!name||!email||!phone_number||!items){
         return res.json({error:'Please fill all fields'});

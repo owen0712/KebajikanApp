@@ -8,14 +8,33 @@ import FactCheckTwoToneIcon from '@mui/icons-material/FactCheckTwoTone';
 import PaidTwoToneIcon from '@mui/icons-material/PaidTwoTone';
 import NotificationsActiveTwoToneIcon from '@mui/icons-material/NotificationsActiveTwoTone';
 import GroupTwoToneIcon from '@mui/icons-material/GroupTwoTone';
+import { useUser } from '../../contexts/UserContext';
 
 const Admin = (props) => {
 
     const navigate = useNavigate();
+    const user = useUser();
 
     const handleClick = (url) => {
         navigate(url);
     }
+
+    useEffect(()=>{
+        let timer = null;
+        if(user==null){
+            timer = setTimeout(()=>{
+                navigate('/login')
+            },5000)
+        }
+        if(user){
+            if(user.role!=2){
+                navigate('/');
+            }
+        }
+        return () => {
+            clearTimeout(timer);
+        }
+    },[user])
         
     return (
         <React.Fragment>

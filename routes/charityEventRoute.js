@@ -124,7 +124,7 @@ router.get('/charity_event/:id',(req,res)=>{
 // @route   GET /charity_event/name/:id
 // @desc    Retrieve Charity Event Name
 // @access  Public
-router.get('/charity_event/name/:id',(req,res)=>{
+router.get('/charity_event/name/:id',requiredLogin,(req,res)=>{
     CharityEvent.find({_id:req.params.id}).then(event=>{
         res.json({name:event[0].title});
     }).catch(err=>{

@@ -25,8 +25,19 @@ const CreateItemDonation = (props) => {
     const quantityInputRef = useRef();
 
     useEffect(()=>{
-        fetchData();
-    },[])
+        let timer = null;
+        if(user==null){
+            timer = setTimeout(()=>{
+                navigate('/login')
+            },5000)
+        }
+        if(user){
+            fetchData();
+        }
+        return () => {
+            clearTimeout(timer);
+        }
+    },[user])
 
     const fetchData = () => {
         setIsLoading(true);
@@ -154,7 +165,6 @@ const CreateItemDonation = (props) => {
 
     return (
         <React.Fragment>
-            {user==null?<Navigate to="/login"/>:<></>}
             {isLoading?<Loading/>:<>
             <BackSection onBackButtonClick={handleRedirectBack} title="Item Donation"/>
             <div id="donation-left-content">

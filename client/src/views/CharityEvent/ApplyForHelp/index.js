@@ -67,8 +67,19 @@ const ApplyForHelp = (props) => {
     ]
 
     useEffect(()=>{
-        fetchData();
-    },[])
+        let timer = null;
+        if(user==null){
+            timer = setTimeout(()=>{
+                navigate('/login')
+            },5000)
+        }
+        if(user){
+            fetchData();
+        }
+        return () => {
+            clearTimeout(timer);
+        }
+    },[user])
 
     const fetchData = () => {
         setIsLoading(true);
@@ -76,6 +87,7 @@ const ApplyForHelp = (props) => {
             method:'get',
             headers:{
                 'Content-Type':'application/json',
+                'Authorization':'Bearer'+user.access_token
             }
         }).then(res=>res.json()).then(data=>{
             if(data.error){
@@ -301,7 +313,6 @@ const ApplyForHelp = (props) => {
         
     return (
         <React.Fragment>
-            {user==null?<Navigate to="/login"/>:<></>}
             <BackSection title={event_name+"  Application Form"} onBackButtonClick={handleRedirectBack}/>
             {isLoading?<Loading/>:<>
             <form id="application-form" onSubmit={event=>handleSubmit(event)}>

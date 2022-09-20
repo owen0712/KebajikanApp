@@ -2,11 +2,12 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const CharityApplication = mongoose.model('CharityApplication');
+const requiredLogin = require('../middlewares/requiredLogin');
 
 // @route   POST /charity_application/:id
 // @desc    Create New Charity Event Application
 // @access  Private
-router.post('/charity_application/:id',(req,res)=>{
+router.post('/charity_application/:id',requiredLogin,(req,res)=>{
     const {name,phone_number,identity_no,email,ic_no,marital_status,current_address,permanent_address,program,department,year_of_study,semester,father_occ,mother_occ,father_income,mother_income,total_income,no_sibling,no_dependent,document,photo,user_id,role} = req.body;
     if(!name||!phone_number||!identity_no||!email||!ic_no||!marital_status||!current_address||!permanent_address||!program||!department||!year_of_study||!semester||!father_occ||!mother_occ||!photo||!document||!user_id||!role){
         return res.json({error:'please fill all fields'});

@@ -24,8 +24,19 @@ const CreateMoneyDonation = (props) => {
     const amountOption = [10,50,100,200];
 
     useEffect(()=>{
-        fetchData();
-    },[])
+        let timer = null;
+        if(user==null){
+            timer = setTimeout(()=>{
+                navigate('/login')
+            },5000)
+        }
+        if(user){
+            fetchData();
+        }
+        return () => {
+            clearTimeout(timer);
+        }
+    },[user])
 
     const fetchData = () => {
         setIsLoading(true);
@@ -128,7 +139,6 @@ const CreateMoneyDonation = (props) => {
 
     return (
         <React.Fragment>
-            {user==null?<Navigate to="/login"/>:<></>}
             {isLoading?<Loading/>:<>
             <BackSection onBackButtonClick={handleRedirectBack} title="Money Donation"/>
             <div id="donation-left-content">

@@ -3,13 +3,12 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const Appointment = mongoose.model("Appointment");
 const Donation = mongoose.model("Donation");
-const jwt=require("jsonwebtoken")
-const {JWT_SECRET_ACCESS}=require('../config/keys');
+const requiredLogin = require("../middlewares/requiredLogin");
 
 // @route   POST /appointment/:id
 // @desc    Create New Appointment
 // @access  Private
-router.post('/appointment/:id',(req,res)=>{
+router.post('/appointment/:id',requiredLogin,(req,res)=>{
     const {date,time,location,name,email,phone_number,user_id} = req.body;
     if(!date||!time||!location||!name||!email||!phone_number||!user_id){
         return res.json({error:'Please fill all fields'});
@@ -49,7 +48,7 @@ router.post('/appointment/:id',(req,res)=>{
 // @route   GET /apppointment
 // @desc    Retrieve All Apppointment
 // @access  Private
-router.get('/appointment',(req,res)=>{
+router.get('/appointment',requiredLogin,(req,res)=>{
     Appointment.find()
     .sort('-created_on')
     .then(appointments=>{
@@ -62,7 +61,7 @@ router.get('/appointment',(req,res)=>{
 // @route   GET /apppointment/:id
 // @desc    Retrieve Specific Apppointment
 // @access  Private
-router.get('/appointment/:id',(req,res)=>{
+router.get('/appointment/:id',requiredLogin,(req,res)=>{
     Appointment.find({_id:req.params.id})
     .populate("charity_event_id")
     .then(appointment=>{
@@ -75,7 +74,7 @@ router.get('/appointment/:id',(req,res)=>{
 // @route   PUT /apppointment/:id
 // @desc    Update Specific Apppointment
 // @access  Private
-router.put('/appointment/:id',(req,res)=>{
+router.put('/appointment/:id',requiredLogin,(req,res)=>{
     const {date,time,location,name,email,phone_number} = req.body;
     if(!date||!time||!location||!name||!email||!phone_number){
         return res.json({error:'Please fill all fields'});
@@ -91,7 +90,7 @@ router.put('/appointment/:id',(req,res)=>{
 // @route   PUT /apppointment/status/:id
 // @desc    Update Status For Specific Apppointment
 // @access  Private
-router.put('/appointment/status/:id',(req,res)=>{
+router.put('/appointment/status/:id',requiredLogin,(req,res)=>{
     const {status} = req.body;
     if(!status){
         return res.json({error:'Invalid status'});

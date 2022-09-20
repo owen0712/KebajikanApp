@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import './create_charity_event.css';
 import BackSection from '../../../components/BackSection';
 import { useNavigate, Navigate } from 'react-router-dom';
@@ -24,6 +24,18 @@ const CreateCharityEvent = (props) => {
     const fileTextDisplay = useRef();
     const navigate = useNavigate();
     const user = useUser();
+
+    useEffect(()=>{
+        let timer = null;
+        if(user==null){
+            timer = setTimeout(()=>{
+                navigate('/login')
+            },5000)
+        }
+        return () => {
+            clearTimeout(timer);
+        }
+    },[user])
 
     const handleTitleOnChange = (event) => {
         setTitle(event.target.value);
@@ -188,7 +200,6 @@ const CreateCharityEvent = (props) => {
         
     return (
         <React.Fragment>
-            {user==null?<Navigate to="/login"/>:<></>}
             <BackSection onBackButtonClick={props.isAdmin?handleRedirectBackAdmin:handleRedirectBackUser} title="Create Charity Event"/>
             <form onSubmit={event=>handleSubmit(event)}>
                 <div id="create-form-upper-part">
