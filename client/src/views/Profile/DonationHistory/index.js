@@ -103,9 +103,7 @@ const DonationHistory = (props) =>{
 
     return(
         <React.Fragment>
-            {user==null?<Navigate to="/login"/>:<></>}
-            {isLoading?<Loading/>:""}
-            <div id="donation-history">
+            {isLoading?<Loading/>:<div id="donation-history">
                 <ProfileSideNavigation activeIndex={3}/>
                 <div id="donation-history-content">
                     <table>
@@ -157,6 +155,7 @@ const DonationHistory = (props) =>{
                     </div>
                 </div>
             </div>
+            }
         </React.Fragment>
     )
 }

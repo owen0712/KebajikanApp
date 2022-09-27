@@ -3,6 +3,8 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const mongoose = require('mongoose');
 const { MONGOURI } = require('./config/keys');
+const http = require('http');
+const socketio = require('./utils/socketio');
 
 require('./models/userModel');
 require('./models/charityEventModel');
@@ -50,8 +52,12 @@ mongoose.connection.on('error', (err) => {
     console.log('err connecting', err)
 })
 
-require('./cronjob/updateCharityEvent');
+// require('./cronjob/updateCharityEvent');
 
-app.listen(PORT, () => {
+const server = http.createServer(app);
+
+socketio(server);
+
+server.listen(PORT, () => {
     console.log("server is running on port", PORT)
 })

@@ -41,15 +41,18 @@ import EmailVerification from './views/Authorization/EmailVerification';
 import ForgotPassword from './views/Authorization/ForgotPassword';
 import ResetPassword from './views/Authorization/ResetPassword';
 import Main from './views/Main';
+import Chat from './views/Chat';
 import { UserProvider } from './contexts/UserContext.js';
+import { SocketProvider } from './contexts/SocketContext';
 // import NavRoute from './core/navRoute';
 
 function App() {
 
   return (
+    <UserProvider>
+    <SocketProvider>
     <div className="App">
       <BrowserRouter>
-      <UserProvider>
         <Header/>
         <div id="body">
         <Routes>
@@ -111,12 +114,15 @@ function App() {
           <Route path='/forgot_password' element={<ForgotPassword/>}/>
           <Route path='/reset_password/:token' element={<ResetPassword/>}/>
           <Route path='/activate/:id' element={<EmailVerification/>}/>
+          <Route exact path='/chat' element={<Chat/>}/>
+          <Route path='/chat/:id' element={<Chat/>}/>
         </Routes>
         </div>
         <Footer/>
-        </UserProvider>
       </BrowserRouter>
     </div>
+    </SocketProvider>
+    </UserProvider>
   );
 }
 

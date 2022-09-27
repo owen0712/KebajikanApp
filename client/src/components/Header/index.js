@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import CircleIcon from '@mui/icons-material/Circle';
 import { useUser, useUserUpdate } from "../../contexts/UserContext";
+import ChatIcon from '@mui/icons-material/Chat';
 
 const Header = (props) => {
 
@@ -117,9 +118,9 @@ const Header = (props) => {
       {
         user?
         <nav id="user-section">
+        <span><Link to='/chat' className="nav-item white-text"><ChatIcon/></Link></span>
         {user.role>0?<span><Link to='/admin' className="nav-item white-text">Administration</Link></span>:<></>}
-        
-        <NotificationsActiveIcon className="nav-item" id="notification-icon" onClick={handleNotificationOnClick}/>
+        <span className="nav-item" id="notification-icon"><NotificationsActiveIcon onClick={handleNotificationOnClick}/></span>
         <Popover
           id={id}
           open={open}
@@ -144,14 +145,12 @@ const Header = (props) => {
           })}
         </Popover>
 
-        <span><Link to='/profile' className="nav-item white-text">{user.name}</Link></span>
-        <AccountCircleIcon className="nav-item"/>
+        <span><Link to='/profile' className="nav-item white-text align-middle"><AccountCircleIcon/>{user.name}</Link></span>
         <span><Link to='/login'  onClick={handleOnClick} className="nav-item white-text">Logout</Link></span>
         </nav>
         :
         <nav id="user-section">
-          <span><Link to='/login' className="nav-item white-text">Sign In</Link></span>
-          <AccountCircleIcon className="nav-item"/>
+          <span><Link to='/login' className="nav-item white-text align-middle"><AccountCircleIcon/>Sign In</Link></span>
         </nav>
       }
       
