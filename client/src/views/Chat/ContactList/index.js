@@ -83,8 +83,11 @@ const ContactList = (props) => {
                     displayRelations.map(relation=>{
                         return <div className={`contact ${relation.chatmate_id._id==chatmate?'selected':''}`} key={relation._id} onClick={()=>handleContactOnClick(relation.chatmate_id._id)}>
                             <img src={relation.chatmate_id.profile_pic}/>
-                            <span>{relation.chatmate_id.name}</span>
-                            <small>2022-10-23</small>
+                            <span className='content-row'>
+                                <p>{relation.chatmate_id.name}</p>
+                                {relation.latest_chat_record&&<small>{relation.latest_chat_record.content}</small>}
+                            </span>
+                            <small>{relation.modified_on.slice(0,10)}</small>
                         </div>
                     })
                 }</>

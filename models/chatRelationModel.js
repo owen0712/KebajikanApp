@@ -11,6 +11,15 @@ const chatRelationSchema = new mongoose.Schema({
         type:ObjectId,
         ref:"User",
         required:true
+    },
+    latest_chat_record:{
+        type:ObjectId,
+        ref:"ChatRecord"
+    },
+    modified_on:{
+        type:Date,
+        required:true,
+        default:Date.now
     }
 })
 

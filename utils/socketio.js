@@ -2,6 +2,7 @@ const { Server } = require('socket.io');
 const { DOMAIN } = require('../config/keys');
 const mongoose = require('mongoose');
 require('../models/chatRecordModel');
+require('../models/chatRelationModel');
 const ChatRecord = mongoose.model('ChatRecord');
 
 const socketio = (server) => {
@@ -20,9 +21,7 @@ const socketio = (server) => {
         }
         users[username] = socket.id;
 
-        socket.on('send_message', ({from,to,message})=>{
-
-            console.log(message)
+        socket.on('send_message', ({from,to,message}, callback)=>{
 
             const newChatRecord = new ChatRecord({
                 content:message,
@@ -34,6 +33,7 @@ const socketio = (server) => {
                 if(users[to]){
                     socket.to(users[to]).emit('receive_message',savedChatRecord)
                 }
+                callback({latest_chat_record:savedChatRecord._id});
             })
         })
     })

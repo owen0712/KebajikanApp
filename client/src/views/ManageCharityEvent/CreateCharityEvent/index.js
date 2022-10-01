@@ -119,9 +119,17 @@ const CreateCharityEvent = (props) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        if(new Date(preregister_start_date)<new Date()){
+            Swal.fire({
+                title: "Preregister Start Date must be after today",
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
+            return;
+        }
         if(preregister_end_date<preregister_start_date){
             Swal.fire({
-                title: "Preregister End Date must greater than Preregister Start Date",
+                title: "Preregister End Date must be after Preregister Start Date",
                 icon: 'error',
                 confirmButtonText: 'Ok'
             });
@@ -129,7 +137,7 @@ const CreateCharityEvent = (props) => {
         }
         if(donation_start_date<preregister_end_date){
             Swal.fire({
-                title: "Donation Start Date must greater than Preregister End Date",
+                title: "Donation Start Date must be after Preregister End Date",
                 icon: 'error',
                 confirmButtonText: 'Ok'
             });
@@ -137,7 +145,7 @@ const CreateCharityEvent = (props) => {
         }
         if(donation_end_date<donation_start_date){
             Swal.fire({
-                title: "Donation End Date must greater than Donation Start Date",
+                title: "Donation End Date must be after Donation Start Date",
                 icon: 'error',
                 confirmButtonText: 'Ok'
             });

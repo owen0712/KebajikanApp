@@ -38,6 +38,8 @@
 .chat-message .message{
     padding: 10px;
     width: max-content;
+    max-width: 95%;
+    word-break: break-all;
 }
 
 .chat-message .sender{

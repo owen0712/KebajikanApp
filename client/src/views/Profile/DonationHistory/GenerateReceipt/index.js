@@ -111,7 +111,7 @@ const GenerateReceipt = (props) => {
             else{
                 setTimeout(()=>{
                     retrieveReceipt();
-                },2000);
+                },5000);
             }
         }).catch(err=>{
             Swal.fire({

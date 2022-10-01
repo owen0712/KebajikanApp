@@ -15,7 +15,7 @@ const checkEventStatus = (event) => {
     }
     return "";
 }
-cron.schedule("* 0 * * * *",()=>{
+cron.schedule("* * * * * *",()=>{
     CharityEvent.find({ "status" : { "$in": ["Not Started", "In Progress", "Preregistration"] }})
     .select('-photo')
     .select('-document')

@@ -6,7 +6,10 @@ const ChatRecord = mongoose.model('ChatRecord');
 const User = mongoose.model('User');
 const requiredLogin = require('../middlewares/requiredLogin');
 
-router.post('/chat',(req,res)=>{
+// @route   POST /chat
+// @desc    Create New Chat Relation
+// @access  Private
+router.post('/chat',requiredLogin,(req,res)=>{
     const {user_id,chatmate_id} = req.body;
     if(!user_id||!chatmate_id){
         return res.json({error:'Please fill all fields'});
@@ -38,7 +41,9 @@ router.post('/chat',(req,res)=>{
 // @access  Private
 router.get('/chat',requiredLogin,(req,res)=>{
     ChatRelation.find({user_id:req.user._id})
+    .sort('-modified_on')
     .populate('chatmate_id','profile_pic name')
+    .populate('latest_chat_record','content')
     .then(relations=>{
         res.json({relations:relations});
     }).catch(err=>{
@@ -71,6 +76,25 @@ router.get('/chatrecord/:id',requiredLogin,(req,res)=>{
     }).catch(err=>{
         res.json({error:err});
     });
+})
+
+// @route   PUT /chatrelation/:id
+// @desc    Update Chat Relation
+// @access  Private
+router.put('/chatrelation/:id',requiredLogin,(req,res)=>{
+    ChatRelation.findOneAndUpdate({user_id:req.user._id,chatmate_id:req.params.id},req.body,{new:false},(err,result)=>{
+        if(err){
+            console.log(err)
+            return res.json({error:err})
+        }
+        ChatRelation.findOneAndUpdate({user_id:req.params.id,chatmate_id:req.user._id},req.body,{new:false},(err,result)=>{
+            if(err){
+                return res.json({error:err})
+            }
+            
+            res.json({message:"Successfully updated"})
+        })
+    })
 })
 
 module.exports = router;

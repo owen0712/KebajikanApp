@@ -107,6 +107,34 @@ const ChatMessage = (props) => {
         })
     }
 
+    const updateContact = ({latest_chat_record}) => {
+        fetch('/chatrelation/'+selectedChatMate,{
+            method:'put',
+            headers:{
+                'Content-Type':'application/json',
+                'Authorization':'Bearer'+user.access_token
+            },
+            body:JSON.stringify({
+                modified_on:new Date(),
+                latest_chat_record
+            })
+        }).then(res=>res.json()).then(data=>{
+            if(data.error){
+                Swal.fire({
+                    title: data.error,
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                })
+            }
+        }).catch(err=>{
+            Swal.fire({
+                title: err,
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            })
+        })
+    }
+
     const handleMessageOnChange = (event) => {
         setMessage(event.target.value);
     }
@@ -116,9 +144,11 @@ const ChatMessage = (props) => {
             if(!message){
                 return;
             }
-            socket.emit('send_message',{from:user.id,to:selectedChatMate,message});
-            setMessage("");
-            fetchChatRecordData();
+            socket.emit('send_message',{from:user.id,to:selectedChatMate,message},(latest_chat_record)=>{
+                setMessage("");
+                updateContact(latest_chat_record);
+                fetchChatRecordData();
+            });
         }
     }
         

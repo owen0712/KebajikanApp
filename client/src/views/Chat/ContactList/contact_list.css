@@ -46,8 +46,21 @@
     padding-top: 10px;
 }
 
-.contact span{
+.contact .content-row{
+    display: inline-block;
     width: 65%;
     padding-left: 10px;
+}
+
+.content-row *{
+    display: block;
+    width: 100%;
+}
+
+.content-row p{
+    margin: 0;
+}
+
+.content-row small{
     padding-top: 5px;
 }
