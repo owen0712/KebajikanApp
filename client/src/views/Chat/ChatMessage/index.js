@@ -1,5 +1,5 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './chat_message.css';
 import { useUser } from '../../../contexts/UserContext';
 import Swal from 'sweetalert2';
@@ -14,6 +14,7 @@ const ChatMessage = (props) => {
     const [chatmate,setChatMate] = useState(null);
     const selectedChatMate = props.chatmate;
     const socket = useSocket();
+    const setUpdateList = props.setUpdateList;
 
     useEffect(()=>{
         let timer = null;
@@ -35,7 +36,12 @@ const ChatMessage = (props) => {
 
     useEffect(()=>{
         socket.on('receive_message',(data)=>{
-            setChatRecord(prev=>[...prev,data]);
+            console.log(data)
+            console.log(selectedChatMate)
+            setUpdateList(true);
+            if(data.sender==selectedChatMate){
+                setChatRecord(prev=>[...prev,data]);
+            }
         })
     },[socket])
 
@@ -147,6 +153,7 @@ const ChatMessage = (props) => {
             socket.emit('send_message',{from:user.id,to:selectedChatMate,message},(latest_chat_record)=>{
                 setMessage("");
                 updateContact(latest_chat_record);
+                setUpdateList(true);
                 fetchChatRecordData();
             });
         }

@@ -36,18 +36,50 @@ router.post('/chat',requiredLogin,(req,res)=>{
     
 });
 
-// @route   GET /chat/:id
+// @route   GET /chat
 // @desc    Retrieve User Contact List
 // @access  Private
 router.get('/chat',requiredLogin,(req,res)=>{
     ChatRelation.find({user_id:req.user._id})
     .sort('-modified_on')
     .populate('chatmate_id','profile_pic name')
-    .populate('latest_chat_record','content')
+    .populate('latest_chat_record','recipient content status')
     .then(relations=>{
         res.json({relations:relations});
     }).catch(err=>{
-        console.log(err)
+        res.json({error:err});
+    });
+})
+
+// @route   GET /relation/:id
+// @desc    Check Chat Relation
+// @access  Private
+router.get('/relation/:id',requiredLogin,(req,res)=>{
+    ChatRelation.findOne({user_id:req.user._id,chatmate_id:req.params.id})
+    .then(relation=>{
+        if(relation){
+            res.json({result:false});
+        }
+        else{
+            const newChatRelation = new ChatRelation({
+                user_id:req.user._id,
+                chatmate_id:req.params.id
+            });
+            const newChatMateRelation = new ChatRelation({
+                user_id:req.params.id,
+                chatmate_id:req.user._id
+            });
+            newChatRelation.save().then(createdRelation=>{
+                newChatMateRelation.save().then(createdRelation=>{
+                    return res.json({result:true});
+                }).catch(err=>{
+                    res.json({error:err});
+                });
+            }).catch(err=>{
+                res.json({error:err});
+            });
+        }
+    }).catch(err=>{
         res.json({error:err});
     });
 })
@@ -56,10 +88,20 @@ router.get('/chat',requiredLogin,(req,res)=>{
 // @desc    Retrieve Chatmate Details
 // @access  Private
 router.get('/chatmate/:id',requiredLogin,(req,res)=>{
-    User.findOne({_id:req.params.id})
-    .then(user=>{
-        const {name,profile_pic} = user;
-        return res.json({chatmate:{name,profile_pic}});
+    ChatRelation.findOne({user_id:req.user._id,chatmate_id:req.params.id})
+    .then(relation=>{
+        if(relation){
+            User.findOne({_id:req.params.id})
+            .then(user=>{
+                const {name,profile_pic} = user;
+                return res.json({chatmate:{name,profile_pic}});
+            }).catch(err=>{
+                res.json({error:err});
+            });
+        }
+        else{
+            return res.json({chatmate:null});
+        }
     }).catch(err=>{
         res.json({error:err});
     });
@@ -94,6 +136,19 @@ router.put('/chatrelation/:id',requiredLogin,(req,res)=>{
             
             res.json({message:"Successfully updated"})
         })
+    })
+})
+
+// @route   PUT /message/:id
+// @desc    Update Unread Chat Record
+// @access  Private
+router.put('/message/:id',requiredLogin,(req,res)=>{
+    ChatRecord.updateMany({$or:[{$and:[{sender:req.params.id},{recipient:req.user._id},{status:"Unread"}]},{$and:[{sender:req.user._id},{recipient:req.params.id},{status:"Unread"}]}]},{status:"Read"},{new:false},(err,result)=>{
+        if(err){
+            console.log(err)
+            return res.json({error:err})
+        }
+        res.json({message:"Successfully updated"})
     })
 })
 

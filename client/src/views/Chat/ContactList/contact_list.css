@@ -42,13 +42,9 @@
     vertical-align: top;
 }
 
-.contact small{
-    padding-top: 10px;
-}
-
 .contact .content-row{
     display: inline-block;
-    width: 65%;
+    width: 15vw;
     padding-left: 10px;
 }
 
@@ -63,4 +59,26 @@
 
 .content-row small{
     padding-top: 5px;
+    overflow: hidden;
+}
+
+.unread-message small{
+    color: hsl(214, 100%, 59%);
+    font-weight: bold;
+}
+
+.unread-message .other-row{
+    display: inline-block;
+    align-content: flex-end;
+}
+
+.unread-message svg{
+    align-self: flex-end;
+    margin-left: auto;
+    margin-right: 5px;
+    margin-top: 5px;
+    display: block;
+    color: hsl(214, 100%, 59%);
+    width: 10px;
+    height: 10px;
 }

@@ -1,9 +1,10 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './contact_list.css';
 import { useUser } from '../../../contexts/UserContext';
 import Swal from 'sweetalert2';
 import { Loading } from '../../../components';
+import CircleIcon from '@mui/icons-material/Circle';
 
 const ContactList = (props) => {
 
@@ -14,6 +15,8 @@ const ContactList = (props) => {
     const [isLoading,setIsLoading] = useState(true);
     const setChatMate = props.setChatMate;
     const chatmate = props.chatmate;
+    const updateList = props.updateList;
+    const setUpdateList = props.setUpdateList;
 
     useEffect(()=>{
         let timer = null;
@@ -23,15 +26,23 @@ const ContactList = (props) => {
             },5000)
         }
         if(user){
+            setIsLoading(true);
             fetchData();
+            setIsLoading(false);
         }
         return () => {
             clearTimeout(timer);
         }
     },[user])
 
+    useEffect(()=>{
+        if(updateList){
+            fetchData();
+            setUpdateList(false);
+        }
+    },[updateList])
+
     const fetchData = () => {
-        setIsLoading(true);
         fetch('/chat',{
             method:'get',
             headers:{
@@ -49,7 +60,33 @@ const ContactList = (props) => {
             else{
                 setRelations(data.relations);
                 setDisplayRelations(data.relations);
-                setIsLoading(false);
+            }
+        }).catch(err=>{
+            Swal.fire({
+                title: err,
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            })
+        })
+    }
+
+    const updateReadMessage = (chatmate_id) => {
+        fetch('/message/'+chatmate_id,{
+            method:'put',
+            headers:{
+                'Content-Type':'application/json',
+                'Authorization':'Bearer'+user.access_token
+            }
+        }).then(res=>res.json()).then(data=>{
+            if(data.error){
+                Swal.fire({
+                    title: data.error,
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                })
+            }
+            else{
+                setUpdateList(true);
             }
         }).catch(err=>{
             Swal.fire({
@@ -70,8 +107,11 @@ const ContactList = (props) => {
         }))
     }
 
-    const handleContactOnClick = (id) => {
-        setChatMate(id);
+    const handleContactOnClick = (relation) => {
+        setChatMate(relation.chatmate_id._id);
+        if(relation.latest_chat_record?.recipient==user.id&&relation.latest_chat_record?.status=="Unread"){
+            updateReadMessage(relation.chatmate_id._id);
+        }
     }
         
     return (
@@ -81,13 +121,17 @@ const ContactList = (props) => {
                 <input className='search-bar' placeholder='Search contacts' onChange={handleSearchOnChange}/>
                 {
                     displayRelations.map(relation=>{
-                        return <div className={`contact ${relation.chatmate_id._id==chatmate?'selected':''}`} key={relation._id} onClick={()=>handleContactOnClick(relation.chatmate_id._id)}>
+                        return <div className={`contact ${relation.chatmate_id._id==chatmate?'selected':''} ${relation.latest_chat_record?.recipient==user.id&&relation.latest_chat_record?.status=="Unread"?"unread-message":""}`} 
+                        key={relation._id} onClick={()=>handleContactOnClick(relation)}>
                             <img src={relation.chatmate_id.profile_pic}/>
                             <span className='content-row'>
                                 <p>{relation.chatmate_id.name}</p>
                                 {relation.latest_chat_record&&<small>{relation.latest_chat_record.content}</small>}
                             </span>
-                            <small>{relation.modified_on.slice(0,10)}</small>
+                            <span className='other-row'>
+                                <small>{relation.modified_on.slice(0,10)}</small>
+                                {relation.latest_chat_record?.recipient==user.id&&relation.latest_chat_record?.status=="Unread"?<CircleIcon/>:""}
+                            </span>
                         </div>
                     })
                 }</>

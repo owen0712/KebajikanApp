@@ -5,6 +5,7 @@ import BackSection from '../../../components/BackSection';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Swal from 'sweetalert2';
 import { Loading } from '../../../components';
+import { useUser } from '../../../contexts/UserContext';
 
 const ViewCharityEventDetails = (props) => {
 
@@ -12,6 +13,7 @@ const ViewCharityEventDetails = (props) => {
     const [isLoading,setIsLoading] = useState(true);
     const navigate = useNavigate();
     const id = useParams();
+    const user = useUser();
 
     useEffect(()=>{
         fetchData();
@@ -46,6 +48,14 @@ const ViewCharityEventDetails = (props) => {
     }
 
     const handleClick = (action,id) => {
+        if(!user){
+            Swal.fire({
+                title: "Please login to continue your action",
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            })
+            return;
+        }
         navigate(`/charity_event/${action}/${id}`);
     }
 
@@ -75,7 +85,7 @@ const ViewCharityEventDetails = (props) => {
                     </>:
                     <button onClick={()=>handleClick("apply_help",event._id)} className="preregistration-button">Apply For Help</button>
                     }
-                    <button onClick={()=>handleChat(event.organizer_id._id)} className="chat-button">Chat</button>
+                    {user?.id==event.organizer_id._id?"":<button onClick={()=>handleChat(event.organizer_id._id)} className="chat-button">Chat</button>}
                 </span>
             </div>
             </>}
