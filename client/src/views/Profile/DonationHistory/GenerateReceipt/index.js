@@ -10,17 +10,9 @@ const GenerateReceipt = (props) => {
 
     const [donation,setDonation] = useState(null);
     const [isLoading,setIsLoading] = useState(true);
-    const isSuccess = props.isSuccess;
     const id = useParams();
     const navigate = useNavigate();
     const user = useUser();
-
-    useEffect(()=>{
-        if(user==null){
-            return;
-        }
-        fetchData();
-    },[])
 
     useEffect(()=>{
         let timer = null;

@@ -43,7 +43,7 @@ const ContactList = (props) => {
     },[updateList])
 
     const fetchData = () => {
-        fetch('/chat',{
+        fetch('/contact',{
             method:'get',
             headers:{
                 'Content-Type':'application/json',

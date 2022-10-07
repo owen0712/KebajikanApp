@@ -5,11 +5,12 @@ const ChatRelation = mongoose.model('ChatRelation');
 const ChatRecord = mongoose.model('ChatRecord');
 const User = mongoose.model('User');
 const requiredLogin = require('../middlewares/requiredLogin');
+const PORT = process.env.PORT || 5000;
 
 // @route   POST /chat
 // @desc    Create New Chat Relation
 // @access  Private
-router.post('/chat',requiredLogin,(req,res)=>{
+router.post('/contact',requiredLogin,(req,res)=>{
     const {user_id,chatmate_id} = req.body;
     if(!user_id||!chatmate_id){
         return res.json({error:'Please fill all fields'});
@@ -39,7 +40,7 @@ router.post('/chat',requiredLogin,(req,res)=>{
 // @route   GET /chat
 // @desc    Retrieve User Contact List
 // @access  Private
-router.get('/chat',requiredLogin,(req,res)=>{
+router.get('/contact',requiredLogin,(req,res)=>{
     ChatRelation.find({user_id:req.user._id})
     .sort('-modified_on')
     .populate('chatmate_id','profile_pic name')
@@ -49,6 +50,13 @@ router.get('/chat',requiredLogin,(req,res)=>{
     }).catch(err=>{
         res.json({error:err});
     });
+})
+
+// @route   GET /port
+// @desc    Retrieve Port
+// @access  Private
+router.get('/port',(req,res)=>{
+    res.json({port:PORT});
 })
 
 // @route   GET /relation/:id
