@@ -16,6 +16,7 @@ const ManagePartTimeJobDetails = (props) => {
     const [allowance, setAllowance] = useState(0);
     const [closed_date, setClosedDate] = useState(null);
     const [photo, setPhoto] = useState(null);
+    const [createdBy, setCreatedBy] = useState("");
     const [isEdit, setIsEdit] = useState(props.isEdit);
     const imageUploadInput = useRef();
     const imageDisplay = useRef();
@@ -31,20 +32,25 @@ const ManagePartTimeJobDetails = (props) => {
             },5000)
         }
         if(user){
+            fetchData();
             if(user.role==2){
                 fetchData();
-                console.log(user);
             }
             else{
-                timer = setTimeout(()=>{
-                    navigate('/login')
-                },5000)
+                if(createdBy && user.id!==createdBy){
+                    Swal.fire({
+                        title: "Unauthorized access, you are redirected to home page",
+                        icon: 'error',
+                        confirmButtonText: 'Ok'
+                    });
+                    navigate('/login');
+                }
             }
         }
         return () => {
             clearTimeout(timer);
         }
-    },[user])
+    },[user, createdBy])
 
     const fetchData = () => {
         setIsLoading(true);
@@ -67,6 +73,7 @@ const ManagePartTimeJobDetails = (props) => {
                 setAllowance(event.allowance);
                 setClosedDate(event.closed_date.slice(0,10));
                 setPhoto(event.photo);
+                setCreatedBy(event.created_by);
                 setIsLoading(false);
             }
         }).catch(err=>{

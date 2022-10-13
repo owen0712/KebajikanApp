@@ -20,6 +20,7 @@ const ManageCharityEventDetails = (props) => {
     const [donation_end_date,setDonationEndDate] = useState(null);
     const [document,setDocument] = useState(null);
     const [photo,setPhoto] = useState(null);
+    const [createdBy, setCreatedBy] = useState("");
     const [receipients,setReceipients] = useState([]);
     const [isEdit,setIsEdit] = useState(props.isEdit);
     const imageUploadInput = useRef();
@@ -38,19 +39,25 @@ const ManageCharityEventDetails = (props) => {
             },5000)
         }
         if(user){
+            fetchData();
             if(user.role==2){
                 fetchData();
             }
             else{
-                timer = setTimeout(()=>{
-                    navigate('/login')
-                },5000)
+                if(createdBy && user.id!==createdBy){
+                    Swal.fire({
+                        title: "Unauthorized access, you are redirected to home page",
+                        icon: 'error',
+                        confirmButtonText: 'Ok'
+                    });
+                    navigate('/login');
+                }
             }
         }
         return () => {
             clearTimeout(timer);
         }
-    },[user])
+    },[user, createdBy])
 
     const fetchData = () =>{
         setIsLoading(true);
@@ -80,6 +87,7 @@ const ManageCharityEventDetails = (props) => {
                 setDonationEndDate(event.donation_end_date.slice(0, 10));
                 setDocument(event.document);
                 setPhoto(event.photo);
+                setCreatedBy(event.created_by);
                 setReceipients(event.receipient);
                 setIsLoading(false);
             }
