@@ -1,7 +1,8 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import {useNavigate, Navigate} from "react-router-dom";
 import {BackSection, Loading} from '../../../components';
 import Swal from 'sweetalert2';
+import { useUser } from '../../../contexts/UserContext';
 import './create_part_time_job.css';
 
 const CreatePartTimeJob = (props) => {
@@ -17,18 +18,26 @@ const CreatePartTimeJob = (props) => {
     const imageUploadInput = useRef();
     const imageDisplay = useRef();
     const navigate = useNavigate();
+    const user = useUser();
+
+    useEffect(()=>{
+        let timer = null;
+        if(user==null){
+            timer = setTimeout(()=>{
+                navigate('/login')
+            },5000)
+        }
+        return () => {
+            clearTimeout(timer);
+        }
+    },[user])
 
     const handleTitleOnChange = (event) =>{
         setTitle(event.target.value);
     }
 
     const handleRequiredStudentOnChange = (event) =>{
-        if (event.target.value>=0)
-            setRequiredStudent(event.target.value);
-        else{
-            setRequiredStudent(0);
-            event.target.value="";
-        }
+        setRequiredStudent(event.target.value);
     }
 
     const handleDescriptionOnChange = (event) =>{
@@ -77,13 +86,11 @@ const CreatePartTimeJob = (props) => {
     const handleSubmit = (event) =>{
         event.preventDefault();
         setIsSubmitLoading(true);
-        const {id,role}=JSON.parse(sessionStorage.getItem("user"));
-        const jwt=sessionStorage.getItem("jwt");
         fetch('/part_time_job',{
             method:'post',
             headers:{
                 'Content-Type':'application/json',
-                'Authorization':"Bearer"+jwt
+                'Authorization':"Bearer"+user.access_token
             },
             body:JSON.stringify({
                 title,
@@ -93,8 +100,8 @@ const CreatePartTimeJob = (props) => {
                 allowance,
                 closed_date,
                 photo,
-                user_id:id,
-                role
+                user_id:user.id,
+                role:user.role
             })
         }).then(res=>res.json()).then(data=>{
             setIsSubmitLoading(false);
@@ -131,7 +138,6 @@ const CreatePartTimeJob = (props) => {
 
     return (
         <React.Fragment>
-            {sessionStorage.getItem("user")==null?<Navigate to="/login"/>:<></>}
             {isSubmitLoading?<Loading/>:<></>}
             <BackSection title={(props.isAdmin)?"Create Part-Time Job":"Propose Part-Time Job"} onBackButtonClick={navigatePrev}/> 
             <form onSubmit={event=>handleSubmit(event)}>
@@ -149,7 +155,7 @@ const CreatePartTimeJob = (props) => {
                     <div id="form-right-content">
                         <span className="short-input">
                             <label >REQUIRED STUDENT</label>
-                            <input type="number" name="amount" defaultValue={0} onChange={event=>handleRequiredStudentOnChange(event)}/>
+                            <input type="number" name="amount" min="0" defaultValue={0} onChange={event=>handleRequiredStudentOnChange(event)}/>
                         </span>
                         <span className="short-input">
                             <label >LOCATION</label>
@@ -157,7 +163,7 @@ const CreatePartTimeJob = (props) => {
                         </span>
                         <span className="short-input">
                             <label >ALLOWANCE (RM)</label>
-                            <input type="number" name="amount" defaultValue={0} onChange={event=>handleAllowanceOnChange(event)}/>
+                            <input type="number" name="amount" min="0" defaultValue={0} onChange={event=>handleAllowanceOnChange(event)}/>
                         </span>
                         <span className="short-input">
                             <label >CLOSED DATE</label>

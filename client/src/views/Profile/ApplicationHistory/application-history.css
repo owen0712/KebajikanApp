@@ -47,3 +47,52 @@
     border-radius: 10px 10px 0px 0px;
     border-bottom: none;
 }
+
+#event-application-list-table-section .title{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 30%;
+}
+
+#event-application-list-table-section .application-date{
+    width: 15%;
+}
+
+#event-application-list-table-section .application-status{
+    width: 10%;
+}
+
+#job-application-list-table-section .title{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 30%;
+}
+
+#job-application-list-table-section .application-date{
+    width: 15%;
+}
+
+#job-application-list-table-section .application-status{
+    width: 10%;
+}
+
+#proposal-application-list-table-section .title{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 20%;
+}
+
+#proposal-application-list-table-section .application-date{
+    width: 12%;
+}
+
+#proposal-application-list-table-section .application-type{
+    width: 11%;
+}
+
+#proposal-application-list-table-section .application-status{
+    width: 9%;
+}

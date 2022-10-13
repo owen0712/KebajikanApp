@@ -9,24 +9,45 @@ import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import Swal from 'sweetalert2';
 import { Status, BackSection, Loading } from '../../../components';
+import { useUser } from '../../../contexts/UserContext';
 
 const ManagePartTimeJob = (props) => {
 
     const navigate = useNavigate();
     const [events,setEvents] = useState([]);
     const [pageNumber,setPageNumber] = useState(1);
-    const [isLoading,setIsLoading] = useState(false);
+    const [isLoading,setIsLoading] = useState(true);
+    const user = useUser();
 
     useEffect(()=>{
-        fetchData();
-    },[])
+        let timer = null;
+        if(user==null){
+            timer = setTimeout(()=>{
+                navigate('/login')
+            },5000)
+        }
+        if(user){
+            if(user.role==2){
+                fetchData();
+            }
+            else{
+                timer = setTimeout(()=>{
+                    navigate('/login')
+                },5000)
+            }
+        }
+        return () => {
+            clearTimeout(timer);
+        }
+    },[user])
 
     const fetchData = () =>{
         setIsLoading(true);
         fetch('/part_time_job',{
             method:'get',
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                'Authorization':"Bearer"+user.access_token
             }
         }).then(res=>res.json()).then(data=>{
             if(data.error){
@@ -67,7 +88,8 @@ const ManagePartTimeJob = (props) => {
                 fetch('/part_time_job/'+id,{
                     method:'delete',
                     headers:{
-                        'Content-Type':'application/json'
+                        'Content-Type':'application/json',
+                        'Authorization':"Bearer"+user.access_token
                     }
                 }).then(res=>res.json()).then(data=>{
                     if(data.error){
@@ -105,18 +127,17 @@ const ManagePartTimeJob = (props) => {
 
     return (
         <React.Fragment>
-            {JSON.parse(sessionStorage.getItem("user")).role!=2?<Navigate to="/"/>:<></>}
             {isLoading?<Loading/>:<>
             <BackSection title="Part-Time Job" previousIsHome={true} createButtonName="Create New Part-Time Job" onBackButtonClick={navigatePrev} handleButtonCreate={handleCreate}/>
-            <div id="#part-time-job-list-table-section">
+            <div id="part-time-job-list-table-section">
                 <table>
                     <thead>
-                        <tr id="#part-time-job-list-table-header-row">
-                            <th>PART-TIME JOB NAME</th>
-                            <th>EMPLOYER</th>
-                            <th>STUDENT</th>
-                            <th>DATE CREATED</th>
-                            <th>STATUS</th>
+                        <tr id="part-time-job-list-table-header-row">
+                            <th className="title">PART-TIME JOB NAME</th>
+                            <th className="employer">EMPLOYER</th>
+                            <th className="student-required">STUDENT</th>
+                            <th className="date">DATE CREATED</th>
+                            <th className="job-status">STATUS</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -124,7 +145,7 @@ const ManagePartTimeJob = (props) => {
                         {
                         events.map(event=>{
                             return <tr key={event._id}>
-                                <td>{event.title}</td>
+                                <td className='title'>{event.title}</td>
                                 <td>{event.organizer_id.name}</td>
                                 <td>{event.allocated_student.length}/{event.required_student}</td>
                                 <td>{event.created_on.slice(0,10)}</td>

@@ -2,8 +2,12 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const JobApplication = mongoose.model('JobApplication');
+const requiredLogin = require('../middlewares/requiredLogin');
 
-router.post('/job_application/:id',(req,res)=>{
+// @route   POST /job_application/:id
+// @desc    Create New Part-time Job Application
+// @access  Private
+router.post('/job_application/:id',requiredLogin,(req,res)=>{
     console.log("jobApplication:",req.body);
     //62acb99f3e617b651832c980
     const {name,email,identity_no,course,document,user_id,role} = req.body;
@@ -41,7 +45,10 @@ router.post('/job_application/:id',(req,res)=>{
     });
 });
 
-router.get('/job_application',(req,res)=>{
+// @route   GET /job_application
+// @desc    Retrieve All Users' Job Applications
+// @access  Private
+router.get('/job_application',requiredLogin,(req,res)=>{
     JobApplication.find()
     .select("-document")
     .then(events=>{
@@ -51,7 +58,11 @@ router.get('/job_application',(req,res)=>{
     });
 });
 
-router.get('/job_application/:id',(req,res)=>{
+
+// @route   GET /job_application/:id
+// @desc    Retrieve User's Job Applications
+// @access  Private
+router.get('/job_application/:id',requiredLogin,(req,res)=>{
     JobApplication.find({"created_by":req.params.id})
     .select("-document")
     .populate("job_id","title")
@@ -62,7 +73,10 @@ router.get('/job_application/:id',(req,res)=>{
     });
 });
 
-router.get('/job_application/view/:id',(req,res)=>{
+// @route   GET /job_application/view/:id
+// @desc    Retrieve Specific User's Job Application
+// @access  Private
+router.get('/job_application/view/:id',requiredLogin,(req,res)=>{
     JobApplication.find({"_id":req.params.id})
     .populate("job_id")
     .then(event=>{
@@ -72,7 +86,10 @@ router.get('/job_application/view/:id',(req,res)=>{
     });
 });
 
-router.put('/job_application/:id',(req,res)=>{
+// @route   PUT /job_application/:id
+// @desc    Update User's Job Application
+// @access  Private
+router.put('/job_application/:id',requiredLogin,(req,res)=>{
     const {name,email,identity_no,course,document} = req.body;
     if(!name||!email||!identity_no||!course||!document){
         return res.json({error:'please fill all fields'});
@@ -85,7 +102,10 @@ router.put('/job_application/:id',(req,res)=>{
     })
 });
 
-router.delete('/job_application/:id',(req,res)=>{
+// @route   DELETE /job_application/:id
+// @desc    Delete User's Job Application
+// @access  Private
+router.delete('/job_application/:id',requiredLogin,(req,res)=>{
     JobApplication.deleteOne({_id:req.params.id}).then(result=>{
         res.json({message:"Successfully withdraw"});
     }).catch(err=>{

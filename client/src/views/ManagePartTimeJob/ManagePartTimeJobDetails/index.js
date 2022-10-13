@@ -3,6 +3,7 @@ import {useNavigate, useParams, Navigate} from "react-router-dom";
 import {BackSection, Loading} from '../../../components';
 import './manage_part_time_job_details.css';
 import Swal from 'sweetalert2';
+import { useUser } from '../../../contexts/UserContext';
 
 const ManagePartTimeJobDetails = (props) => {
     
@@ -20,17 +21,38 @@ const ManagePartTimeJobDetails = (props) => {
     const imageDisplay = useRef();
     const navigate = useNavigate();
     const job_id  = useParams();
+    const user = useUser();
 
     useEffect(()=>{
-        fetchData();
-    },[])
+        let timer = null;
+        if(user==null){
+            timer = setTimeout(()=>{
+                navigate('/login')
+            },5000)
+        }
+        if(user){
+            if(user.role==2){
+                fetchData();
+                console.log(user);
+            }
+            else{
+                timer = setTimeout(()=>{
+                    navigate('/login')
+                },5000)
+            }
+        }
+        return () => {
+            clearTimeout(timer);
+        }
+    },[user])
 
     const fetchData = () => {
         setIsLoading(true);
         fetch('/part_time_job/'+job_id.id,{
             method:'get',
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                'Authorization':"Bearer"+user.access_token
             }
         }).then(res=>res.json()).then(data=>{
             if(data.error){
@@ -112,12 +134,11 @@ const ManagePartTimeJobDetails = (props) => {
     const handleSave = (event) =>{
         event.preventDefault();
         setIsSubmitLoading(true);
-        const jwt=sessionStorage.getItem("jwt");
         fetch('/part_time_job/'+job_id.id,{
             method:'put',
             headers:{
                 'Content-Type':'application/json',
-                'Authorization':"Bearer"+jwt
+                'Authorization':"Bearer"+user.access_token
             },
             body:JSON.stringify({
                 title,
@@ -176,7 +197,6 @@ const ManagePartTimeJobDetails = (props) => {
 
     return (
         <React.Fragment>
-            {sessionStorage.getItem("user")==null?<Navigate to="/login"/>:<></>}
             {isSubmitLoading?<Loading/>:<></>}
             {isLoading?<Loading/>:<>
             <BackSection title={isEdit?"Edit Part-Time Job Details":"View Part-Time Job Details"} onBackButtonClick={navigatePrev}/> 

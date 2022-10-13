@@ -6,6 +6,7 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import CreateIcon from '@mui/icons-material/Create';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import Swal from 'sweetalert2';
+import { useUser } from '../../../contexts/UserContext';
 
 const ApplicationHistoty = (props) =>{
     const navigate = useNavigate();
@@ -19,21 +20,34 @@ const ApplicationHistoty = (props) =>{
     const [isDisplayEventApplication,setIsDisplayEventApplication] = useState(true);
     const [isDisplayJobApplication,setIsDisplayJobApplication] = useState(false);
     const [isDisplayProposalApplication,setIsDisplayProposalApplication] = useState(false);
+    const user = useUser();
 
     useEffect(()=>{
-        fetchEventApplicationData();
-        fetchJobApplicationData();
-        fetchEventProposalApplicationData();
-        fetchJobProposalApplicationData();
-    },[])
+        let timer = null;
+        if(user==null){
+            timer = setTimeout(()=>{
+                navigate('/login')
+            },5000)
+        }
+        if(user){
+            fetchEventApplicationData();
+            fetchJobApplicationData();
+            fetchEventProposalApplicationData();
+            fetchJobProposalApplicationData();
+        }
+        return () => {
+            clearTimeout(timer);
+        }
+    },[user])
 
     const fetchJobApplicationData=()=>{
         setIsLoading(true);
-        const {id}=JSON.parse(sessionStorage.getItem("user"));
-        fetch('/job_application/'+id,{
+        const {id}=user;
+        fetch('/job_application/'+user.id,{
             method:'get',
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                'Authorization':"Bearer"+user.access_token
             }
         }).then(res=>res.json()).then(data=>{
             if(data.error){
@@ -50,11 +64,11 @@ const ApplicationHistoty = (props) =>{
 
     const fetchEventApplicationData=()=>{
         setIsLoading(true);
-        const {id}=JSON.parse(sessionStorage.getItem("user"));
-        fetch('/charity_application/'+id,{
+        fetch('/charity_application/'+user.id,{
             method:'get',
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                'Authorization':"Bearer"+user.access_token
             }
         }).then(res=>res.json()).then(data=>{
             if(data.error){
@@ -71,11 +85,11 @@ const ApplicationHistoty = (props) =>{
 
     const fetchEventProposalApplicationData=()=>{
         setIsLoading(true);
-        const {id}=JSON.parse(sessionStorage.getItem("user"));
-        fetch('/charity_event/organizer/'+id,{
+        fetch('/charity_event/organizer/'+user.id,{
             method:'get',
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                'Authorization':"Bearer"+user.access_token
             }
         }).then(res=>res.json()).then(data=>{
             if(data.error){
@@ -95,11 +109,11 @@ const ApplicationHistoty = (props) =>{
 
     const fetchJobProposalApplicationData=()=>{
         setIsLoading(true);
-        const {id}=JSON.parse(sessionStorage.getItem("user"));
-        fetch('/part_time_job/organizer/'+id,{
+        fetch('/part_time_job/organizer/'+user.id,{
             method:'get',
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                'Authorization':"Bearer"+user.access_token
             }
         }).then(res=>res.json()).then(data=>{
             if(data.error){
@@ -161,7 +175,8 @@ const ApplicationHistoty = (props) =>{
                 fetch('/charity_application/'+id,{
                     method:'delete',
                     headers:{
-                        'Content-Type':'application/json'
+                        'Content-Type':'application/json',
+                        'Authorization':"Bearer"+user.access_token
                     }
                 }).then(res=>res.json()).then(data=>{
                     if(data.error){
@@ -207,7 +222,8 @@ const ApplicationHistoty = (props) =>{
                 fetch('/job_application/'+id,{
                     method:'delete',
                     headers:{
-                        'Content-Type':'application/json'
+                        'Content-Type':'application/json',
+                        'Authorization':"Bearer"+user.access_token
                     }
                 }).then(res=>res.json()).then(data=>{
                     if(data.error){
@@ -249,12 +265,11 @@ const ApplicationHistoty = (props) =>{
             showCancelButton: true
         }).then(result=>{
             if(result.isConfirmed){
-                const jwt=sessionStorage.getItem("jwt");
                 fetch('/charity_event/'+id,{
                     method:'delete',
                     headers:{
                         'Content-Type':'application/json',
-                        'Authorization':"Bearer"+jwt
+                        'Authorization':"Bearer"+user.access_token
                     }
                 }).then(res=>res.json()).then(data=>{
                     if(data.error){
@@ -297,7 +312,8 @@ const ApplicationHistoty = (props) =>{
                 fetch('/part_time_job/'+id,{
                     method:'delete',
                     headers:{
-                        'Content-Type':'application/json'
+                        'Content-Type':'application/json',
+                        'Authorization':"Bearer"+user.access_token
                     }
                 }).then(res=>res.json()).then(data=>{
                     if(data.error){
@@ -361,9 +377,9 @@ const ApplicationHistoty = (props) =>{
                 <table>
                     <thead>
                         <tr id="event-application-list-table-header-row">
-                            <th>CHARITY EVENT NAME</th>
-                            <th>DATE APPLIED</th>
-                            <th>STATUS</th>
+                            <th className='title'>CHARITY EVENT NAME</th>
+                            <th className='application-date'>DATE APPLIED</th>
+                            <th className='application-status'>STATUS</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -371,7 +387,7 @@ const ApplicationHistoty = (props) =>{
                         {
                         eventApplications.map(application=>{
                             return <tr key={application._id}>
-                                <td>{application.event_id.title}</td>
+                                <td className='title'>{application.event_id.title}</td>
                                 <td>{application.created_on.slice(0,10)}</td>
                                 <td><Status statusName={application.status}/></td>
                                 <td className='button-list'>
@@ -393,9 +409,9 @@ const ApplicationHistoty = (props) =>{
                 <table>
                     <thead>
                         <tr id="job-application-list-table-header-row">
-                            <th>PART-TIME JOB NAME</th>
-                            <th>DATE APPLIED</th>
-                            <th>STATUS</th>
+                            <th className='title'>PART-TIME JOB NAME</th>
+                            <th className='application-date'>DATE APPLIED</th>
+                            <th className='application-status'>STATUS</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -426,10 +442,10 @@ const ApplicationHistoty = (props) =>{
                 <table>
                     <thead>
                         <tr id="proposal-application-list-table-header-row">
-                            <th>PROPOSAL NAME</th>
-                            <th>TYPE</th>
-                            <th>DATE APPLIED</th>
-                            <th>STATUS</th>
+                            <th className='title'>PROPOSAL NAME</th>
+                            <th className='application-type'>TYPE</th>
+                            <th className='application-date'>DATE APPLIED</th>
+                            <th className='application-status'>STATUS</th>
                             <th></th>
                         </tr>
                     </thead>

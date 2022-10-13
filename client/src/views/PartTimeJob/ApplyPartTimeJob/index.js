@@ -5,6 +5,7 @@ import BackSection from '../../../components/BackSection';
 import Dropdown from '../../../components/Dropdown';
 import Swal from 'sweetalert2';
 import { Loading } from '../../../components';
+import { useUser } from '../../../contexts/UserContext';
 
 const courseOption = [
     "Software Engineering", 
@@ -30,10 +31,22 @@ const ApplyPartTimeJob = (props) => {
     const [document,setDocument] = useState({});
     const fileUploadInput = useRef();
     const fileTextDisplay = useRef();
+    const user = useUser();
 
     useEffect(()=>{
-        fetchData();
-    },[])
+        let timer = null;
+        if(user==null){
+            timer = setTimeout(()=>{
+                navigate('/login')
+            },5000)
+        }
+        if(user){
+            fetchData();
+        }
+        return () => {
+            clearTimeout(timer);
+        }
+    },[user])
 
     const handleNameOnChange = (event) => {
         setName(event.target.value);
@@ -99,13 +112,11 @@ const ApplyPartTimeJob = (props) => {
     const handleSubmit = (event) => {
         event.preventDefault();
         setIsSubmitLoading(true);
-        const {id,role}=JSON.parse(sessionStorage.getItem("user"));
-        const jwt=sessionStorage.getItem("jwt");
         fetch('/job_application/'+job_id.id,{
             method:'post',
             headers:{
                 'Content-Type':'application/json',
-                'Authorization':"Bearer"+jwt
+                'Authorization':'Bearer'+user.access_token
             },
             body:JSON.stringify({
                 name,
@@ -113,8 +124,8 @@ const ApplyPartTimeJob = (props) => {
                 identity_no,
                 course,
                 document,
-                user_id:id,
-                role
+                user_id:user.id,
+                role:user.role
             })
         }).then(res=>res.json()).then(data=>{
             console.log("Data",data);
@@ -149,7 +160,6 @@ const ApplyPartTimeJob = (props) => {
         
     return (
         <React.Fragment>
-            {sessionStorage.getItem("user")==null?<Navigate to="/login"/>:<></>}
             <BackSection onBackButtonClick={navigatePrev} title={"Apply Part-Time Job: "+jobTitle}/>
             {isSubmitLoading?<Loading/>:<></>}
             {isLoading?<Loading/>:<>

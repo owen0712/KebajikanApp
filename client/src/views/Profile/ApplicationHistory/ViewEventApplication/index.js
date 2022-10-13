@@ -3,6 +3,7 @@ import {useNavigate, useParams} from 'react-router-dom';
 import './view-event-application.css';
 import {Loading, BackSection} from '../../../../components';
 import Swal from 'sweetalert2';
+import { useUser } from '../../../../contexts/UserContext';
 
 const ViewEventApplication = (props) => {
 
@@ -38,17 +39,30 @@ const ViewEventApplication = (props) => {
     const imageDisplay = useRef();
     const fileUploadInput = useRef();
     const fileTextDisplay = useRef();
+    const user = useUser();
 
     useEffect(()=>{
-        fetchData();
-    },[])
+        let timer = null;
+        if(user==null){
+            timer = setTimeout(()=>{
+                navigate('/login')
+            },5000)
+        }
+        if(user){
+            fetchData();
+        }
+        return () => {
+            clearTimeout(timer);
+        }
+    },[user])
 
     const fetchData = () => {
         setIsLoading(true);
         fetch('/charity_application/view/'+id.id,{
             method:'get',
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                // 'Authorization':'Bearer'+user.access_token
             }
         }).then(res=>res.json()).then(data=>{
             if(data.error){
@@ -206,12 +220,11 @@ const ViewEventApplication = (props) => {
     const handleSave = (event) => {
         event.preventDefault();
         setIsSubmitLoading(true);
-        const jwt=sessionStorage.getItem("jwt");
         fetch('/charity_application/'+id.id,{
             method:'put',
             headers:{
                 'Content-Type':'application/json',
-                'Authorization':"Bearer"+jwt
+                'Authorization':'Bearer'+user.access_token
             },
             body:JSON.stringify({
                 name,
@@ -398,7 +411,7 @@ const ViewEventApplication = (props) => {
                     <p id="file-upload-reminder">* Please upload your parents or guardian salary statement together with supporting documents in zip files</p>
                 </div>
                 <div id="tnc-section">
-                    <input disabled={!isEdit} value="1" type="checkbox"/>
+                    <input disabled={!isEdit} checked value="1" type="checkbox"/>
                     <p>By proceeding you agree to our <a>Term and Condition</a></p>
                 </div>
                 {isEdit?<div id="save-section"><button onClick={toggleCancel} id="cancel-button">Cancel</button><input type="submit" value="Save" id="save-button"/></div>:<button onClick={toggleEdit} id="create-button">Edit</button>}

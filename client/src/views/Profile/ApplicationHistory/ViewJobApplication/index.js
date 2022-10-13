@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import './view-job-application.css';
 import { BackSection, Dropdown, Loading } from '../../../../components';
 import Swal from 'sweetalert2';
+import { useUser } from '../../../../contexts/UserContext';
 
 const courseOption = [
     "Software Engineering", 
@@ -29,11 +30,22 @@ const ViewJobApplication = (props) => {
     const fileUploadInput = useRef();
     const fileTextDisplay = useRef();
     const job_id = useParams();
+    const user = useUser();
 
     useEffect(()=>{
-        fetchData();
-        // fetchJobData();
-    },[])
+        let timer = null;
+        if(user==null){
+            timer = setTimeout(()=>{
+                navigate('/login')
+            },5000)
+        }
+        if(user){
+            fetchData();
+        }
+        return () => {
+            clearTimeout(timer);
+        }
+    },[user])
 
     const handleNameOnChange = (event) => {
         setName(event.target.value);
@@ -80,7 +92,8 @@ const ViewJobApplication = (props) => {
         fetch('/job_application/view/'+job_id.id,{
             method:'get',
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                'Authorization':'Bearer'+user.access_token
             }
         }).then(res=>res.json()).then(data=>{
             if(data.error){
@@ -105,12 +118,11 @@ const ViewJobApplication = (props) => {
     const handleSave = (e) => {
         e.preventDefault();
         setIsSubmitLoading(true);
-        const jwt=sessionStorage.getItem("jwt");
         fetch('/job_application/'+job_id.id,{
             method:'put',
             headers:{
                 'Content-Type':'application/json',
-                'Authorization':"Bearer"+jwt
+                'Authorization':'Bearer'+user.access_token
             },
             body:JSON.stringify({
                 name,
