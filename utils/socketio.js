@@ -1,4 +1,4 @@
-const { Server } = require('socket.io');
+const socketIO = require('socket.io');
 const { DOMAIN } = require('../config/keys');
 const mongoose = require('mongoose');
 require('../models/chatRecordModel');
@@ -6,10 +6,14 @@ require('../models/chatRelationModel');
 const ChatRecord = mongoose.model('ChatRecord');
 
 const socketio = (server) => {
-    const io = new Server(server, {
-        cors:{
-            origin: `${DOMAIN}`
-        }
+    const io = socketIO(server, {
+        cors: {
+          origin: `${DOMAIN}`,
+          methods: ["GET", "POST"],
+          credentials: true
+        },
+        upgrade: false,
+        transports: ['websocket']
     })
     
     const users = {};

@@ -3,8 +3,8 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const mongoose = require('mongoose');
 const { MONGOURI } = require('./config/keys');
-const http = require('http');
 const socketio = require('./utils/socketio');
+const http = require('http');
 
 require('./models/userModel');
 require('./models/charityEventModel');
@@ -56,8 +56,8 @@ mongoose.connection.on('error', (err) => {
 
 const server = http.createServer(app);
 
-socketio(server);
-
 server.listen(PORT, () => {
     console.log("server is running on port", PORT)
 })
+
+socketio(server);

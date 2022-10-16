@@ -1,8 +1,8 @@
 .chat-window{
     background-color: #E2ECFF;
-    width: 67.65%;
-    min-height: 85.5vh;
-    max-height: 85.5vh;
+    width: 59.5vw;
+    min-height: 86vh;
+    max-height: 86vh;
     display: inline-block;
     vertical-align: top;
 }
@@ -71,6 +71,29 @@
 .chat-input input{
     border: 2px solid #192F59;
     border-radius: 20px;
-    width: 95%;
+    width: 90%;
     padding-left: 25px;
+    height: 35px;
+}
+
+.chat-input button{
+    background-color: #192F59;
+    border-radius: 50%;
+    border: solid 1px #192F59;
+    margin-left: 10px;
+    display: inline-flex;
+    justify-content: center;
+    align-content: center;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.chat-input button svg{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    color: white;
+    margin-left: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }

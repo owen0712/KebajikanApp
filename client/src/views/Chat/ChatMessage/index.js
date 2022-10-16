@@ -4,6 +4,7 @@ import './chat_message.css';
 import { useUser } from '../../../contexts/UserContext';
 import Swal from 'sweetalert2';
 import { useSocket } from '../../../contexts/SocketContext';
+import SendIcon from '@mui/icons-material/Send';
 
 const ChatMessage = (props) => {
 
@@ -145,18 +146,16 @@ const ChatMessage = (props) => {
         setMessage(event.target.value);
     }
 
-    const handleKeyUp = (event) => {
-        if(event.key === 'Enter'){
-            if(!message){
-                return;
-            }
-            socket.emit('send_message',{from:user.id,to:selectedChatMate,message},(latest_chat_record)=>{
-                setMessage("");
-                updateContact(latest_chat_record);
-                setUpdateList(true);
-                fetchChatRecordData();
-            });
+    const handleSendOnClick = (event) => {
+        if(!message){
+            return;
         }
+        socket.emit('send_message',{from:user.id,to:selectedChatMate,message},(latest_chat_record)=>{
+            setMessage("");
+            updateContact(latest_chat_record);
+            setUpdateList(true);
+            fetchChatRecordData();
+        });
     }
         
     return (
@@ -179,7 +178,8 @@ const ChatMessage = (props) => {
                     })}
                 </div>
                 <div className='chat-input'>
-                    <input value={message} type='text' placeholder='Type a message' onChange={handleMessageOnChange} onKeyUp={handleKeyUp} disabled={!chatmate}/>
+                    <input value={message} type='text' placeholder='Type a message' onChange={handleMessageOnChange} disabled={!chatmate}/>
+                    <button onClick={handleSendOnClick} disabled={!chatmate}><SendIcon/></button>
                 </div>
             </div>
         </React.Fragment>
