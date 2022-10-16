@@ -136,8 +136,9 @@ router.get('/charity_event/name/:id',requiredLogin,(req,res)=>{
 // @desc    Update Charity Event
 // @access  Private
 router.put('/charity_event/:id',requiredLogin,(req,res)=>{
-    const {title,purpose,description,location,amount,preregister_start_date,preregister_end_date,donation_start_date,donation_end_date,photo,document,receipeint} = req.body;
-    if(!title||!purpose||!description||!location||!amount||!preregister_start_date||!preregister_end_date||!donation_start_date||!donation_end_date||!photo||!document){
+    //document is optional
+    const {title,purpose,description,location,amount,preregister_start_date,preregister_end_date,donation_start_date,donation_end_date,photo,receipeint} = req.body;
+    if(!title||!purpose||!description||!location||!amount||!preregister_start_date||!preregister_end_date||!donation_start_date||!donation_end_date||!photo){
         return res.json({error:'please fill all fields'});
     }
     const date = new Date();

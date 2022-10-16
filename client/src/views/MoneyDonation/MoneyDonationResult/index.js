@@ -26,6 +26,7 @@ const MoneyDonationResult = (props) => {
         }
         if(user){
             updateData();
+            generateReceipt();
             fetchData();
         }
         return () => {
@@ -81,6 +82,33 @@ const MoneyDonationResult = (props) => {
             else{
                 setDonation(data.donation);
                 setIsLoading(false);
+            }
+        }).catch(err=>{
+            Swal.fire({
+                title: err,
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            })
+        })
+    }
+
+    const generateReceipt = () => {
+        fetch('/receipt/'+id.id,{
+            method:'post',
+            headers:{
+                'Content-Type':'application/json',
+                'Authorization':'Bearer'+user.access_token
+            }
+        }).then(res=>res.json()).then(data=>{
+            if(data.error){
+                Swal.fire({
+                    title: data.error,
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                })
+            }
+            else{
+                return;
             }
         }).catch(err=>{
             Swal.fire({

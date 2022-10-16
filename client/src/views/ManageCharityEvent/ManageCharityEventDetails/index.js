@@ -211,6 +211,22 @@ const ManageCharityEventDetails = (props) => {
             });
             return;
         }
+        var request_body = {
+            title,
+            purpose,
+            description,
+            location,
+            amount,
+            preregister_start_date,
+            preregister_end_date,
+            donation_start_date,
+            donation_end_date,
+            photo,
+            receipients
+        };
+        if(document&&document?.content){
+            request_body = {...request_body, document}
+        }
         fetch('/charity_event/'+id,{
             method:'put',
             headers:{
@@ -218,18 +234,7 @@ const ManageCharityEventDetails = (props) => {
                 'Authorization':"Bearer"+user.access_token
             },
             body:JSON.stringify({
-                title,
-                purpose,
-                description,
-                location,
-                amount,
-                preregister_start_date,
-                preregister_end_date,
-                donation_start_date,
-                donation_end_date,
-                document,
-                photo,
-                receipients
+                ...request_body
             })
         }).then(res=>res.json()).then(data=>{
             if(data.error){

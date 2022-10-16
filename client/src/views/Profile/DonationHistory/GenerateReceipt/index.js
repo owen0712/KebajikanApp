@@ -86,32 +86,7 @@ const GenerateReceipt = (props) => {
     }
 
     const handleButtonOnClick = () => {
-        fetch('/receipt/'+id.id,{
-            method:'post',
-            headers:{
-                'Content-Type':'application/json',
-                'Authorization':'Bearer'+user.access_token
-            }
-        }).then(res=>res.json()).then(data=>{
-            if(data.error){
-                Swal.fire({
-                    title: data.error,
-                    icon: 'error',
-                    confirmButtonText: 'Ok'
-                })
-            }
-            else{
-                setTimeout(()=>{
-                    retrieveReceipt();
-                },5000);
-            }
-        }).catch(err=>{
-            Swal.fire({
-                title: err,
-                icon: 'error',
-                confirmButtonText: 'Ok'
-            })
-        })
+        retrieveReceipt();
     }
 
     const handleRedirectBack = () => {
