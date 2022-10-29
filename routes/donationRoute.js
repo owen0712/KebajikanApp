@@ -6,7 +6,7 @@ const {STRIPE_SECRET, DOMAIN}=require('../config/keys');
 const stripe = require('stripe')(STRIPE_SECRET);
 const requiredLogin = require('../middlewares/requiredLogin');
 const {generateReceipt} = require('../utils/pdfgenerator');
-const path = require('path');
+const {sendReceiptEmail} = require('../utils/nodemailer');
 
 // @route   POST /donation/money/:id
 // @desc    Create New Money Donation
@@ -65,9 +65,27 @@ router.post('/receipt/:id',requiredLogin,(req,res)=>{
     Donation.findOne({_id:req.params.id})
     .populate('donor_id')
     .populate('charity_event_id')
-    .then(donation=>{
-        generateReceipt(donation);
-        res.json({status:"OK"})
+    .then(async(donation)=>{
+        if(donation?.receipt){
+            return res.json({status:"OK"});
+        }
+        await generateReceipt(donation);
+        setTimeout(()=>{
+            Donation.findOne({_id:req.params.id})
+            .then(async(donation)=>{
+                const emailContent = {
+                    destinationEmail:donation.email,
+                    subject:"Thank You For Your Donation",
+                    content:"Thank you for your donation. This is the computer-generated receipt for your donation",
+                    attachment:donation.receipt
+                }
+                sendReceiptEmail(emailContent);
+                res.json({status:"OK"});
+            }).catch(err=>{
+                res.json({error:err});
+            });
+        }, 5000);
+        
     }).catch(err=>{
         res.json({error:err});
     });
@@ -77,10 +95,11 @@ router.post('/receipt/:id',requiredLogin,(req,res)=>{
 // @desc    Retrieve Receipt
 // @access  Private
 router.get('/receipt/:id',requiredLogin,(req,res)=>{
-    res.download(`${path.resolve(__dirname, '..')}/receipt/${req.params.id}.pdf`,(err)=>{
-        if(err){
-            console.log(err)
-        }
+    Donation.findOne({_id:req.params.id})
+    .then(donation=>{
+        res.json({receipt:donation.receipt});
+    }).catch(err=>{
+        res.json({error:err});
     });
 })
 

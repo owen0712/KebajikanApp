@@ -6,7 +6,7 @@ const User = mongoose.model("User");
 const jwt=require("jsonwebtoken");
 const {JWT_SECRET_ACCESS,JWT_SECRET_REFRESH,DOMAIN}=require('../config/keys');
 const checkToken = require('../middlewares/checkToken');
-const sendMail = require('../utils/nodemailer');
+const {sendMail} = require('../utils/nodemailer');
 const getAvatarImage = require('../utils/imagereader');
 const requiredLogin = require('../middlewares/requiredLogin');
 

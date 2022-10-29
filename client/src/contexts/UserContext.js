@@ -27,13 +27,13 @@ export const UserProvider = ( {children} ) => {
     useEffect(()=>{
         const refresh_token=sessionStorage.getItem("refresh_token");
         if(user==null&&refresh_token){
-          refreshUserData();
+            refreshUserData();
         }
         if(user&&refresh_token){
-          refreshToken();
+            refreshToken();
         }
         setIsFetching(false);
-    })
+    },[user])
     
     const refreshUserData = () => {
         const refresh_token=sessionStorage.getItem("refresh_token");
@@ -48,7 +48,7 @@ export const UserProvider = ( {children} ) => {
                 console.log(data.error);
             }
             else{
-              updateUser(data.user);
+                updateUser(data.user);
             }
         }).catch(err=>{
             console.log(err);

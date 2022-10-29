@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './money_donation_result.css';
 import BackSection from '../../../components/BackSection';
-import { useNavigate, Navigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useUser } from '../../../contexts/UserContext';
 import { Loading } from '../../../components';
@@ -25,8 +25,11 @@ const MoneyDonationResult = (props) => {
             },5000)
         }
         if(user){
+            console.log('render')
             updateData();
-            generateReceipt();
+            if(isSuccess){
+                generateReceipt();
+            }
             fetchData();
         }
         return () => {
@@ -106,9 +109,6 @@ const MoneyDonationResult = (props) => {
                     icon: 'error',
                     confirmButtonText: 'Ok'
                 })
-            }
-            else{
-                return;
             }
         }).catch(err=>{
             Swal.fire({

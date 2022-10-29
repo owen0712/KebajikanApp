@@ -64,7 +64,7 @@ const GenerateReceipt = (props) => {
                 'Content-Type':'application/json',
                 'Authorization':'Bearer'+user.access_token
             }
-        }).then(res=>res.blob()).then(data=>{
+        }).then(res=>res.json()).then(data=>{
             if(data.error){
                 Swal.fire({
                     title: data.error,
@@ -72,10 +72,12 @@ const GenerateReceipt = (props) => {
                     confirmButtonText: 'Ok'
                 })
             }
-            const link = document.createElement('a');
-            link.href = window.URL.createObjectURL(data);
-            link.download = `${id.id}-${new Date().toISOString().slice(0,10)}.pdf`;
-            link.click();
+            const linkSource = data.receipt.content;
+            const downloadLink = document.createElement("a");
+            const fileName = data.receipt.name;
+            downloadLink.href = linkSource;
+            downloadLink.download = fileName;
+            downloadLink.click();
         }).catch(err=>{
             Swal.fire({
                 title: err,

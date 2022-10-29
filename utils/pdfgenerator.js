@@ -1,5 +1,9 @@
 const pdf = require('html-pdf');
 const { getUMLogo } = require('./imagereader');
+const mongoose = require('mongoose');
+require('../models/donationModel');
+const Donation = mongoose.model('Donation');
+const phantom = require('phantomjs')
 
 const receiptTemplate = (donation) =>{
     const date = new Date();
@@ -38,7 +42,11 @@ const receiptTemplate = (donation) =>{
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Donation Receipt</title>
-        <style>
+        <style type="text/css" media="print">
+            html {
+                zoom: 0.55;
+            }
+
             .bold{
                 font-weight: bold;
             }
@@ -134,7 +142,6 @@ const receiptTemplate = (donation) =>{
             </div>
             <div>
                 <p class="bold">Resit Rasmi ini dijana oleh komputer, tandatangan tidak diperlukan/</p>
-                <p>This Official Receipt is computer generated, no signature is required</p>
             </div>
         </div>
     </body>
@@ -143,11 +150,23 @@ const receiptTemplate = (donation) =>{
 }
 const generateReceipt = async (donation) => {
 
-    await pdf.create(receiptTemplate(donation),{}).toFile(`receipt/${donation._id}.pdf`,(err,res)=>{
-        if(err){
-            return Promise.reject();
+    // await pdf.create(receiptTemplate(donation),{}).toFile(`receipt/${donation._id}.pdf`,(err,res)=>{
+    //     if(err){
+    //         return Promise.reject();
+    //     }
+    //     return Promise.resolve();
+    // })
+
+    await pdf.create(receiptTemplate(donation), {phantomPath: phantom.path,childProcessOptions: { env: { OPENSSL_CONF: '/dev/null' }}}).toBuffer((err,buffer)=>{
+        const receipt = {
+            name:donation._id+'.pdf',
+            content:'data:application/pdf;base64,'+buffer.toString('base64')
         }
-        return Promise.resolve();
+        Donation.findByIdAndUpdate(donation._id,{receipt},{new:false},(err,result)=>{
+            if(err){
+                console.log(err)
+            }
+        })
     })
 
 }
