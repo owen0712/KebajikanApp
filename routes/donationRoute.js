@@ -79,7 +79,7 @@ router.post('/receipt/:id',requiredLogin,(req,res)=>{
                     content:"Thank you for your donation. This is the computer-generated receipt for your donation",
                     attachment:donation.receipt
                 }
-                sendReceiptEmail(emailContent);
+                await sendReceiptEmail(emailContent);
                 res.json({status:"OK"});
             }).catch(err=>{
                 res.json({error:err});

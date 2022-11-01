@@ -7,7 +7,7 @@ const jwt=require("jsonwebtoken");
 const {JWT_SECRET_ACCESS,JWT_SECRET_REFRESH,DOMAIN}=require('../config/keys');
 const checkToken = require('../middlewares/checkToken');
 const {sendMail} = require('../utils/nodemailer');
-const getAvatarImage = require('../utils/imagereader');
+const {getAvatarImage} = require('../utils/imagereader');
 const requiredLogin = require('../middlewares/requiredLogin');
 
 // @route   POST /signup
@@ -47,13 +47,10 @@ router.post("/signup", (req, res) => {
           });
   
           user.save()
-            .then((user) => {
+            .then(async (user) => {
               const subject = 'Kebajikan App Registration Verfication';
               const content = `<p>Please click the link below to activate your account</p> <a href='${DOMAIN}/activate/${user._id}'>Click here</a>`
-              const result=sendMail({destinationEmail:email,subject,content})
-              if(!result){
-                return res.json({message:"Failed"});
-              }
+              await sendMail({destinationEmail:email,subject,content})
               res.json({ message: "New user successfully saved" });
             })
             .catch((err) => {
