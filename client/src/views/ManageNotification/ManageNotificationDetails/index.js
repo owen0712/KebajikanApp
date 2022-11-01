@@ -217,9 +217,9 @@ const ManageNotificationDetails = (props) => {
                                     </span>
                                 })
                             }
-                        </div>
-                        <div id="recipient-list-pagination">
-                            <Pagination count={recipientList.length<=ROW_PER_PAGE?1:parseInt(recipientList.length/ROW_PER_PAGE)+1} page={page} onChange={handlePageOnChange} />
+                            <div id="recipient-list-pagination">
+                                <Pagination count={recipientList.length<=ROW_PER_PAGE?1:parseInt(recipientList.length/ROW_PER_PAGE)+1} page={page} onChange={handlePageOnChange} />
+                            </div>
                         </div>
                     </span>
                     :
@@ -233,9 +233,9 @@ const ManageNotificationDetails = (props) => {
                                     </span>
                                 })
                             }
-                        </div>
-                        <div id="recipient-list-pagination">
-                            <Pagination count={recipients.length<=ROW_PER_PAGE?1:parseInt(recipients.length/ROW_PER_PAGE)+1} page={page} onChange={handlePageOnChange} />
+                            <div id="recipient-list-pagination">
+                                <Pagination count={recipients.length<=ROW_PER_PAGE?1:parseInt(recipients.length/ROW_PER_PAGE)+1} page={page} onChange={handlePageOnChange} />
+                            </div>
                         </div>
                     </span>}                 
                     {isEdit?<div id="save-section">
