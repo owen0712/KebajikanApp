@@ -37,12 +37,13 @@ router.post('/part_time_job',requiredLogin,(req,res)=>{
 });
 
 // @route   GET /part_time_job
-// @desc    Create New Part-time Job
+// @desc    Retrive Part-time Job 
 // @access  Private
 router.get('/part_time_job',requiredLogin,(req,res)=>{
     PartTimeJob.find({status:{ "$in": ["Closed", "Available"] }})
     .select("-photo")
     .populate("organizer_id","name")
+    .sort("-created_on")
     .then(events=>{
         res.json({events:events});
     }).catch(err=>{
@@ -57,6 +58,7 @@ router.get('/part_time_job/organizer/:id',requiredLogin,(req,res)=>{
     PartTimeJob.find({organizer_id:req.params.id})
     .select("-photo")
     .populate("organizer_id","name")
+    .sort("-created_on")
     .then(events=>{
         res.json({events:events});
     }).catch(err=>{

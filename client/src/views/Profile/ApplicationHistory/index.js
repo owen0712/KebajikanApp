@@ -451,9 +451,10 @@ const ApplicationHistoty = (props) =>{
                     </thead>
                     <tbody>
                         {
-                        proposal.map(application=>{
+                        proposal.sort((a,b)=>{return (new Date(b.created_on) - new Date(a.created_on))})
+                        .map(application=>{
                             return <tr key={application._id}>
-                                <td>{application.title}</td>
+                                <td className='title'>{application.title}</td>
                                 <td>{application.type}</td>
                                 <td>{application.created_on.slice(0,10)}</td>
                                 <td><Status statusName={(application.status!=="Rejected"&&application.status!=="Pending")?"Approved":application.status}/></td>

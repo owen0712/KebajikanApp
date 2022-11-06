@@ -51,7 +51,7 @@ const Admin = (props) => {
                     <WorkTwoToneIcon/>
                     <p>PART-TIME JOB</p>
                 </span>
-                <span className="option-card" onClick={()=>handleClick('/')}>
+                <span className="option-card" onClick={()=>handleClick('/manage_user_application')}>
                     <FactCheckTwoToneIcon/>
                     <p>USER APPLICATION</p>
                 </span>

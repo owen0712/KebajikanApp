@@ -1,0 +1,179 @@
+#user-job-application-layout{
+    display: flex;
+}
+
+#user-job-application-details-section{
+    width: 40%;
+}
+
+#user-job-application-details-section img{
+    width: 100%;
+    height: auto;
+}
+
+#user-job-application-details-section span{
+    width: 50%;
+    padding-left: 50px;
+}
+
+#user-job-application-details-section #organizer{
+    display: flex;
+    font-size: 25px;
+    font-weight: bold;
+    margin: 0;
+}
+
+#user-job-application-details-section #title{
+    font-weight: bold;
+    margin: 5px auto;
+    text-align: center;
+}
+
+.chat-button{
+    border: 1px solid #192F59;
+    color: white;
+    background-color: #192F59;
+    border-radius: 10px;
+    height: 40px;
+    width:80px;
+    cursor: pointer;
+    margin: 10px;
+}
+
+#user-job-application-form{
+    margin: 45px 5%;
+    width: 50%;
+}
+
+#user-job-application-form .short-input label{
+    width: 40%;
+}
+
+#user-job-application-form .short-input{
+    margin: 10px 10px 30px 10px;
+}
+
+#course-dropdown{
+    width: 100%;
+}
+
+#course-dropdown-label{
+    background-color: aqua;
+}
+
+#course-dropdown svg{
+    align-items: center;
+}
+
+#application-job-title{
+    font-size: 50px;
+    color: #192F59;
+    margin-top: 0;
+    
+}
+
+.resume-preview{
+    width: 100%;
+    height: 100%;
+}
+
+.resume-preview-frame{
+    border: #192F59 3px solid;
+    width: 99%;
+    padding: 5px;
+
+}
+
+#save-button{
+    background-color: #192F59;
+    color: white;
+    margin: 10px 4px;
+    border-radius: 20px;
+    height: 40px;
+    position: relative;
+    display: inline-block;
+    text-align: center;
+    width: 100px;
+    cursor: pointer;
+}
+
+#cancel-button{
+    background-color: #DD4B39;
+    border-color: #DD4B39;
+    color: white;
+    margin: 10px 4px;
+    border-radius: 20px;
+    height: 40px;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    width: 100px;
+    cursor: pointer;
+}
+
+#save-section{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.resume-preview-box{
+    width: 80%;
+    position: absolute;
+    background-color: white;
+    border: 2px solid #000;
+    margin: 5% 10%;
+    
+}
+
+.resume-full-preview-title{
+    width: 100%;
+    color: white;
+    background-color: #192F59;
+    margin: 0;
+    text-align: center;
+    padding: 1% 0;
+}
+
+.resume-full-preview-frame{
+    border: #192F59 3px solid;
+    width: 99%;
+    padding: 3px;
+    height: 500px;
+}
+
+.resume-full-preview-action-section{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-close-button{
+    border-color: #323232;
+    background-color: #323232;
+    color: white;
+    margin: 10px auto;
+    border-radius: 20px;
+    height: 40px;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    width: 100px;
+    cursor: pointer;
+}
+
+.resume-preview-label svg{
+    color: white;
+    margin: 0px 5px 0px 0px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    float: right;
+}
+
+.resume-preview-label svg:hover{
+    color: white;
+    border: white 1px solid;
+    border-radius: 5px;
+}

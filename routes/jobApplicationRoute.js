@@ -51,6 +51,9 @@ router.post('/job_application/:id',requiredLogin,(req,res)=>{
 router.get('/job_application',requiredLogin,(req,res)=>{
     JobApplication.find()
     .select("-document")
+    .populate("job_id","title")
+    .populate("created_by","name")
+    .sort("-created_on")
     .then(events=>{
         res.json({events:events});
     }).catch(err=>{
@@ -66,6 +69,7 @@ router.get('/job_application/:id',requiredLogin,(req,res)=>{
     JobApplication.find({"created_by":req.params.id})
     .select("-document")
     .populate("job_id","title")
+    .sort("-created_on")
     .then(events=>{
         res.json({events:events});
     }).catch(err=>{

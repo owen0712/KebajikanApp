@@ -100,4 +100,20 @@ router.delete('/charity_application/:id',(req,res)=>{
     })
 });
 
+// @route   GET /charity_application
+// @desc    Retrieve All Users' Charity Applications
+// @access  Private
+router.get('/charity_application',requiredLogin,(req,res)=>{
+    CharityApplication.find()
+    .select("-document")
+    .populate("event_id","title")
+    .populate("created_by","name")
+    .sort("-created_on")
+    .then(events=>{
+        res.json({events:events});
+    }).catch(err=>{
+        res.json({error:err});
+    });
+});
+
 module.exports = router;
