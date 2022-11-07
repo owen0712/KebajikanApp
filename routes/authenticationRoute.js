@@ -99,7 +99,7 @@ router.post("/signin", (req, res) => {
             if(err){
                 console.log(err);
             }
-            res.json({ user:{id:savedUser._id,name:savedUser.name,role:savedUser.role,access_token,refresh_token}, message: "Successfully signed in" });
+            res.json({ user:{id:savedUser._id,name:savedUser.name,role:savedUser.role,charity_event_organizer:savedUser.charity_event_organizer,part_time_job_organizer:savedUser.part_time_job_organizer,charity_event_recipient:savedUser.charity_event_recipient,part_time_job_recipient:savedUser.part_time_job_recipient,access_token,refresh_token}, message: "Successfully signed in" });
           })
         } else {
           return res.json({ error: "Invalid email or password" });
@@ -176,7 +176,7 @@ router.get("/refresh/token", checkToken, (req, res) => {
     if(err){
         console.log(err);
     }
-    res.json({ user:{id:user._id,name:user.name,role:user.role,access_token,refresh_token} });
+    res.json({ user:{id:user._id,name:user.name,role:user.role,charity_event_organizer:user.charity_event_organizer,part_time_job_organizer:user.part_time_job_organizer,charity_event_recipient:user.charity_event_recipient,part_time_job_recipient:user.part_time_job_recipient,access_token,refresh_token} });
   })
 });
 

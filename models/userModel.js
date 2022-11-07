@@ -41,6 +41,22 @@ const userSchema = new mongoose.Schema({
     },
     access_token:{
         type:String
+    },
+    charity_event_organizer:{
+        type:Boolean,
+        default:false
+    },
+    part_time_job_organizer:{
+        type:Boolean,
+        default:false
+    },
+    charity_event_recipient:{
+        type:Boolean,
+        default:false
+    },
+    part_time_job_recipient:{
+        type:Boolean,
+        default:false
     }
 })
 
