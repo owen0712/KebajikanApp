@@ -19,6 +19,24 @@ const Admin = (props) => {
         navigate(url);
     }
 
+    const isAdmin = () => {
+        if(user){
+            return user.role==2;
+        }
+    }
+
+    const isCharityEventOrganizer = () => {
+        if(user){
+            return user.role==2||user.charity_event_organizer;
+        }
+    }
+
+    const isPartTimeJobOrganizer = () => {
+        if(user){
+            return user.role==2||user.part_time_job_organizer;
+        }
+    }
+
     useEffect(()=>{
         let timer = null;
         if(user==null){
@@ -27,7 +45,7 @@ const Admin = (props) => {
             },5000)
         }
         if(user){
-            if(user.role!=2){
+            if(user.role!=2&&!user.charity_event_organizer&&!user.part_time_job_organizer){
                 navigate('/');
             }
         }
@@ -39,19 +57,19 @@ const Admin = (props) => {
     return (
         <React.Fragment>
             <div id="admin-section">
-                <span className="option-card" onClick={()=>handleClick('/manage_announcement')}>
+                {isAdmin()&&<span className="option-card" onClick={()=>handleClick('/manage_announcement')}>
                     <NewReleasesIcon/>
                     <p>ANNOUNCEMENT</p>
-                </span>
-                <span className="option-card" onClick={()=>handleClick('/manage_charity_event')}>
+                </span>}
+                {isCharityEventOrganizer()&&<span className="option-card" onClick={()=>handleClick('/manage_charity_event')}>
                     <EventTwoToneIcon/>
                     <p>CHARITY EVENT</p>
-                </span>
-                <span className="option-card" onClick={()=>handleClick('/manage_part_time_job')}>
+                </span>}
+                {isPartTimeJobOrganizer()&&<span className="option-card" onClick={()=>handleClick('/manage_part_time_job')}>
                     <WorkTwoToneIcon/>
                     <p>PART-TIME JOB</p>
-                </span>
-                <span className="option-card" onClick={()=>handleClick('/manage_user_application')}>
+                </span>}
+                {isAdmin()&&<><span className="option-card" onClick={()=>handleClick('/manage_user_application')}>
                     <FactCheckTwoToneIcon/>
                     <p>USER APPLICATION</p>
                 </span>
@@ -67,6 +85,7 @@ const Admin = (props) => {
                     <GroupTwoToneIcon/>
                     <p>USER</p>
                 </span>
+                </>}
             </div>
         </React.Fragment>
     )

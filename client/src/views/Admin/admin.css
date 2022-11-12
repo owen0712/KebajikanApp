@@ -2,7 +2,7 @@
     display: flex;
     flex-wrap: wrap;
     padding: 0 10%;
-
+    min-height: 50vh;
 }
 
 .option-card{

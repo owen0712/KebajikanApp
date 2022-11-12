@@ -30,6 +30,12 @@ const Header = (props) => {
     }
   },[anchorEl])
 
+  const isAdministrator = () => {
+    if(user){
+      return user.role>0||user.charity_event_organizer||user.part_time_job_organizer;
+    }
+  }
+
   const fetchNotification = () => {
     if(user==null){
       return;
@@ -119,7 +125,7 @@ const Header = (props) => {
         user?
         <nav id="user-section">
         <span><Link to='/chat' className="nav-item white-text"><ChatIcon/></Link></span>
-        {user.role>0?<span><Link to='/admin' className="nav-item white-text">Administration</Link></span>:<></>}
+        {isAdministrator()?<span><Link to='/admin' className="nav-item white-text">Administration</Link></span>:<></>}
         <span className="nav-item" id="notification-icon"><NotificationsActiveIcon onClick={handleNotificationOnClick}/></span>
         <Popover
           id={id}
