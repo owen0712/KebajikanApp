@@ -1,0 +1,21 @@
+#charity-recipient-section{
+    display: flex;
+}
+
+#charity-recipient-details{
+    width: 100%;
+    background-color: white;
+    padding: 10px;
+    border-radius: 20px;
+}
+
+#charity-recipient-form {
+    width: 95%;
+    padding: 40px 15px 0px 15px;
+}
+
+#charity-recipient-pagination{
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+}
