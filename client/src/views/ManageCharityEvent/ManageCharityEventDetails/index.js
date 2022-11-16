@@ -5,6 +5,7 @@ import BackSection from '../../../components/BackSection';
 import Swal from 'sweetalert2';
 import { Loading } from '../../../components';
 import { useUser } from '../../../contexts/UserContext';
+import RecipientList from './RecipientList';
 
 const ManageCharityEventDetails = (props) => {
 
@@ -21,7 +22,7 @@ const ManageCharityEventDetails = (props) => {
     const [document,setDocument] = useState(null);
     const [photo,setPhoto] = useState(null);
     const [createdBy, setCreatedBy] = useState("");
-    const [receipients,setReceipients] = useState([]);
+    const [recipients,setRecipients] = useState([]);
     const [isEdit,setIsEdit] = useState(props.isEdit);
     const imageUploadInput = useRef();
     const imageDisplay = useRef();
@@ -64,7 +65,8 @@ const ManageCharityEventDetails = (props) => {
         fetch('/charity_event/'+id,{
             method:'get',
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                'Authorization':'Bearer'+user.access_token
             }
         }).then(res=>res.json()).then(data=>{
             if(data.error){
@@ -88,7 +90,7 @@ const ManageCharityEventDetails = (props) => {
                 setDocument(event.document);
                 setPhoto(event.photo);
                 setCreatedBy(event.created_by);
-                setReceipients(event.receipient);
+                setRecipients(event.recipients);
                 setIsLoading(false);
             }
         }).catch(err=>{
@@ -222,7 +224,7 @@ const ManageCharityEventDetails = (props) => {
             donation_start_date,
             donation_end_date,
             photo,
-            receipients
+            recipients
         };
         if(document&&document?.content){
             request_body = {...request_body, document}
@@ -371,35 +373,7 @@ const ManageCharityEventDetails = (props) => {
                     <input className="hidden" ref={imageUploadInput} type="file" accept="image/*" onChange={event=>handleImageOnChange(event)}/>
                     <img ref={imageDisplay} src={photo.content} name="image" onClick={isEdit?handleImageOnClick:()=>{}}/>
                 </span>
-                {/* <div id="#charity-event-list-table-section">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>STUDENT'S NAME</th>
-                                <th>DATE APPROVED</th>
-                                <th>STATUS</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                            receipients.map(recepient=>{
-                                return <tr key={recepient._id}>
-                                    <td>{event.title}</td>
-                                    <td>{event.organizer_id.name}</td>
-                                    <td>RM{event.current_amount}/{event.amount}</td>
-                                    <td>{event.created_on}</td>
-                                    <td>{event.status}</td>
-                                    <td className='button-list'>
-                                        <button className='button'><RemoveRedEyeIcon/>View</button>
-                                        <button className='button'><CreateIcon/>Edit</button>
-                                        <button className='danger-button'><DeleteIcon/>Delete</button>    
-                                    </td>
-                                </tr>
-                            })}
-                        </tbody>
-                    </table>
-                </div> */}
+                <RecipientList isEdit={isEdit} recipients={recipients} setRecipients={setRecipients}/>
                 {isEdit?<div id="save-section">
                 <button onClick={toggleCancel} id="cancel-button">Cancel</button>
                 <input type="submit" value="Save" id="create-button"/>

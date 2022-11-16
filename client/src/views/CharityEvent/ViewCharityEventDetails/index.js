@@ -21,7 +21,7 @@ const ViewCharityEventDetails = (props) => {
 
     const fetchData = () => {
         setIsLoading(true);
-        fetch('/charity_event/'+id.id,{
+        fetch('/charity_event/view/'+id.id,{
             method:'get',
             headers:{
                 'Content-Type':'application/json'

@@ -73,6 +73,31 @@ router.get('/charity_application/view/:id',(req,res)=>{
     });
 });
 
+// @route   GET /charity_application/recipient/:id
+// @desc    Retrieve Charity Application Receipt
+// @access  Private
+router.get('/charity_application/receipt/:id',(req,res)=>{
+    CharityApplication.findOne({"_id":req.params.id})
+    .then(application=>{
+        res.json({receipt:application.receipt});
+    }).catch(err=>{
+        res.json({error:err});
+    });
+});
+
+// @route   GET /charity_application/approved/:id
+// @desc    Retrieve Charity Application Receipt
+// @access  Private
+router.get('/charity_application/approved/:id',(req,res)=>{
+    CharityApplication.find({"created_by":req.params.id,"status":{ "$in": ["Active", "Paid"] }})
+    .populate("event_id","title")
+    .then(applications=>{
+        res.json({applications});
+    }).catch(err=>{
+        res.json({error:err});
+    });
+});
+
 // @route   PUT /charity_application/:id
 // @desc    Update User Application
 // @access  Private
@@ -83,6 +108,23 @@ router.put('/charity_application/:id',(req,res)=>{
     }
     CharityApplication.findByIdAndUpdate(req.params.id,req.body,{new:false},(err,result)=>{
         if(err){
+            return res.json({error:err})
+        }
+        res.json({message:"Successfully updated"})
+    })
+});
+
+// @route   PUT /charity_application/recipient/:id
+// @desc    Update User Application
+// @access  Private
+router.put('/charity_application/recipient/:id',(req,res)=>{
+    const {name,status,bank_acc,bank,details} = req.body;
+    if(!name||!status||!bank_acc||!bank||!details){
+        return res.json({error:'please fill all fields'});
+    }
+    CharityApplication.findByIdAndUpdate(req.params.id,req.body,{new:false},(err,result)=>{
+        if(err){
+            console.log(err)
             return res.json({error:err})
         }
         res.json({message:"Successfully updated"})

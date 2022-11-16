@@ -27,13 +27,13 @@ const ViewCharityEventList = (props) => {
             },5000)
         }
         if(user){
-            if(user.role==2){
-                fetchData();
-            }
-            else{
+            if(user.role!=2&&!user.charity_event_organizer&&!user.part_time_job_organizer){
                 timer = setTimeout(()=>{
                     navigate('/login')
                 },5000)
+            }
+            else{
+                fetchData();
             }
         }
         return () => {
@@ -47,7 +47,8 @@ const ViewCharityEventList = (props) => {
 
     const fetchData = () =>{
         setIsLoading(true);
-        fetch('/charity_event/approved',{
+        const url = user.role==2?'/charity_event/approved':'/charity_event/organizer/approved/'+user.id;
+        fetch(url,{
             method:'get',
             headers:{
                 'Content-Type':'application/json',
@@ -165,6 +166,11 @@ const ViewCharityEventList = (props) => {
                     </thead>
                     <tbody>
                         {
+                            events.length==0&&<tr className="no-event" rowSpan={6}>
+                                <td colSpan={6}>No events exists. Please create new event now!</td>
+                            </tr>
+                        }
+                        {
                         displayedEvents.map(event=>{
                             return <tr key={event._id}>
                                 <td className="title">{event.title}</td>
@@ -181,9 +187,9 @@ const ViewCharityEventList = (props) => {
                         })}
                     </tbody>
                 </table>
-                <div id="event-list-pagination">
+                {events.length>0&&<div id="event-list-pagination">
                     <Pagination count={events.length<=ROW_PER_PAGE?1:parseInt(events.length/ROW_PER_PAGE)+1} page={page} onChange={handlePageOnChange} />
-                </div>
+                </div>}
             </div>
             </>}            
         </React.Fragment>

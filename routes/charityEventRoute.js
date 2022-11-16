@@ -53,6 +53,35 @@ router.get('/charity_event/approved',requiredLogin,(req,res)=>{
     });
 })
 
+// @route   POST /charity_event/organizer/approved
+// @desc    Retrieve Organizer Approved Charity Event
+// @access  Private
+router.get('/charity_event/organizer/approved/:id',requiredLogin,(req,res)=>{
+    CharityEvent.find({ "status" : { "$in": ["Not Started", "In Progress", "Preregistration","Closed"] }, "created_by":req.params.id })
+    .select("-document")
+    .populate("organizer_id","-_id name")
+    .sort('-created_on')
+    .then(events=>{
+        res.json({events:events});
+    }).catch(err=>{
+        res.json({error:err});
+    });
+})
+
+// @route   GET /charity_event/:id
+// @desc    Retrieve Specific Charity Event
+// @access  Public
+router.get('/charity_event/view/:id',(req,res)=>{
+    CharityEvent.find({_id:req.params.id})
+    .populate("organizer_id","name")
+    .then(event=>{
+        event[0].document.content="";
+        res.json({event:event[0]});
+    }).catch(err=>{
+        res.json({error:err});
+    });
+})
+
 // @route   GET /charity_event/view
 // @desc    Retrieve Available Charity Event
 // @access  Public
@@ -109,10 +138,11 @@ router.get('/charity_event/organizer/:id',requiredLogin,(req,res)=>{
 
 // @route   GET /charity_event/:id
 // @desc    Retrieve Specific Charity Event
-// @access  Public
-router.get('/charity_event/:id',(req,res)=>{
+// @access  Private
+router.get('/charity_event/:id',requiredLogin,(req,res)=>{
     CharityEvent.find({_id:req.params.id})
     .populate("organizer_id","name")
+    .populate("recipients")
     .then(event=>{
         event[0].document.content="";
         res.json({event:event[0]});
@@ -187,6 +217,22 @@ router.delete('/charity_event/:id',requiredLogin,(req,res)=>{
         res.json({message:"Successfully Deleted"});
     }).catch(err=>{
         res.json({error:err})
+    })
+});
+
+// @route   PUT /charity_event/status/:id
+// @desc    Update Charity Event Recipients
+// @access  Private
+router.put('/charity_event/recipient/:id',(req,res)=>{
+    const {recipient} = req.body;
+    if(!recipient){
+        return res.json({error:'Invalid recipient'});
+    }
+    CharityEvent.findByIdAndUpdate(req.params.id, { $push: { recipients: recipient } },{new:false},(err,result)=>{
+        if(err){
+            return res.json({error:err})
+        }
+        res.json({message:"Successfully updated"})
     })
 });
 

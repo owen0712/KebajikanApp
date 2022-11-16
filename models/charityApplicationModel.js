@@ -111,6 +111,20 @@ const charityApplicationSchema = new mongoose.Schema({
     photo:{
         type:Object,
         required:true
+    },
+    bank:{
+        type:String
+    },
+    bank_acc:{
+        type:String
+    },
+    receipt:{
+        type:Object,
+        default:{name:'',content:''}
+    },
+    allowance:{
+        type:Number,
+        default:0
     }
 })
 

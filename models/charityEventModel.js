@@ -47,9 +47,9 @@ const charityEventSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    receipient:{
+    recipients:{
         type:[ObjectId],
-        ref:"User"
+        ref:"CharityApplication"
     },
     organizer_id:{
         type:ObjectId,
