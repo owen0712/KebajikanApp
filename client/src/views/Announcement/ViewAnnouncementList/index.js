@@ -163,7 +163,7 @@ const ViewAnnouncementList = (props) => {
                                 <td className='title'>{announcement.title}</td>
                                 <td className='description'>{announcement.description}</td>
                                 <td>{announcement.created_on.slice(0,10)}</td>
-                                <td className='button-list'>
+                                <td>
                                     <button className='button' onClick={()=>handleView(announcement._id)}><RemoveRedEyeIcon/>View</button>
                                     <button className='button' onClick={()=>handleEdit(announcement._id)}><CreateIcon/>Edit</button>
                                     <button className='danger-button' onClick={()=>handleDelete(announcement._id)}><DeleteIcon/>Delete</button>    

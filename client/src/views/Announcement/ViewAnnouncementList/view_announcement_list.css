@@ -26,14 +26,9 @@
     position: relative;
 }
 
-.button-list{
-    display: flex;
-    justify-content: center;
-}
-
 .button{
     color: #192F59;
-    display: flex;
+    display: inline-flex;
     height: 30px;
     border: 2px solid #192F59;
     background-color: white;
@@ -50,7 +45,7 @@
 
 .danger-button{
     color: #DF5645;
-    display: flex;
+    display: inline-flex;
     height: 30px;
     border: 2px solid #DF5645;
     background-color: white;

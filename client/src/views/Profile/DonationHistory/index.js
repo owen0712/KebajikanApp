@@ -113,7 +113,7 @@ const DonationHistory = (props) =>{
                                 <th className="category">CATEGORY</th>
                                 <th className="date">DONATION DATE</th>
                                 <th className="donation-status">STATUS</th>
-                                <th></th>
+                                <th className='button-row'></th>
                             </tr>
                         </thead>
                         <tbody>

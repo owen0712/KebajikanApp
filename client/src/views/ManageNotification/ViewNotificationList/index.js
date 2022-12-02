@@ -165,7 +165,7 @@ const ViewNotificationList = (props) => {
                                 <td className='title'>{notification.title}</td>
                                 <td className='description'>{notification.description}</td>
                                 <td>{notification.created_on.slice(0,10)}</td>
-                                <td className='button-list'>
+                                <td>
                                     <button className='button' onClick={()=>handleView(notification._id)}><RemoveRedEyeIcon/>View</button>
                                     <button className='button' onClick={()=>handleEdit(notification._id)}><CreateIcon/>Edit</button>
                                     <button className='danger-button' onClick={()=>handleDelete(notification._id)}><DeleteIcon/>Delete</button>    

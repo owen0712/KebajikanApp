@@ -1,6 +1,7 @@
 #donation-right-content svg{
     color: #192F59;
     margin: 0 5px 0 0;
+    cursor: pointer;
 }
 
 #secure-message{

@@ -45,6 +45,8 @@ import ForgotPassword from './views/Authorization/ForgotPassword';
 import ResetPassword from './views/Authorization/ResetPassword';
 import Main from './views/Main';
 import Chat from './views/Chat';
+import ManageCharityEventRecipients from './views/ManageRecipient/ManageCharityEventRecipient';
+import ManageCharityEventRecipient from './views/Profile/ManageCharityRecipient';
 import { UserProvider } from './contexts/UserContext.js';
 import { SocketProvider } from './contexts/SocketContext';
 // import NavRoute from './core/navRoute';
@@ -117,6 +119,9 @@ function App() {
           <Route path='/charity_event/donate_money/success/:id' element={<MoneyDonationResult isSuccess={true}/>}/>
           <Route path='/charity_event/donate_money/failed/:id' element={<MoneyDonationResult isSuccess={false}/>}/>
           <Route path='/charity_event/generate_receipt/:id' element={<GenerateReceipt/>}/>
+          <Route path='/charity_event/recipient/view/:id' element={<ManageCharityEventRecipients isEdit={false}/>}/>
+          <Route path='/charity_event/recipient/edit/:id' element={<ManageCharityEventRecipients isEdit={true}/>}/>
+          <Route path='/profile/manage_charity_recipient' element={<ManageCharityEventRecipient/>}/>
           <Route path='/profile/donation_history' element={<DonationHistory/>}/>
           <Route path='/profile/password' element={<ChangePassword/>}/>
           <Route path='/forgot_password' element={<ForgotPassword/>}/>

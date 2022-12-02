@@ -373,7 +373,7 @@ const ManageCharityEventDetails = (props) => {
                     <input className="hidden" ref={imageUploadInput} type="file" accept="image/*" onChange={event=>handleImageOnChange(event)}/>
                     <img ref={imageDisplay} src={photo.content} name="image" onClick={isEdit?handleImageOnClick:()=>{}}/>
                 </span>
-                <RecipientList isEdit={isEdit} recipients={recipients} setRecipients={setRecipients}/>
+                {recipients.length>0&&<RecipientList isEdit={isEdit} recipients={recipients} setRecipients={setRecipients}/>}
                 {isEdit?<div id="save-section">
                 <button onClick={toggleCancel} id="cancel-button">Cancel</button>
                 <input type="submit" value="Save" id="create-button"/>

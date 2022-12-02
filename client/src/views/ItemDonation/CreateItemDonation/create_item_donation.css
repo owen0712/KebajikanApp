@@ -59,15 +59,17 @@
 
 .item-list-board .item-list{
     color: #192f59;
-    background-color: transparent;
+    background-color: white;
     border-top: 2px solid #192f59;
 }
 
 .item-list table{
+    margin: 0;
     background-color: transparent;
     color: #192f59;;
     table-layout: fixed;
-    max-height: 50vh;
+    min-height: 5vh;
+    max-height: 10vh;
     overflow: scroll;
 }
 
@@ -75,4 +77,5 @@
     display: table-cell;
     overflow: hidden;
     text-overflow: ellipsis;
+    padding-left: 40px;
 }

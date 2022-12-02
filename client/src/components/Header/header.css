@@ -10,6 +10,8 @@
 
 #header a{
     text-decoration: none;
+    display: flex;
+    align-items: center;
 }
 
 .notification-row{
@@ -88,11 +90,13 @@
 
 .align-middle{
     display: flex;
-    line-height: 25px;
+    line-height: 20px;
 }
 
 .align-middle svg{
     padding-right: 10px;
+    width: 22px;
+    height: 22px;
 }
 
 #user-section #notification-icon{
