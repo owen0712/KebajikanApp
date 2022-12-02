@@ -3,7 +3,7 @@ import {useParams, useNavigate, Navigate} from 'react-router-dom';
 import './apply_help.css';
 import { BackSection, Loading } from '../../../components';
 import Swal from 'sweetalert2';
-import Dropdown from '../../../components/Dropdown';
+import {Dropdown, TNC} from '../../../components';
 import { useUser } from '../../../contexts/UserContext';
 
 const ApplyForHelp = (props) => {
@@ -455,7 +455,7 @@ const ApplyForHelp = (props) => {
                 </div>
                 <div id="tnc-section">
                     <input type="checkbox" onChange={event=>handleIsAgreeOnChange(event)}/>
-                    <p>By proceeding you agree to our <a>Term and Condition</a></p>
+                    <p>By proceeding you agree to our <TNC height="273vh"/></p>
                 </div>
                 <input type="submit" value="Submit" id="create-button"/>
             </form>

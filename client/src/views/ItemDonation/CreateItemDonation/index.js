@@ -4,7 +4,7 @@ import BackSection from '../../../components/BackSection';
 import { useNavigate, Navigate, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useUser } from '../../../contexts/UserContext';
-import { Loading } from '../../../components';
+import { Loading, TNC } from '../../../components';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -212,7 +212,7 @@ const CreateItemDonation = (props) => {
                     </div>
                     <div id="tnc-section">
                         <input type="checkbox" onChange={event=>handleIsAgreeOnChange(event)}/>
-                        <p>By proceeding you agree to our <a>Term and Condition</a></p>
+                        <p>By proceeding you agree to our <TNC height="175vh"/></p>
                     </div>
                     <input type="submit" value="Submit" id="submit-button"/>
                 </form>

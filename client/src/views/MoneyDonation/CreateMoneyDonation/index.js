@@ -4,7 +4,7 @@ import BackSection from '../../../components/BackSection';
 import { useNavigate, Navigate, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useUser } from '../../../contexts/UserContext';
-import { Loading } from '../../../components';
+import { Loading, TNC } from '../../../components';
 import LockIcon from '@mui/icons-material/Lock';
 
 const CreateMoneyDonation = (props) => {
@@ -177,7 +177,7 @@ const CreateMoneyDonation = (props) => {
                     <span id="secure-message"><LockIcon/>Your payment is 100% secure</span>
                     <div id="tnc-section">
                         <input type="checkbox" onChange={event=>handleIsAgreeOnChange(event)}/>
-                        <p>By proceeding you agree to our <a>Term and Condition</a>.Transaction fee applied.</p>
+                        <p>By proceeding you agree to our <TNC height="130vh"/>.Transaction fee applied.</p>
                     </div>
                     <input type="submit" value="Submit" id="submit-button"/>
                 </form>
