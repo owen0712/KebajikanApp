@@ -86,7 +86,7 @@ const ViewUserApplicationList = (props) =>{
 
     const fetchEventProposalApplicationData=()=>{
         setIsLoading(true);
-        fetch('/charity_event/organizer/'+user.id,{
+        fetch('/charity_event/organizer',{
             method:'get',
             headers:{
                 'Content-Type':'application/json',
@@ -110,7 +110,7 @@ const ViewUserApplicationList = (props) =>{
 
     const fetchJobProposalApplicationData=()=>{
         setIsLoading(true);
-        fetch('/part_time_job/organizer/'+user.id,{
+        fetch('/part_time_job/organizer',{
             method:'get',
             headers:{
                 'Content-Type':'application/json',
@@ -142,9 +142,9 @@ const ViewUserApplicationList = (props) =>{
     
     const handleViewProposalApplication = (id, type) => {
         if(type=="Charity Event")
-            navigate('/profile/application_history/propose_charity_event/view/'+id);
+            navigate('/manage_user_application/event_proposal_application/view/'+id);
         else
-            navigate('/profile/application_history/propose_part_time_job/view/'+id);
+            navigate('/manage_user_application/job_proposal_application/view/'+id);
     }
 
     const handleVerifyEventApplication = (id) => {
@@ -157,9 +157,9 @@ const ViewUserApplicationList = (props) =>{
 
     const handleEditProposalApplication = (id, type) => {
         if(type=="Charity Event")
-            navigate('/profile/application_history/propose_charity_event/edit/'+id);
+            navigate('/manage_user_application/event_proposal_application/verify/'+id);
         else
-            navigate('/profile/application_history/propose_part_time_job/edit/'+id);
+            navigate('/manage_user_application/job_proposal_application/verify/'+id);
     }
 
     const onDisplayEventApplication = ()=> {
@@ -208,7 +208,7 @@ const ViewUserApplicationList = (props) =>{
                                 <td><Status statusName={application.status}/></td>
                                 <td className='button-list'>
                                     <button className='button' onClick={()=>handleViewEventApplication(application._id)}><RemoveRedEyeIcon/>View</button>
-                                    <button className='button' disabled={(application.status=="Approved" || application.status=="Rejected")} onClick={()=>handleVerifyEventApplication((application.status=="Approved" || application.status=="Rejected")?()=>{}:application._id)}><VerifiedIcon/>Verify</button>
+                                    <button className='button' disabled={(application.status=="Approved" || application.status=="Rejected")} onClick={(application.status=="Approved" || application.status=="Rejected")?()=>{}:()=>handleVerifyEventApplication(application._id)}><VerifiedIcon/>Verify</button>
                                 </td>
                             </tr>
                         })}
@@ -241,7 +241,7 @@ const ViewUserApplicationList = (props) =>{
                                 <td><Status statusName={application.status}/></td>
                                 <td className='button-list'>
                                     <button className='button' onClick={()=>handleViewJobApplication(application._id)}><RemoveRedEyeIcon/>View</button>
-                                    <button className='button' disabled={(application.status=="Approved" || application.status=="Rejected")} onClick={()=>handleVerifyJobApplication((application.status=="Approved" || application.status=="Rejected")?()=>{}:application._id)}><VerifiedIcon/>Verify</button>
+                                    <button className='button' disabled={(application.status=="Approved" || application.status=="Rejected")} onClick={(application.status=="Approved" || application.status=="Rejected")?()=>{}:()=>handleVerifyJobApplication(application._id)}><VerifiedIcon/>Verify</button>
                                 </td>
                             </tr>
                         })}
@@ -279,7 +279,7 @@ const ViewUserApplicationList = (props) =>{
                                 <td><Status statusName={(application.status!=="Rejected"&&application.status!=="Pending")?"Approved":application.status}/></td>
                                 <td className='button-list'>
                                     <button className='button' onClick={()=>handleViewProposalApplication(application._id, application.type)}><RemoveRedEyeIcon/>View</button>
-                                    <button className='button' onClick={()=>handleEditProposalApplication(application._id, application.type)}><VerifiedIcon/>Verify</button>
+                                    <button className='button' disabled={(application.status!=="Pending")} onClick={(application.status!=="Pending")?()=>{}:()=>handleEditProposalApplication(application._id, application.type)}><VerifiedIcon/>Verify</button>
                                 </td>
                             </tr>
                             })}

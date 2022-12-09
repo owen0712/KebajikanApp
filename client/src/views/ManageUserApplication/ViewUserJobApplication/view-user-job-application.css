@@ -97,20 +97,6 @@
     cursor: pointer;
 }
 
-#cancel-button{
-    background-color: #DD4B39;
-    border-color: #DD4B39;
-    color: white;
-    margin: 10px 4px;
-    border-radius: 20px;
-    height: 40px;
-    display: inline-block;
-    position: relative;
-    text-align: center;
-    width: 100px;
-    cursor: pointer;
-}
-
 #save-section{
     display:flex;
     align-items: center;
@@ -176,4 +162,18 @@
     color: white;
     border: white 1px solid;
     border-radius: 5px;
+}
+
+#user-job-application-form #cancel-button{
+    background-color: #E1E1E1;
+    border-color: #E1E1E1;
+    color: white;
+    margin: 10px 4px;
+    border-radius: 20px;
+    height: 40px;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    width: 100px;
+    cursor: pointer;
 }

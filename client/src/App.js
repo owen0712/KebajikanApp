@@ -20,6 +20,8 @@ import ViewEventApplication from './views/Profile/ApplicationHistory/ViewEventAp
 import ViewUserApplicationList from './views/ManageUserApplication/ViewUserApplicationList';
 import ViewUserJobApplication from './views/ManageUserApplication/ViewUserJobApplication';
 import ViewUserEventApplication from './views/ManageUserApplication/ViewUserEventApplication';
+import ViewUserEventProposal from './views/ManageUserApplication/ViewUserEventProposal';
+import ViewUserJobProposal from './views/ManageUserApplication/ViewUserJobProposal';
 import ViewProfile from './views/Profile/ViewProfile';
 import Login from './views/Authorization/Login';
 import SignUp from './views/Authorization/SignUp';
@@ -94,8 +96,12 @@ function App() {
           <Route path='/manage_user_application' element={<ViewUserApplicationList/>}/>
           <Route path='/manage_user_application/event_application/view/:id' element={<ViewUserEventApplication isVerify={false}/>}/>
           <Route path='/manage_user_application/job_application/view/:id' element={<ViewUserJobApplication isVerify={false}/>}/>
+          <Route path='/manage_user_application/event_proposal_application/view/:id' element={<ViewUserEventProposal isVerify={false}/>}/>
+          <Route path='/manage_user_application/job_proposal_application/view/:id' element={<ViewUserJobProposal isVerify={false}/>}/>
           <Route path='/manage_user_application/event_application/verify/:id' element={<ViewUserEventApplication isVerify={true}/>}/>
           <Route path='/manage_user_application/job_application/verify/:id' element={<ViewUserJobApplication isVerify={true}/>}/>
+          <Route path='/manage_user_application/event_proposal_application/verify/:id' element={<ViewUserEventProposal isVerify={true}/>}/>
+          <Route path='/manage_user_application/job_proposal_application/verify/:id' element={<ViewUserJobProposal isVerify={true}/>}/>
           <Route path='/profile' element={<ViewProfile/>}/>
           <Route path='/login' element={<Login/>}/>
           <Route path='/signup' element={<SignUp/>}/>

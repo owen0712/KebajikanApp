@@ -231,7 +231,7 @@ const ViewUserEventApplication = (props) => {
             <BackSection onBackButtonClick={navigatePrev} title={"View "+event_name+"  Application Form"}/>
             {isSubmitLoading?<Loading/>:<></>}
             {isLoading?<Loading/>:<>
-            <form id="application-form">
+            <form id="user-event-application-form">
                 <p className='section-header'>APPLICATION DETAILS</p>
                 <div id="apply-form-upper-part">
                     <span className="file-upload">
@@ -362,6 +362,7 @@ const ViewUserEventApplication = (props) => {
                     <div id="verify-section">
                         <button onClick={toggleApprove} id="approve-button">Approve</button>
                         <button onClick={toggleReject} id="reject-button">Reject</button>
+                        <button onClick={toggleViewOnly} id="cancel-button">Cancel</button>
                     </div>:
                     <button disabled={(status=="Approved" || status=="Rejected")} onClick={(status=="Approved" || status=="Rejected")?()=>{}:toggleVerify} id="verify-button">Verify</button>}
             </form>

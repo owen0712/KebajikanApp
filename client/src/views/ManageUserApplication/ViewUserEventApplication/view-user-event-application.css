@@ -150,9 +150,9 @@ input:disabled{
     cursor: pointer;
 }
 
-#cancel-button{
-    background-color: #DD4B39;
-    border-color: #DD4B39;
+#user-event-application-form #cancel-button{
+    background-color: #E1E1E1;
+    border-color: #E1E1E1;
     color: white;
     margin: 10px 4px;
     border-radius: 20px;

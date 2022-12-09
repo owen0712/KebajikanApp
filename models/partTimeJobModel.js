@@ -49,6 +49,13 @@ const partTimeJobSchema = new mongoose.Schema({
         ref:"User",
         required:true
     },
+    verified_by:{
+        type:ObjectId,
+        ref:"User"
+    },
+    verified_on:{
+        type:Date
+    },
     photo:{
         type:Object,
         required:true

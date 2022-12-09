@@ -39,7 +39,8 @@ const jobApplicationSchema = new mongoose.Schema({
         required:true
     },
     verified_by:{
-        type:ObjectId
+        type:ObjectId,
+        ref:"User"
     },
     verified_on:{
         type:Date

@@ -136,6 +136,21 @@ router.get('/charity_event/organizer/:id',requiredLogin,(req,res)=>{
     });
 });
 
+// @route   GET /part_time_job/organizer/:id
+// @desc    Retrieve User Proposed Charity Event
+// @access  Private
+router.get('/charity_event/organizer',requiredLogin,(req,res)=>{
+    CharityEvent.find()
+    .select("-photo")
+    .populate("organizer_id",["name","role"])
+    .sort("-created_on")
+    .then(events=>{
+        res.json({events:events.filter((e)=>{return e.organizer_id.role!="Admin"})});
+    }).catch(err=>{
+        res.json({error:err});
+    });
+});
+
 // @route   GET /charity_event/:id
 // @desc    Retrieve Specific Charity Event
 // @access  Private
@@ -229,6 +244,22 @@ router.put('/charity_event/recipient/:id',(req,res)=>{
         return res.json({error:'Invalid recipient'});
     }
     CharityEvent.findByIdAndUpdate(req.params.id, { $push: { recipients: recipient } },{new:false},(err,result)=>{
+        if(err){
+            return res.json({error:err})
+        }
+        res.json({message:"Successfully updated"})
+    })
+});
+
+// @route   PUT /proposed_charity_event/status/:id
+// @desc    Update Proposed Event Application Status
+// @access  Private
+router.put('/proposed_charity_event/status/:id',requiredLogin,(req,res)=>{
+    const {status, verified_by, verified_on} = req.body;
+    if(!status || !verified_by || !verified_on){
+        return res.json({error:'Error occur. Application Status failed to update'});
+    }
+    CharityEvent.findByIdAndUpdate(req.params.id,req.body,{new:false},(err,result)=>{
         if(err){
             return res.json({error:err})
         }

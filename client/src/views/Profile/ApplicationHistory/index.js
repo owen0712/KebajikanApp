@@ -461,7 +461,7 @@ const ApplicationHistoty = (props) =>{
                                 <td className='button-list'>
                                     <button className='button' onClick={()=>handleViewProposalApplication(application._id, application.type)}><RemoveRedEyeIcon/>View</button>
                                     <button className='button' onClick={()=>handleEditProposalApplication(application._id, application.type)}><CreateIcon/>Edit</button>
-                                    <button className='danger-button' onClick={()=>handleDeleteProposalApplication(application._id, application.type)}><PersonRemoveIcon/>Withdraw</button>    
+                                    <button className='danger-button' disabled={(application.status!="Pending")} onClick={(application.status!="Pending")?()=>{}:()=>handleDeleteProposalApplication(application._id, application.type)}><PersonRemoveIcon/>Withdraw</button>    
                                 </td>
                             </tr>
                         })}

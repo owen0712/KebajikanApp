@@ -127,4 +127,36 @@ router.put('/user/part_time_job_recipient/:id',requiredLogin,(req,res)=>{
     })
 });
 
+// @route   PUT /user/charity_event_job_organizer/:id
+// @desc    Update Charity Event Organizer Status For Specific User
+// @access  Private
+router.put('/user/charity_event_organizer/:id',requiredLogin,(req,res)=>{
+    const {charity_event_organizer, role} = req.body;
+    if(!charity_event_organizer || !role){
+        return res.json({error:'Unexpected Error occur'});
+    }
+    User.findByIdAndUpdate(req.params.id,req.body,{new:false},(err,result)=>{
+        if(err){
+            return res.json({error:err})
+        }
+        res.json({message:"Successfully updated"})
+    })
+});
+
+// @route   PUT /user/part_time_job_organizer/:id
+// @desc    Update Part-Time Job Organizer Status For Specific User
+// @access  Private
+router.put('/user/part_time_job_organizer/:id',requiredLogin,(req,res)=>{
+    const {part_time_job_organizer, role} = req.body;
+    if(!part_time_job_organizer || !role){
+        return res.json({error:'Unexpected Error occur'});
+    }
+    User.findByIdAndUpdate(req.params.id,req.body,{new:false},(err,result)=>{
+        if(err){
+            return res.json({error:err})
+        }
+        res.json({message:"Successfully updated"})
+    })
+});
+
 module.exports=router

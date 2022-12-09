@@ -197,6 +197,7 @@ const ViewJobApplication = (props) => {
             console.log(err);
         })
     }
+
     const toggleViewOnly = () => {
         setIsVerify(false);
         resetState();
@@ -264,6 +265,7 @@ const ViewJobApplication = (props) => {
                     <div id="verify-section">
                         <button onClick={toggleApprove} id="approve-button">Approve</button>
                         <button onClick={toggleReject} id="reject-button">Reject</button>
+                        <button onClick={toggleViewOnly} id="cancel-button">Cancel</button>
                     </div>:
                     <button disabled={(status=="Approved" || status=="Rejected")} onClick={(status=="Approved" || status=="Rejected")?()=>{}:toggleVerify} id="verify-button">Verify</button>}
                 </form>
