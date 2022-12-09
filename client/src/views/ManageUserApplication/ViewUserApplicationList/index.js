@@ -202,13 +202,13 @@ const ViewUserApplicationList = (props) =>{
                         {
                         eventApplications.map(application=>{
                             return <tr key={application._id}>
-                                <td className='applicant-name'>{application.created_by.name}</td>
+                                <td className='applicant-name'>{application.name}</td>
                                 <td className='title'>{application.event_id.title}</td>
                                 <td>{application.created_on.slice(0,10)}</td>
                                 <td><Status statusName={application.status}/></td>
                                 <td className='button-list'>
                                     <button className='button' onClick={()=>handleViewEventApplication(application._id)}><RemoveRedEyeIcon/>View</button>
-                                    <button className='button' onClick={()=>handleVerifyEventApplication(application._id)}><VerifiedIcon/>Verify</button>
+                                    <button className='button' disabled={(application.status=="Approved" || application.status=="Rejected")} onClick={()=>handleVerifyEventApplication((application.status=="Approved" || application.status=="Rejected")?()=>{}:application._id)}><VerifiedIcon/>Verify</button>
                                 </td>
                             </tr>
                         })}
@@ -235,13 +235,13 @@ const ViewUserApplicationList = (props) =>{
                         {
                         jobApplications.map(application=>{
                             return <tr key={application._id}>
-                                <td className='applicant-name'>{application.created_by.name}</td>
-                                <td>{application.job_id.title}</td>
+                                <td className='applicant-name'>{application.name}</td>
+                                <td className='title'>{application.job_id.title}</td>
                                 <td>{application.created_on.slice(0,10)}</td>
                                 <td><Status statusName={application.status}/></td>
                                 <td className='button-list'>
                                     <button className='button' onClick={()=>handleViewJobApplication(application._id)}><RemoveRedEyeIcon/>View</button>
-                                    <button className='button' onClick={()=>handleVerifyJobApplication(application._id)}><VerifiedIcon/>Verify</button>
+                                    <button className='button' disabled={(application.status=="Approved" || application.status=="Rejected")} onClick={()=>handleVerifyJobApplication((application.status=="Approved" || application.status=="Rejected")?()=>{}:application._id)}><VerifiedIcon/>Verify</button>
                                 </td>
                             </tr>
                         })}

@@ -106,6 +106,23 @@ router.put('/job_application/:id',requiredLogin,(req,res)=>{
     })
 });
 
+// @route   PUT /job_application/status/:id
+// @desc    Update User Application Status
+// @access  Private
+router.put('/job_application/status/:id',requiredLogin,(req,res)=>{
+    const {status, verified_by, verified_on} = req.body;
+    if(!status || !verified_by || !verified_on){
+        return res.json({error:'Error occur. Application Status failed to update'});
+    }
+    JobApplication.findByIdAndUpdate(req.params.id,req.body,{new:false},(err,result)=>{
+        if(err){
+            return res.json({error:err})
+        }
+        res.json({message:"Successfully updated"})
+    })
+});
+
+
 // @route   DELETE /job_application/:id
 // @desc    Delete User's Job Application
 // @access  Private

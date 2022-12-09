@@ -90,3 +90,9 @@ input:disabled{
     display: inline;
     margin: 0;
 }
+
+#create-button:disabled{
+    color: rgba(25, 47, 89, 0.4);
+    background-color: #E1E1E1;
+    cursor: default;
+}

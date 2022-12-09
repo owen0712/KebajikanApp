@@ -104,6 +104,24 @@ input:disabled{
     cursor: pointer;
 }
 
+#verify-button{
+    background-color: #192F59;
+    color: white;
+    margin: 10px auto;
+    border-radius: 20px;
+    height: 40px;
+    position: relative;
+    display: block;
+    width: 100px;
+    cursor: pointer;
+}
+
+#verify-button:disabled{
+    color: rgba(25, 47, 89, 0.4);
+    background-color: #E1E1E1;
+    cursor: default;
+}
+
 #approve-button{
     background-color: #1A7755;
     border-color: #1A7755;

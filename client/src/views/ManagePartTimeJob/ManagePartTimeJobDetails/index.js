@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from 'react'
 import {useNavigate, useParams, Navigate} from "react-router-dom";
 import {BackSection, Loading} from '../../../components';
 import './manage_part_time_job_details.css';
+import AllocatedStudentList from './AllocatedStudentList';
 import Swal from 'sweetalert2';
 import { useUser } from '../../../contexts/UserContext';
 
@@ -11,6 +12,7 @@ const ManagePartTimeJobDetails = (props) => {
     const [isSubmitLoading,setIsSubmitLoading] = useState(false);
     const [title, setTitle] = useState("");
     const [required_student, setRequiredStudent] = useState(0);
+    const [allocated_student, setAllocatedStudent] = useState([]);
     const [description, setDescription] = useState("");
     const [location, setLocation] = useState("");
     const [allowance, setAllowance] = useState(0);
@@ -68,6 +70,7 @@ const ManagePartTimeJobDetails = (props) => {
                 const event = data.event;
                 setTitle(event.title);
                 setRequiredStudent(event.required_student);
+                setAllocatedStudent(event.allocated_student);
                 setDescription(event.description);
                 setLocation(event.location);
                 setAllowance(event.allowance);
@@ -243,6 +246,7 @@ const ManagePartTimeJobDetails = (props) => {
                     <input disabled={!isEdit} className="hidden" ref={imageUploadInput} type="file" accept="image/*" onChange={event=>handleImageOnChange(event)}/>
                     <img ref={imageDisplay} alt="" src={photo.content} name="image" onClick={handleImageOnClick}/>
                 </span>
+                {allocated_student.length>0&&<AllocatedStudentList isEdit={isEdit} allocated_student={allocated_student} setAllocatedStudent={setAllocatedStudent}/>}
                 {isEdit?<div id="save-section"><button onClick={toggleCancel} id="cancel-button">Cancel</button><input type="submit" value="Save" id="save-button"/></div>:<button onClick={toggleEdit} id="create-button">Edit</button>}
             </form>
             </>}

@@ -1,0 +1,46 @@
+#job-allocated-student-list{
+    padding: 0px;
+    border-spacing: 0px;
+    background-color: #192F59;
+    border: 3px solid #192F59;
+    table-layout: fixed;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#job-allocated-student-list th{
+    padding: 10px;
+    padding-left: 20px;
+}
+
+#job-allocated-student-list tbody{
+    background-color: white;
+}
+
+#job-allocated-student-list .allocated-student{
+    padding: 10px;
+    line-height: 7vh;
+    background-color: #F6F8FB;
+}
+
+#job-allocated-student-list td{
+    border: 0px;
+    border-bottom: 3px solid rgb(25, 47, 89, .25);
+}
+
+#job-allocated-student-list .button{
+    display: inline-flex;
+}
+
+#job-allocated-student-list .status{
+    padding: 0.75vw 1.5vh;
+}
+
+#job-allocated-student-list-pagination{
+    width: 400%;
+    background-color: white;
+    display: flex;
+    padding: 10px 0px;
+    color: #192F59;
+    justify-content: flex-end;
+}

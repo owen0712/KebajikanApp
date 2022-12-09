@@ -32,7 +32,7 @@ const partTimeJobSchema = new mongoose.Schema({
     },
     allocated_student:{
         type:[ObjectId],
-        ref:"User"
+        ref:"JobApplication"
     },
     organizer_id:{
         type:ObjectId,

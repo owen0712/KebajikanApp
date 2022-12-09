@@ -26,6 +26,7 @@ const ViewJobApplication = (props) => {
     const [course, setCourse] = useState("");
     const [identity_no, setIdentityNo] = useState("");
     const [document,setDocument] = useState({});
+    const [status,setStatus] = useState(""); 
     const [isEdit,setIsEdit] = useState(props.isEdit);
     const fileUploadInput = useRef();
     const fileTextDisplay = useRef();
@@ -108,6 +109,7 @@ const ViewJobApplication = (props) => {
                 setIdentityNo(event.identity_no);
                 setCourse(event.course);
                 setDocument(event.document);
+                setStatus(event.status);
                 setIsLoading(false);
             }
         }).catch(err=>{
@@ -215,7 +217,16 @@ const ViewJobApplication = (props) => {
                         <input className="hidden" ref={fileUploadInput} onChange={event=>handleFileOnChange(event)} type="file" accept=".pdf" name="document"/>
                         <input disabled={!isEdit} ref={fileTextDisplay} onClick={isEdit?handleTextInputOnClick:()=>{}} type="text" defaultValue={document.name}/>
                     </span>
-                    {isEdit?<div id="save-section"><button onClick={toggleCancel} id="cancel-button">Cancel</button><input type="submit" value="Save" id="save-button"/></div>:<button onClick={toggleEdit} id="create-button">Edit</button>}
+                    <span className="short-input">
+                        <label >STATUS</label>
+                        <input disabled type="text" name="status" defaultValue={status} />
+                    </span>
+                    {isEdit?
+                    <div id="save-section">
+                        <button onClick={toggleCancel} id="cancel-button">Cancel</button>
+                        <input type="submit" value="Save" id="save-button"/>
+                    </div>:
+                    <button disabled={(status=="Approved" || status=="Rejected")} onClick={(status=="Approved" || status=="Rejected")?()=>{}:toggleEdit} id="create-button">Edit</button>}
                 </form>
             </div>
             </>}

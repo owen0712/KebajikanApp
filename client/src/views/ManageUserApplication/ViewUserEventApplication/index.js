@@ -29,11 +29,14 @@ const ViewUserEventApplication = (props) => {
     const [document,setDocument] = useState(null);
     const [photo,setPhoto] = useState(null);
     const [isAgree,setIsAgree] = useState(false);
+    const [created_by,setCreatedBy] = useState(null); 
+    const [event_id,setEventId] = useState(null); 
     const [event_name,setEventName] = useState(""); 
+    const [status, setStatus] = useState("");
     const [isLoading,setIsLoading] = useState(true);
     const [isSubmitLoading,setIsSubmitLoading] = useState(false);
     const [isVerify,setIsVerify] = useState(props.isVerify);
-    const id = useParams();
+    const {id} = useParams();
     const navigate = useNavigate();
     const imageUploadInput = useRef();
     const imageDisplay = useRef();
@@ -58,7 +61,7 @@ const ViewUserEventApplication = (props) => {
 
     const fetchData = () => {
         setIsLoading(true);
-        fetch('/charity_application/view/'+id.id,{
+        fetch('/charity_application/view/'+id,{
             method:'get',
             headers:{
                 'Content-Type':'application/json',
@@ -91,60 +94,11 @@ const ViewUserEventApplication = (props) => {
                 setDependentNo(event.no_dependent);
                 setDocument(event.document);
                 setPhoto(event.photo);
+                setEventId(event.event_id._id);
+                setCreatedBy(event.created_by);
                 setEventName(event.event_id.title);
+                setStatus(event.status);
                 setIsLoading(false);
-            }
-        }).catch(err=>{
-            console.log(err);
-        })
-    }
-
-
-    const handleSave = (event) => {
-        event.preventDefault();
-        setIsSubmitLoading(true);
-        fetch('/charity_application/'+id.id,{
-            method:'put',
-            headers:{
-                'Content-Type':'application/json',
-                'Authorization':'Bearer'+user.access_token
-            },
-            body:JSON.stringify({
-                name,
-                phone_number,
-                identity_no,
-                email,
-                ic_no,
-                marital_status,
-                current_address,
-                permanent_address,
-                program,
-                department,
-                year_of_study,
-                semester,
-                father_occ,
-                mother_occ,
-                father_income,
-                mother_income,
-                total_income,
-                no_sibling,
-                no_dependent,
-                document,
-                photo
-            })
-        }).then(res=>res.json()).then(data=>{
-            setIsSubmitLoading(false);
-            if(data.error){
-                console.log(data.error);
-            }
-            else{
-                console.log(data.message);
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Successfully Updated!',
-                    confirmButtonText: 'OK'
-                });
-                toggleViewOnly();
             }
         }).catch(err=>{
             console.log(err);
@@ -167,14 +121,104 @@ const ViewUserEventApplication = (props) => {
         setIsVerify(true);
     }
 
-    const toggleApprove = (e) => {
-        e.preventDefault();
-        console.log("Approve");
+    const toggleApprove = (event) => {
+        event.preventDefault();
+        setIsSubmitLoading(true);
+        fetch('/charity_event/recipient/'+event_id,{
+            method:'put',
+            headers:{
+                'Content-Type':'application/json',
+                'Authorization':'Bearer'+user.access_token
+            },
+            body:JSON.stringify({
+                recipient : id
+            })
+        }).then(res=>res.json()).then(data=>{
+            setIsSubmitLoading(false);
+            if(data.error){
+                console.log(data.error);
+            }
+            else{
+                updateStatus("Approved");
+                updateUserAsCharityRecipient();
+                toggleViewOnly();
+            }
+        }).catch(err=>{
+            console.log(err);
+        })
     }
 
-    const toggleReject = (e) => {
-        e.preventDefault();
-        console.log("Reject");
+    const toggleReject = (event) => {
+        event.preventDefault();
+        Swal.fire({
+            title: 'Reject Charity Event Application',
+            text: 'Do you want to reject this application?',
+            icon: 'warning',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'Cancel',
+            showCancelButton: true
+        }).then(result=>{
+            if(result.isConfirmed){
+                updateStatus("Rejected");
+                toggleViewOnly();
+            }
+        })
+    }
+
+    const updateStatus = (decision) => {
+        setIsSubmitLoading(true);
+        fetch('/charity_application/status/'+id,{
+            method:'put',
+            headers:{
+                'Content-Type':'application/json',
+                'Authorization':'Bearer'+user.access_token
+            },
+            body:JSON.stringify({
+                status : decision,
+                verified_by: user.id,
+                verified_on: Date()
+            })
+        }).then(res=>res.json()).then(data=>{
+            setIsSubmitLoading(false);
+            if(data.error){
+                Swal.fire({
+                    title: data.error,
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                });
+            }
+            else{
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Successfully '+decision+'!',
+                    confirmButtonText: 'OK'
+                });
+            }
+        }).catch(err=>{
+            console.log(err);
+        })
+    }
+
+    const updateUserAsCharityRecipient = () => {
+        fetch('/user/charity_event_recipient/'+created_by,{
+            method:'put',
+            headers:{
+                'Content-Type':'application/json',
+                'Authorization':'Bearer'+user.access_token
+            },
+            body:JSON.stringify({
+                charity_event_recipient:true
+            })
+        }).then(res=>res.json()).then(data=>{
+            if(data.error){
+                console.log(data.error);
+            }
+            else{
+                console.log(data.message);
+            }
+        }).catch(err=>{
+            console.log(err);
+        })
     }
 
     const toggleViewOnly = () => {
@@ -305,18 +349,21 @@ const ViewUserEventApplication = (props) => {
                         <input className="hidden" ref={fileUploadInput} type="file" accept=".zip,.rar,.7zip" name="document"/>
                         <input disabled ref={fileTextDisplay} onClick={(isVerify)?handleTextInputOnClick:()=>{}} type="text" defaultValue={document.name}/>
                     </span>
-                    <p id="file-upload-reminder">* Please upload your parents or guardian salary statement together with supporting documents in zip files</p>
+                    <span className="full-input">
+                        <label >STATUS</label>
+                        <input disabled type="text" name="status" defaultValue={status} />
+                    </span>
                 </div>
                 <div id="tnc-section">
                     <input disabled checked value="1" type="checkbox"/>
                     <p>By proceeding you agree to our <a>Term and Condition</a></p>
                 </div>
-                {isVerify?
+                {(isVerify)?
                     <div id="verify-section">
                         <button onClick={toggleApprove} id="approve-button">Approve</button>
                         <button onClick={toggleReject} id="reject-button">Reject</button>
                     </div>:
-                    <button onClick={toggleVerify} id="create-button">Verify</button>}
+                    <button disabled={(status=="Approved" || status=="Rejected")} onClick={(status=="Approved" || status=="Rejected")?()=>{}:toggleVerify} id="verify-button">Verify</button>}
             </form>
             </>}
         </React.Fragment>

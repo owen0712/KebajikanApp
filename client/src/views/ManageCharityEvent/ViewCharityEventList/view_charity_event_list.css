@@ -78,7 +78,7 @@ table{
     margin-top: 15px;
     background-color: white;
     table-layout: fixed;
-    min-height: 50vh;
+    /* min-height: 50vh; */
 }
 
 table thead{

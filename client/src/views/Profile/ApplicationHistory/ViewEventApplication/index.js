@@ -30,6 +30,7 @@ const ViewEventApplication = (props) => {
     const [photo,setPhoto] = useState(null);
     const [isAgree,setIsAgree] = useState(false);
     const [event_name,setEventName] = useState(""); 
+    const [status,setStatus] = useState(""); 
     const [isLoading,setIsLoading] = useState(true);
     const [isSubmitLoading,setIsSubmitLoading] = useState(false);
     const [isEdit,setIsEdit] = useState(props.isEdit);
@@ -92,6 +93,7 @@ const ViewEventApplication = (props) => {
                 setDocument(event.document);
                 setPhoto(event.photo);
                 setEventName(event.event_id.title);
+                setStatus(event.status);
                 setIsLoading(false);
             }
         }).catch(err=>{
@@ -408,13 +410,22 @@ const ViewEventApplication = (props) => {
                         <input className="hidden" ref={fileUploadInput} onChange={event=>handleFileOnChange(event)} type="file" accept=".zip,.rar,.7zip" name="document"/>
                         <input disabled={!isEdit} ref={fileTextDisplay} onClick={(isEdit)?handleTextInputOnClick:()=>{}} type="text" defaultValue={document.name}/>
                     </span>
-                    <p id="file-upload-reminder">* Please upload your parents or guardian salary statement together with supporting documents in zip files</p>
+                    {!isEdit?"":<p id="file-upload-reminder">* Please upload your parents or guardian salary statement together with supporting documents in zip files</p>}
+                    <span className="full-input">
+                        <label >STATUS</label>
+                        <input disabled type="text" name="status" defaultValue={status} />
+                    </span>
                 </div>
                 <div id="tnc-section">
                     <input disabled={!isEdit} checked value="1" type="checkbox"/>
                     <p>By proceeding you agree to our <a>Term and Condition</a></p>
                 </div>
-                {isEdit?<div id="save-section"><button onClick={toggleCancel} id="cancel-button">Cancel</button><input type="submit" value="Save" id="save-button"/></div>:<button onClick={toggleEdit} id="create-button">Edit</button>}
+                {isEdit?
+                <div id="save-section">
+                    <button onClick={toggleCancel} id="cancel-button">Cancel</button>
+                    <input type="submit" value="Save" id="save-button"/>
+                </div>:
+                <button disabled={(status=="Approved" || status=="Rejected")} onClick={(status=="Approved" || status=="Rejected")?()=>{}:toggleEdit} id="create-button">Edit</button>}
             </form>
             </>}
         </React.Fragment>

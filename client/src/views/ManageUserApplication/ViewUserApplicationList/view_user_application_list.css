@@ -115,3 +115,10 @@
 #proposal-application-list-table-section .application-status{
     width: 9%;
 }
+
+button:disabled{
+    color: rgba(25, 47, 89, 0.4);
+    border: rgba(25, 47, 89, 0.4) 2px solid;
+    background-color: #E1E1E1;
+    cursor: default;
+}

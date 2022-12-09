@@ -84,6 +84,7 @@ router.get('/part_time_job/available',(req,res)=>{
 router.get('/part_time_job/:id',(req,res)=>{
     PartTimeJob.find({_id:req.params.id})
     .populate("organizer_id","name")
+    .populate("allocated_student")
     .then(event=>{
         res.json({event:event[0]});
     }).catch(err=>{
@@ -115,6 +116,22 @@ router.delete('/part_time_job/:id',requiredLogin,(req,res)=>{
         res.json({message:"Successfully Deleted"});
     }).catch(err=>{
         res.json({error:err})
+    })
+});
+
+// @route   PUT /part_time_job/allocated_student/:id
+// @desc    Update Part-time Job Allocated Student
+// @access  Private
+router.put('/part_time_job/allocated_student/:id',requiredLogin,(req,res)=>{
+    const {student,status} = req.body;
+    if(!student || !status){
+        return res.json({error:'Invalid student'});
+    }
+    PartTimeJob.findByIdAndUpdate(req.params.id, { $push: { allocated_student: student },status: status },{new:false},(err,result)=>{
+        if(err){
+            return res.json({error:err})
+        }
+        res.json({message:"Successfully updated"})
     })
 });
 

@@ -21,12 +21,14 @@ const ViewJobApplication = (props) => {
     const [course, setCourse] = useState("");
     const [identity_no, setIdentityNo] = useState("");
     const [created_on, setCreatedOn] = useState("");
+    const [created_by, setCreatedBy] = useState("");
     const [document,setDocument] = useState({});
+    const [status, setStatus] = useState("");
     const [isVerify,setIsVerify] = useState(props.isVerify);
     const [isPreviewPdf,setIsPreviewPdf] = useState(false);
     const fileUploadInput = useRef();
     const fileTextDisplay = useRef();
-    const job_id = useParams();
+    const {id} = useParams();
     const user = useUser();
 
     useEffect(()=>{
@@ -52,7 +54,7 @@ const ViewJobApplication = (props) => {
 
     const fetchData = () => {
         setIsLoading(true);
-        fetch('/job_application/view/'+job_id.id,{
+        fetch('/job_application/view/'+id,{
             method:'get',
             headers:{
                 'Content-Type':'application/json',
@@ -71,7 +73,9 @@ const ViewJobApplication = (props) => {
                 setIdentityNo(event.identity_no);
                 setCourse(event.course);
                 setCreatedOn(event.created_on);
+                setCreatedBy(event.created_by);
                 setDocument(event.document);
+                setStatus(event.status);
                 setIsLoading(false);
             }
         }).catch(err=>{
@@ -79,48 +83,6 @@ const ViewJobApplication = (props) => {
         })
     }
 
-    const handleSave = (e) => {
-        e.preventDefault();
-        setIsSubmitLoading(true);
-        fetch('/job_application/'+job_id.id,{
-            method:'put',
-            headers:{
-                'Content-Type':'application/json',
-                'Authorization':'Bearer'+user.access_token
-            },
-            body:JSON.stringify({
-                name,
-                email,
-                identity_no,
-                course,
-                document
-            })
-        }).then(res=>res.json()).then(data=>{
-            console.log("Data",data);
-            setIsSubmitLoading(false);
-            if(data.error){
-                Swal.fire({
-                    title: data.error,
-                    icon: 'error',
-                    confirmButtonText: 'Ok'
-                });
-            }
-            else{
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Successfully Updated!',
-                    confirmButtonText: 'OK'
-                });
-                toggleViewOnly();
-            }
-        }).catch(err=>{
-            Swal.fire({
-                title: err,
-                icon: 'error',
-                confirmButtonText: 'Ok'
-            });
-        })
-    }
 
     const navigatePrev = () =>{
         navigate('/manage_user_application');
@@ -134,16 +96,107 @@ const ViewJobApplication = (props) => {
         setIsVerify(true);
     }
 
-    const toggleApprove = (e) => {
-        e.preventDefault();
-        console.log("Approve");
+    const toggleApprove = (event) => {
+        event.preventDefault();
+        setIsSubmitLoading(true);
+        const newStatus = (job.allocated_student.length+1 >= job.required_student)?"Closed":"Available";
+        fetch('/part_time_job/allocated_student/'+job._id,{
+            method:'put',
+            headers:{
+                'Content-Type':'application/json',
+                'Authorization':'Bearer'+user.access_token
+            },
+            body:JSON.stringify({
+                student : id,
+                status: newStatus
+            })
+        }).then(res=>res.json()).then(data=>{
+            setIsSubmitLoading(false);
+            if(data.error){
+                console.log(data.error);
+            }
+            else{
+                updateStatus("Approved");
+                updateUserAsPartTimeJobRecipient();
+                toggleViewOnly();
+            }
+        }).catch(err=>{
+            console.log(err);
+        })
     }
 
-    const toggleReject = (e) => {
-        e.preventDefault();
-        console.log("Reject");
+    const toggleReject = (event) => {
+        event.preventDefault();
+        Swal.fire({
+            title: 'Reject Part-Time Job Application',
+            text: 'Do you want to reject this application?',
+            icon: 'warning',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'Cancel',
+            showCancelButton: true
+        }).then(result=>{
+            if(result.isConfirmed){
+                updateStatus("Rejected");
+                toggleViewOnly();
+            }
+        })
     }
 
+    const updateStatus = (decision) => {
+        setIsSubmitLoading(true);
+        fetch('/job_application/status/'+id,{
+            method:'put',
+            headers:{
+                'Content-Type':'application/json',
+                'Authorization':'Bearer'+user.access_token
+            },
+            body:JSON.stringify({
+                status : decision,
+                verified_by: user.id,
+                verified_on: Date()
+            })
+        }).then(res=>res.json()).then(data=>{
+            setIsSubmitLoading(false);
+            if(data.error){
+                Swal.fire({
+                    title: data.error,
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                });
+            }
+            else{
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Successfully '+decision+'!',
+                    confirmButtonText: 'OK'
+                });
+            }
+        }).catch(err=>{
+            console.log(err);
+        })
+    }
+
+    const updateUserAsPartTimeJobRecipient = () => {
+        fetch('/user/part_time_job_recipient/'+created_by,{
+            method:'put',
+            headers:{
+                'Content-Type':'application/json',
+                'Authorization':'Bearer'+user.access_token
+            },
+            body:JSON.stringify({
+                part_time_job_recipient:true
+            })
+        }).then(res=>res.json()).then(data=>{
+            if(data.error){
+                console.log(data.error);
+            }
+            else{
+                console.log(data.message);
+            }
+        }).catch(err=>{
+            console.log(err);
+        })
+    }
     const toggleViewOnly = () => {
         setIsVerify(false);
         resetState();
@@ -181,7 +234,7 @@ const ViewJobApplication = (props) => {
                     
                     
                 </div>
-                <form id="user-job-application-form" onSubmit={e=>handleSave(e)}>
+                <form id="user-job-application-form">
                     <span className="short-input">
                         <label >NAME</label>
                         <input disabled value={name} type="text" name="name" />
@@ -203,12 +256,16 @@ const ViewJobApplication = (props) => {
                         <input className="hidden" ref={fileUploadInput}  type="file" accept=".pdf" name="document"/>
                         <input disabled ref={fileTextDisplay} onClick={isVerify?handleTextInputOnClick:()=>{}} type="text" defaultValue={document.name}/>
                     </span>
+                    <span className="short-input">
+                        <label >STATUS</label>
+                        <input disabled type="text" name="status" defaultValue={status} />
+                    </span>
                     {isVerify?
                     <div id="verify-section">
                         <button onClick={toggleApprove} id="approve-button">Approve</button>
                         <button onClick={toggleReject} id="reject-button">Reject</button>
                     </div>:
-                    <button onClick={toggleVerify} id="create-button">Verify</button>}
+                    <button disabled={(status=="Approved" || status=="Rejected")} onClick={(status=="Approved" || status=="Rejected")?()=>{}:toggleVerify} id="verify-button">Verify</button>}
                 </form>
             </div>
             <div id='pdf-modal'>
