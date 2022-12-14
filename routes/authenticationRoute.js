@@ -78,8 +78,8 @@ router.post("/signin", (req, res) => {
       if (!savedUser) {
         return res.json({ error: "Invalid email or password" });
       }
-      if(savedUser.status=="Not Active"){
-        return res.json({ error: "Please activate your account" });
+      if(savedUser.status=="Inactive"){
+        return res.json({ error: "Your account is inactivated" });
       }
       bcrypt.compare(password, savedUser.password).then((isMatch) => {
         if (isMatch) {

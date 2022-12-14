@@ -19,6 +19,31 @@ router.get('/user',(req,res)=>{
     });
 })
 
+// @route   GET /users
+// @desc    Retrieve All Users
+// @access  Private
+router.get('/users',(req,res)=>{
+    User.find()
+    .sort('created_on')
+    .then(users=>{
+        res.json({users:users});
+    }).catch(err=>{
+        res.json({error:err});
+    });
+})
+
+// @route   GET /user-info/:id
+// @desc    Retrieve User Details for Admin to manage user details
+// @access  Private
+router.get('/user-info/:id',requiredLogin,(req,res)=>{
+    User.find({_id:req.params.id})
+    .then(users=>{
+        res.json({user:users[0]});
+    }).catch(err=>{
+        res.json({error:err});
+    });
+})
+
 // @route   GET /user/:id
 // @desc    Retrieve User Details
 // @access  Private

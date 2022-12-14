@@ -1,0 +1,94 @@
+#manage-user-details-section{
+    display: flex;
+}
+
+#manage-user-details-content-section{
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    align-content: center;
+    width: 100%;
+}
+
+#manage-user-details-right-section{
+    width: 76%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#manage-user-details-left-section{
+    width: 20%;
+    text-align: center;
+    margin-right: 30px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#manage-user-details-left-section img{
+    height: 35vh;
+}
+
+#manage-user-details-left-section .button{
+    display: inline-flex;
+    justify-content: center;
+    border: 1px solid #192F59;
+    color: white;
+    background-color: #192F59;
+    border-radius: 20px;
+    height: 5vh;
+    width:10vw;
+    cursor: pointer;
+    line-height: 30px;
+    font-size: 15px;
+}
+
+#manage-user-details-right-section label{
+    width: 15vw;
+}
+
+#manage-user-details-content-section .full-input{
+    width: 100%;
+    margin-bottom: 30px;
+    margin-top: 10px;
+}
+
+#manage-user-details-section #cancel-button{
+    background-color: #E1E1E1;
+    border-color: #E1E1E1;
+    color: white;
+    margin: 10px 4px;
+    border-radius: 20px;
+    height: 40px;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    width: 100px;
+    cursor: pointer;
+}
+
+#manage-user-details-section #activate-button{
+    background-color: #00A65A;
+    color: white;
+    margin: 10px 4px;
+    border-radius: 20px;
+    height: 40px;
+    position: relative;
+    display: inline-block;
+    text-align: center;
+    width: 100px;
+    cursor: pointer;
+}
+
+#manage-user-details-section #inactivate-button{
+    background-color: #DD4B39;
+    border-color: #DD4B39;
+    color: white;
+    margin: 10px 4px;
+    border-radius: 20px;
+    height: 40px;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    width: 100px;
+    cursor: pointer;
+}

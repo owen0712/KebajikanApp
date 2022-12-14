@@ -81,7 +81,7 @@ const Admin = (props) => {
                     <NotificationsActiveTwoToneIcon/>
                     <p>NOTIFICATION</p>
                 </span>
-                <span className="option-card" onClick={()=>handleClick('/')}>
+                <span className="option-card" onClick={()=>handleClick('/manage_user')}>
                     <GroupTwoToneIcon/>
                     <p>USER</p>
                 </span>
