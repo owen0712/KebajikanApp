@@ -15,11 +15,12 @@ class Dropdown extends Component{
             color: "#192F59",
             fontSize: "15px",
             border: "3px solid #192F59",
-            borderRadius: "0"
+            borderRadius: "0",
+            ...this.props.styling
         };
 
         return(
-            <span className="short-input dropdown">
+            <span className={this.props.inputClassName+" dropdown"}>
                 <label >{(this.props.label)&&this.props.label}</label>
                 <Select disabled={this.props.isDisabled}
                     labelId="dropdown-label"
@@ -37,6 +38,10 @@ class Dropdown extends Component{
             </span>
             )
     }
+}
+
+Dropdown.defaultProps ={
+    inputClassName:"short-input"
 }
 
 export default Dropdown;

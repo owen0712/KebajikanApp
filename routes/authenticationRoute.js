@@ -78,6 +78,9 @@ router.post("/signin", (req, res) => {
       if (!savedUser) {
         return res.json({ error: "Invalid email or password" });
       }
+      if(savedUser.status=="Not Active"){
+        return res.json({ error: "Please activate your account" });
+      }
       if(savedUser.status=="Inactive"){
         return res.json({ error: "Your account is inactivated" });
       }
@@ -179,5 +182,57 @@ router.get("/refresh/token", checkToken, (req, res) => {
     res.json({ user:{id:user._id,name:user.name,role:user.role,charity_event_organizer:user.charity_event_organizer,part_time_job_organizer:user.part_time_job_organizer,charity_event_recipient:user.charity_event_recipient,part_time_job_recipient:user.part_time_job_recipient,access_token,refresh_token} });
   })
 });
+
+// @route   POST /user/create
+// @desc    Admin Create New User
+// @access  Private
+router.post("/user/create",requiredLogin, (req, res) => {
+  const {name, email, password, role} = req.body;
+  if (!name || !email || !password || !role ) {
+      return res.json({ error: "Please fill all required fields" });
+  }
+
+  User.findOne({ email: email })
+  .then((savedUser) => {
+    if (savedUser) {
+      return res.json({ error: "User already exist" });
+    }
+    const isOrganizer = (role==="Organizer"||role==="Admin");
+    const avatar = getAvatarImage();
+    bcrypt.genSalt(10).then(salt=>{
+      bcrypt.hash(password, salt).then((hashedpassword) => {
+        const user = new User({
+          name,
+          email,
+          birthdate:Date.now(),
+          phone_number:"-",
+          profile_pic:avatar,
+          password: hashedpassword,
+          role,
+          charity_event_organizer:isOrganizer,
+          part_time_job_organizer:isOrganizer
+        });
+
+        user.save()
+          .then(async (user) => {
+            const subject = 'Kebajikan App Account Verfication';
+            const content = `<p>Please click the link below to complete your info and activate your account</p> <a href='${DOMAIN}/activate/incomplete_info/${user._id}'>Click here</a>`
+            await sendMail({destinationEmail:email,subject,content})
+            res.json({ message: "New user successfully saved" });
+          })
+          .catch((err) => {
+            console.log(err);
+            res.json({ error: err });
+          });
+      });
+    });
+    
+  })
+  .catch((err) => {
+    console.log(err);
+    res.json({ error: err });
+  });
+});
+
 
 module.exports = router;

@@ -11,7 +11,7 @@
     background-color: #00A65A;
 }
 
-#inactive-status, #rejected-status, #closed-status, #not-verified-status{
+#inactive-status, #rejected-status, #closed-status, #not-verified-status, #not-active-status{
     color: #FFFFFF;
     background-color: #DD4B39;
 }

@@ -1,14 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
-import {useNavigate, useParams} from 'react-router-dom';
-import { BackSection , Loading } from '../../../components';
+import {useNavigate, Navigate, useParams} from 'react-router-dom';
+import { Loading } from '../../../components';
 import { useUser } from '../../../contexts/UserContext';
-import './manage_user_details.css';
+import './complete-user-info.css';
 import Swal from 'sweetalert2';
 
+const CompleteUserInfo = (props) =>{
 
-const ManageUserDetails = (props) =>{
-
-    const [isEdit,setIsEdit] = useState(props.isEdit);
     const [isLoading,setIsLoading] = useState(true);
     const [name,setName] = useState("");
     const [email,setEmail] = useState("");
@@ -18,37 +16,22 @@ const ManageUserDetails = (props) =>{
     const [status,setStatus] = useState("");
     const [identity_no,setIdentityNo] = useState("");
     const [profile_pic, setProfilePic] = useState(null);
-    const user = useUser();
     const {id} = useParams();
+    const user = useUser();
     const imageUploadInput = useRef();
     const imageDisplay = useRef();
     const navigate = useNavigate();
 
     useEffect(()=>{
-        let timer = null;
-        if(user==null){
-            timer = setTimeout(()=>{
-                navigate('/login')
-            },5000)
-        }
-        if(user){
-            if(user.role!=2){
-                navigate('/');
-            }
-            fetchData();
-        }
-        return () => {
-            clearTimeout(timer);
-        }
-    },[user])
+        fetchData();
+    },[])
 
     const fetchData = () =>{
         setIsLoading(true);
-        fetch('/user-info/'+id,{
+        fetch('/user-info/incomplete/'+id,{
             method:'get',
             headers:{
                 'Content-Type':'application/json',
-                'Authorization':'Bearer'+user.access_token
             }
         }).then(res=>res.json()).then(data=>{
             if(data.error){
@@ -63,8 +46,6 @@ const ManageUserDetails = (props) =>{
                 console.log(userInfo)
                 setName(userInfo.name);
                 setEmail(userInfo.email);
-                setPhoneNumber(userInfo.phone_number);
-                setBirthdate(userInfo.birthdate);
                 setRole(userInfo.role);
                 setStatus(userInfo.status);
                 setIdentityNo(userInfo.identity_no);
@@ -80,66 +61,30 @@ const ManageUserDetails = (props) =>{
         })
     }
 
-    const toggleEdit = () => {
-        setIsEdit(true);
+    const handlePhoneNumberOnChange = (event) =>{
+        setPhoneNumber(event.target.value);
     }
 
-    const toggleViewOnly = () => {
-        setIsEdit(false);
-        resetState();
+    const handleBirthDateOnChange = (event) =>{
+        setBirthdate(event.target.value);
     }
 
-    const resetState = () => {
-        fetchData();
-    };
-
-    const toggleInactivate = () =>{
-        setIsLoading(true);
-        Swal.fire({
-            title: ' Inactivate User',
-            text: 'Do you want to inactivate this user?',
-            icon: 'warning',
-            confirmButtonText: 'Yes',
-            cancelButtonText: 'Cancel',
-            showCancelButton: true
-        }).then(result=>{
-            if(result.isConfirmed){
-                updateStatus("Inactive"); 
-                toggleViewOnly();
-            }
-        })
-        toggleViewOnly();
-        setIsLoading(false);
+    const handleIdentityNoOnChange = (event) =>{
+        setIdentityNo(event.target.value);
     }
 
-    const toggleActivate = () =>{
-        setIsLoading(true);
-        Swal.fire({
-            title: ' Activate User',
-            text: 'Do you want to activate this user?',
-            icon: 'warning',
-            confirmButtonText: 'Yes',
-            cancelButtonText: 'Cancel',
-            showCancelButton: true
-        }).then(result=>{
-            if(result.isConfirmed){
-                updateStatus("Active"); 
-                toggleViewOnly();
-            }
-        })
-        toggleViewOnly();
-        setIsLoading(false);
-    }
 
-    const updateStatus = (newStatus) => {
-        fetch('/user/status/'+id,{
+    const handleSubmit = () => {
+        fetch('/user-info/complete/'+id,{
             method:'put',
             headers:{
                 'Content-Type':'application/json',
-                'Authorization':'Bearer'+user.access_token
             },
             body:JSON.stringify({
-                status: newStatus
+                birthdate, 
+                phone_number,
+                identity_no,
+                status:"Active"
             })
         }).then(res=>res.json()).then(data=>{
             if(data.error){
@@ -155,7 +100,7 @@ const ManageUserDetails = (props) =>{
                     icon: 'success',
                     confirmButtonText: 'Ok'
                 });
-                setIsEdit(false);
+                navigate("/");
             }
         }).catch(err=>{
             Swal.fire({
@@ -166,21 +111,17 @@ const ManageUserDetails = (props) =>{
         })
     }
 
-    const handleRedirectBack = () => {
-        navigate('/manage_user');
-    }
-
     return(
         <React.Fragment>
-            <BackSection onBackButtonClick={handleRedirectBack} title={isEdit?"Edit User Details":"View User Details"}/>
             {isLoading?<Loading/>:<>
-                <div id='manage-user-details-section'>
-                    <div id='manage-user-details-content-section'>
-                        <div id='manage-user-details-left-section'>
-                            <input className="hidden" ref={imageUploadInput} type="file" accept="image/*" disabled/>
+                {(user!=null || status!="Not Active")?<Navigate to="/"/>:<>
+                <div id='user-info-section'>
+                    <div id='user-info-content-section'>
+                        <div id='user-info-left-section'>
+                            <input className="hidden" ref={imageUploadInput} type="file" accept="image/*"/>
                             <img ref={imageDisplay} src={profile_pic?profile_pic:"data:,"} name="image"/>
                         </div>
-                        <div id='manage-user-details-right-section'>
+                        <div id='user-info-right-section'>
                             <span className="full-input">
                                 <label >NAME</label>
                                 <input type="text" defaultValue={name} name="name" disabled/>
@@ -190,16 +131,16 @@ const ManageUserDetails = (props) =>{
                                 <input type="email" defaultValue={email} name="email" disabled/>
                             </span>
                             <span className="full-input">
-                                <label >PHONE NUMBER</label>
-                                <input type="text" defaultValue={phone_number} name="phone_number" disabled/>
+                                <label >PHONE NUMBER *</label>
+                                <input type="text" defaultValue={phone_number} name="phone_number" onChange={event=>handlePhoneNumberOnChange(event)}/>
                             </span>
                             <span className="full-input">
-                                <label >BIRTH DATE</label>
-                                <input type="date" defaultValue={birthdate.slice(0,10)} name="birth_date" disabled/>
+                                <label >BIRTH DATE *</label>
+                                <input type="date" defaultValue={birthdate.slice(0,10)} name="birth_date" onChange={event=>handleBirthDateOnChange(event)} />
                             </span>
                         </div>
                         <div>
-                            <span className="full-input">
+                        <span className="full-input">
                                 <label >ROLE</label>
                                 <input type="text" defaultValue={role} name="role" disabled/>
                             </span>
@@ -209,22 +150,18 @@ const ManageUserDetails = (props) =>{
                             </span>
                             <span className="full-input">
                                 <label >ID NO</label>
-                                <input type="text" defaultValue={identity_no?identity_no:"-"} name="id__no" disabled/>
+                                <input type="text" defaultValue={identity_no?identity_no:"-"} name="id__no" onChange={event=>handleIdentityNoOnChange(event)}/>
                             </span>
-                            {isEdit?<div id="save-section">
-                            {status=="Active"?<button onClick={toggleInactivate} id="inactivate-button">Inactivate</button>:""}
-                            {status=="Inactive"?<button onClick={toggleActivate} id="activate-button">Activate</button>:""}
-                            <button onClick={toggleViewOnly} id="cancel-button">Cancel</button>
-                            </div>:
-                            <button disabled={(status=="Not Active")} onClick={(status=="Not Active")?()=>{}:toggleEdit} id="create-button">Edit</button>
-                            }
+                            <div id="save-section">
+                                <button onClick={handleSubmit} id="save-button">Save</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </>}
+            </>}</>}
         </React.Fragment>
     )
 
 }
 
-export default ManageUserDetails;
+export default CompleteUserInfo;

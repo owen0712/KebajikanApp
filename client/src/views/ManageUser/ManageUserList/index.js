@@ -3,15 +3,30 @@ import {useNavigate} from 'react-router-dom';
 import './manage_user_list.css';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import CreateIcon from '@mui/icons-material/Create';
-import { Status, BackSection, Loading } from '../../../components';
+import CloseIcon from '@mui/icons-material/Close';
+import Modal from '@mui/material/Modal';
+import Swal from 'sweetalert2';
+import { Status, BackSection, Loading, Dropdown } from '../../../components';
 import { useUser } from '../../../contexts/UserContext';
+
+const roleOption = [
+    "User", 
+    "Organizer", 
+    "Admin", 
+];
 
 const ManageUserList = () => {
 
     const navigate = useNavigate();
+    const [name,setName] = useState(""); 
+    const [email,setEmail] = useState("");
+    const [password,setPassword] = useState("");
+    const [confirm_password,setConfirmPassword] = useState("");
+    const [role,setRole] = useState("User"); 
     const [users,setUsers] = useState([]);
     const [pageNumber,setPageNumber] = useState(1);
     const [isLoading,setIsLoading] = useState(true);
+    const [isOpenForm,setIsOpenForm] = useState(false);
     const user = useUser();
 
     useEffect(()=>{
@@ -53,9 +68,73 @@ const ManageUserList = () => {
         })
     }
 
-    const handleCreate = () => {
-        console.log("Create");
-        // navigate('/manage_part_time_job/create');
+    const handleNameOnChange = (event) => {
+        setName(event.target.value);
+    }
+
+    const handleEmailOnChange = (event) => {
+        setEmail(event.target.value);
+    }
+
+    const handlePasswordOnChange = (event) => {
+        setPassword(event.target.value);
+    }
+
+    const handleConfirmPasswordOnChange = (event) => {
+        setConfirmPassword(event.target.value);
+    }
+
+    const handleRoleOnChange = (event) => {
+        setRole(event.target.value);
+    }
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        if(password!=confirm_password){
+            Swal.fire({
+                icon: 'error',
+                title: "Both password are not same",
+            })
+            return;
+        }
+        setIsLoading(true);
+        fetch('/user/create',{
+            method:'post',
+            headers:{
+                'Content-Type':'application/json',
+                'Authorization':'Bearer'+user.access_token
+            },
+            body:JSON.stringify({
+                name,
+                email,
+                password,
+                role
+            })
+        }).then(res=>res.json()).then(data=>{
+            console.log("Data",data);
+            setIsLoading(false);
+            if(data.error){
+                Swal.fire({
+                    title: data.error,
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                });
+            }
+            else{
+                Swal.fire({
+                    icon: 'success',
+                    title: data.message,
+                    confirmButtonText: 'OK'
+                });
+                navigatePrev();
+            }
+        }).catch(err=>{
+            Swal.fire({
+                title: err,
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
+        })
     }
 
     const handleView = (id) => {
@@ -71,10 +150,18 @@ const ManageUserList = () => {
         navigate('/admin');
     }
 
+    const handleCloseForm = () => {
+        setIsOpenForm(false);
+    }
+
+    const handleOpenForm = () => {
+        setIsOpenForm(true);
+    }
+
     return (
         <React.Fragment>
             {isLoading?<Loading/>:<>
-            <BackSection title="User" previousIsHome={true} createButtonName="Create New Usere" onBackButtonClick={navigatePrev} handleButtonCreate={handleCreate}/>
+            <BackSection title="User" previousIsHome={true} createButtonName="Create New Usere" onBackButtonClick={navigatePrev} handleButtonCreate={handleOpenForm}/>
             <div id="user-list-table-section">
                 <table>
                     <thead>
@@ -94,12 +181,60 @@ const ManageUserList = () => {
                                 <td><Status statusName={user.status}/></td>
                                 <td className='button-list'>
                                     <button className='button' onClick={()=>handleView(user._id)}><RemoveRedEyeIcon/>View</button>
-                                    <button className='button' onClick={()=>handleEdit(user._id)}><CreateIcon/>Edit</button>
+                                    <button className='button' disabled={(user.status=="Not Active")} onClick={(user.status=="Not Active")?()=>{}:()=>handleEdit(user._id)} ><CreateIcon/>Edit</button>
                                 </td>
                             </tr>
                         })}
                     </tbody>
                 </table>
+            </div>
+            <div id='create-form-modal'>
+                <Modal
+                    open={isOpenForm}
+                    onClose={handleCloseForm}
+                >
+                    <div className='form-modal-box'>
+                        <div className='form-modal-close-section'>
+                            <CloseIcon onClick={handleCloseForm}/>
+                        </div>
+                        <h2 className='form-modal-view-title'>
+                            CREATE NEW USER
+                        </h2>
+                        <div className='form-modal-view-frame'>
+                            <form id="create-user-form" onSubmit={event=>handleSubmit(event)}>
+                                <span>
+                                    <label>FULL NAME *</label>
+                                    <input type="text" onChange={event=>handleNameOnChange(event)}/>
+                                </span>
+                                <span>
+                                    <label>EMAIL *</label>
+                                    <input type="email" onChange={event=>handleEmailOnChange(event)}/>
+                                </span>
+                                
+                                <span>
+                                    <label>PASSWORD *</label>
+                                    <input type="password" onChange={event=>handlePasswordOnChange(event)}/>
+                                </span>
+                                <span>
+                                    <label>CONFIRM PASSWORD *</label>
+                                    <input type="password" onChange={event=>handleConfirmPasswordOnChange(event)}/>
+                                </span>
+                                <Dropdown
+                                    optionList={roleOption}
+                                    label = "ROLE *"
+                                    value = {role}
+                                    handleOnChange = {handleRoleOnChange}
+                                    inputClassName = "long-input"
+                                    styling = {{border:"0",borderRadius:"5px",width:"100%"}}
+                                />
+                                <div className='form-modal-view-action-section'>
+                                    <input type="submit" value="Create" id="create-button"/>
+                                    <button className="modal-close-button" onClick={handleCloseForm}>Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </Modal>
             </div>
             </>}            
         </React.Fragment>
