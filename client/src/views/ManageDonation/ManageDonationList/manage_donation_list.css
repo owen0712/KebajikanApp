@@ -1,0 +1,96 @@
+.button-list{
+    display: flex;
+    justify-content: center;
+}
+
+.button{
+    color: #192F59;
+    display: flex;
+    height: 30px;
+    border: 2px solid #192F59;
+    background-color: white;
+    border-radius: 10px;
+    font-weight: bold;
+    margin: 10px;
+    line-height: 25px;
+    cursor: pointer;
+}
+
+.button svg{
+    margin: 0 5px 0 0;
+    color: #192F59;
+}
+
+.danger-button{
+    color: #DF5645;
+    display: flex;
+    height: 30px;
+    border: 2px solid #DF5645;
+    background-color: white;
+    border-radius: 10px;
+    font-weight: bold;
+    margin: 10px;
+    line-height: 25px;
+    cursor: pointer;
+}
+
+.danger-button svg{
+    margin: 0 5px 0 0;
+    color: #DF5645;
+}
+
+#part-time-job-list-table-section{
+    padding: 20px;
+    background-color: #E2ECFF;
+}
+
+#part-time-job-list-table-section table{
+    padding: 10px;
+    width: 100%;
+    color: #192F59;
+    margin-top: 15px;
+    background-color: white;
+    table-layout: fixed;
+}
+
+#part-time-job-list-table-header-row{
+    height: 10% !important;
+    background-color: #192F59;
+    color: white;
+}
+
+#part-time-job-list-table-section thead th{
+    border: 2px solid #192F59;
+    text-align: left;
+    padding-left: 20px;
+}
+
+#part-time-job-list-table-section tbody{
+    background-color: white;
+    color: #192F59;
+    font-weight: bold;
+}
+
+#part-time-job-list-table-section tbody td{
+    padding-left: 20px;
+    border-bottom: 3px solid rgb(25, 47, 89, .4);
+}
+
+.event-title{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap; 
+    width: 20%;
+}
+
+.category, .donation-status{
+    width: 10%;
+}
+
+.donor{
+    width: 12%;
+}
+
+.amount{
+    width: 11%;
+}

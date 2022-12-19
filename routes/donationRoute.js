@@ -109,6 +109,8 @@ router.get('/receipt/:id',requiredLogin,(req,res)=>{
 router.get('/donation',requiredLogin,(req,res)=>{
     Donation.find()
     .sort('-created_on')
+    .populate("charity_event_id","title")
+    .populate("donor_id","name")
     .then(donations=>{
         res.json({donations:donations});
     }).catch(err=>{
@@ -151,6 +153,25 @@ router.put('/donation/status/:id',requiredLogin,(req,res)=>{
     const {status} = req.body;
     if(!status){
         return res.json({error:'Invalid status'});
+    }
+    Donation.findByIdAndUpdate(req.params.id,req.body,{new:false},(err,result)=>{
+        if(err){
+            return res.json({error:err})
+        }
+        res.json({message:"Successfully updated"})
+    })
+})
+
+// @route   PUT /donation/status/verified/:id
+// @desc    Update Donation Status With Evidence
+// @access  Private
+router.put('/donation/status/verified/:id',requiredLogin,(req,res)=>{
+    const {status, evidence} = req.body;
+    if(!status){
+        return res.json({error:'Invalid status'});
+    }
+    if(!evidence){
+        return res.json({error:'Please upload the evidence'});
     }
     Donation.findByIdAndUpdate(req.params.id,req.body,{new:false},(err,result)=>{
         if(err){

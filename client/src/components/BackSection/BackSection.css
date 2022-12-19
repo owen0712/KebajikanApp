@@ -86,6 +86,12 @@
     height: 25px;
 }
 
+.create-button #transfer-icon{
+    margin: 0 5px 0 0;
+    color: #192F59;
+    height: 25px;
+}
+
 #back-section .create-button{
     margin: auto 20px auto auto;
     position: relative;

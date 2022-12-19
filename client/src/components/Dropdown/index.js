@@ -15,6 +15,7 @@ class Dropdown extends Component{
             color: "#192F59",
             fontSize: "15px",
             border: "3px solid #192F59",
+            borderLeft : "none",
             borderRadius: "0",
             ...this.props.styling
         };
