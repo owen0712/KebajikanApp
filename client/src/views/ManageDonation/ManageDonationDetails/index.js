@@ -9,7 +9,9 @@ import { useUser } from '../../../contexts/UserContext';
 const statusOption = [
     "Verified",
     "Not Verified",
-    "Pending"
+    "Pending",
+    "Rejected",
+    "Appointment"
 ];
 
 const ManageDonationDetails = (props) => {
@@ -293,7 +295,7 @@ const ManageDonationDetails = (props) => {
                 <div className="donation-status-section">
                     <Dropdown 
                     optionList={statusOption}
-                    label = "Course"
+                    label = "STATUS"
                     value = {status}
                     handleOnChange = {handleStatusOnChange}
                     inputClassName = "full-input"
@@ -313,7 +315,7 @@ const ManageDonationDetails = (props) => {
                     }
                 </div>
             {
-                donation.status=="Verified"?
+                (donation.status=="Verified"||donation.status=="Rejected")?
                 <div id="donation-button-row">
                     <button className='button' id="donate-button" onClick={handleButtonOnClick}>Generate Receipt</button>
                 </div>:

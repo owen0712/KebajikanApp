@@ -5,7 +5,7 @@ import Select from '@mui/material/Select';
 import { borderRadius } from '@mui/system';
 
 class Dropdown extends Component{
-    
+
     render(){
         const styling = {
             width:"90%", 
@@ -33,8 +33,9 @@ class Dropdown extends Component{
                 >
                     {
                     this.props.optionList.map(item=>{
-                        return(<MenuItem key={item} value={item}>{item}</MenuItem>)
-                    })}
+                        return(<MenuItem key={(item.value)?item.value:item} value={(item.value)?item.value:item}>{(item.label)?item.label:item}</MenuItem>)
+                    })
+                    }
                 </Select>
             </span>
             )

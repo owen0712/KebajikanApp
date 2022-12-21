@@ -62,7 +62,7 @@ const ManageDonationList = (props) => {
     }
 
     const handleTransferMoney = () => {
-        navigate('/manage_donation/transfer_money');
+        navigate('/manage_donation/transfer_donation');
     }
 
     const handleView = (id) => {
@@ -106,7 +106,7 @@ const ManageDonationList = (props) => {
                                 <td><Status statusName={donation.status}/></td>
                                 <td className='button-list'>
                                     <button className='button' onClick={()=>handleView(donation._id)}><RemoveRedEyeIcon/>View</button>
-                                    <button disabled={donation.status=="Verified"} className='button' onClick={(donation.status=="Verified")?()=>{}:()=>handleVerify(donation._id)}><VerifiedIcon/>Verify</button>
+                                    <button disabled={(donation.status=="Verified"||donation.status=="Rejected")} className='button' onClick={(donation.status=="Verified"||donation.status=="Rejected")?()=>{}:()=>handleVerify(donation._id)}><VerifiedIcon/>Verify</button>
                                 </td>
                             </tr>
                         })}

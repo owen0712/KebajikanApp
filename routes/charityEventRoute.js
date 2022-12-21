@@ -38,12 +38,28 @@ router.post('/charity_event',requiredLogin,(req,res)=>{
     });
 });
 
-// @route   POST /charity_event/approved
+// @route   GET /charity_event/approved
 // @desc    Retrieve Approved Charity Event
 // @access  Private
 router.get('/charity_event/approved',requiredLogin,(req,res)=>{
     CharityEvent.find({ "status" : { "$in": ["Not Started", "In Progress", "Preregistration","Closed"] }})
     .select("-document")
+    .populate("organizer_id","-_id name")
+    .sort('-created_on')
+    .then(events=>{
+        res.json({events:events});
+    }).catch(err=>{
+        res.json({error:err});
+    });
+})
+
+// @route   GET /charity_event/closed
+// @desc    Retrieve closed Charity Event
+// @access  Private
+router.get('/charity_event/closed',requiredLogin,(req,res)=>{
+    CharityEvent.find({ "status" : "Closed" })
+    .select("-document")
+    .populate("recipients")
     .populate("organizer_id","-_id name")
     .sort('-created_on')
     .then(events=>{
