@@ -93,6 +93,21 @@ router.get('/part_time_job/available',(req,res)=>{
     });
 });
 
+// @route   GET /part_time_job/organizer/available
+// @desc    Retrieve Organizer Available Part-time Job
+// @access  Private
+router.get('/part_time_job/organizer/available/:id',requiredLogin,(req,res)=>{
+    PartTimeJob.find({status:{"$in":["Available","Closed"]},"created_by":req.params.id })
+    .select("-photo")
+    .populate("organizer_id","name")
+    .sort("-created_on")
+    .then(events=>{
+        res.json({events:events});
+    }).catch(err=>{
+        res.json({error:err});
+    });
+});
+
 // @route   GET /part_time_job/:id
 // @desc    Retrieve Specific Part-time Job
 // @access  Public

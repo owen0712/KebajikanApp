@@ -385,6 +385,11 @@ const ApplicationHistoty = (props) =>{
                     </thead>
                     <tbody>
                         {
+                            eventApplications.length==0&&<tr className="no-event" rowSpan={6}>
+                                <td colSpan={4}>No event application exists.</td>
+                            </tr>
+                        }
+                        {
                         eventApplications.map(application=>{
                             return <tr key={application._id}>
                                 <td className='title'>{application.event_id.title}</td>
@@ -416,6 +421,11 @@ const ApplicationHistoty = (props) =>{
                         </tr>
                     </thead>
                     <tbody>
+                        {
+                            jobApplications.length==0&&<tr className="no-event" rowSpan={6}>
+                                <td colSpan={4}>No job application exists.</td>
+                            </tr>
+                        }
                         {
                         jobApplications.map(application=>{
                             return <tr key={application._id}>
@@ -450,6 +460,11 @@ const ApplicationHistoty = (props) =>{
                         </tr>
                     </thead>
                     <tbody>
+                        {
+                            proposal.length==0&&<tr className="no-event" rowSpan={6}>
+                                <td colSpan={5}>No proposal exists.</td>
+                            </tr>
+                        }
                         {
                         proposal.sort((a,b)=>{return (new Date(b.created_on) - new Date(a.created_on))})
                         .map(application=>{

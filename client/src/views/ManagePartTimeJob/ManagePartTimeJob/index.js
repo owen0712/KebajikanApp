@@ -27,13 +27,13 @@ const ManagePartTimeJob = (props) => {
             },5000)
         }
         if(user){
-            if(user.role==2){
-                fetchData();
-            }
-            else{
+            if(user.role!=2&&!user.part_time_job_organizer){
                 timer = setTimeout(()=>{
                     navigate('/login')
                 },5000)
+            }
+            else{
+                fetchData();
             }
         }
         return () => {
@@ -43,7 +43,8 @@ const ManagePartTimeJob = (props) => {
 
     const fetchData = () =>{
         setIsLoading(true);
-        fetch('/part_time_job',{
+        const url = user.role==2?'/part_time_job':'/part_time_job/organizer/available/'+user.id;
+        fetch(url,{
             method:'get',
             headers:{
                 'Content-Type':'application/json',
@@ -142,6 +143,11 @@ const ManagePartTimeJob = (props) => {
                         </tr>
                     </thead>
                     <tbody>
+                        {
+                            events.length==0&&<tr className="no-event" rowSpan={6}>
+                                <td colSpan={6}>No part-time job exists. Please create new part-time job now!</td>
+                            </tr>
+                        }
                         {
                         events.map(event=>{
                             return <tr key={event._id}>

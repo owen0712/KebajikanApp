@@ -118,6 +118,9 @@ const ViewJobApplication = (props) => {
             else{
                 updateStatus("Approved");
                 updateUserAsPartTimeJobRecipient();
+                if(newStatus=="Closed"){
+                    updateAllJobApplicationToClosed();
+                }
                 toggleViewOnly();
             }
         }).catch(err=>{
@@ -186,6 +189,25 @@ const ViewJobApplication = (props) => {
             body:JSON.stringify({
                 part_time_job_recipient:true
             })
+        }).then(res=>res.json()).then(data=>{
+            if(data.error){
+                console.log(data.error);
+            }
+            else{
+                console.log(data.message);
+            }
+        }).catch(err=>{
+            console.log(err);
+        })
+    }
+
+    const updateAllJobApplicationToClosed = () => {
+        fetch('/job_application/job_closed/rejected/'+job._id,{
+            method:'put',
+            headers:{
+                'Content-Type':'application/json',
+                'Authorization':'Bearer'+user.access_token
+            }
         }).then(res=>res.json()).then(data=>{
             if(data.error){
                 console.log(data.error);

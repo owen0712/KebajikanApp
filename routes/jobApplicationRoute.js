@@ -122,6 +122,19 @@ router.put('/job_application/status/:id',requiredLogin,(req,res)=>{
     })
 });
 
+// @route   PUT /job_application/job_closed/rejected/:id
+// @desc    Update User Application Status
+// @access  Private
+router.put('/job_application/job_closed/rejected/:id',requiredLogin,(req,res)=>{
+    JobApplication.upda
+    JobApplication.updateMany({"job_id":req.params.id,"status":"Pending"},{status:"Rejected"},(err,result)=>{
+        if(err){
+            console.log("****Update Job Closed",err)
+            return res.json({error:err})
+        }
+        res.json({message:"Successfully updated"})
+    })
+});
 
 // @route   DELETE /job_application/:id
 // @desc    Delete User's Job Application
