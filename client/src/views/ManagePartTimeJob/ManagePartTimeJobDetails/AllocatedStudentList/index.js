@@ -19,7 +19,7 @@ const AllocatedStudentList = (props) => {
     useEffect(()=>{
         setDisplayedAllocatedStudent();
     },[page,allocated_student,isEdit])
-       
+
     useEffect(()=>{
         setPage(1);
     },[])
@@ -38,13 +38,11 @@ const AllocatedStudentList = (props) => {
     }
 
     const handleViewAllocatedStudent = (id) => {
-        console.log("View"+id)
-        // navigate('/part_time_job/allocated_student/view/'+id);
+        navigate('/manage_part_time_job/allocated_student/view/'+id);
     }
 
     const handleEditAllocatedStudent = (id) => {
-        console.log("Edit"+id)
-        // navigate('/part_time_job/allocated_student/edit/'+id);
+        navigate('/manage_part_time_job/allocated_student/edit/'+id);
     }
         
     return (
@@ -62,7 +60,7 @@ const AllocatedStudentList = (props) => {
                             return <tr key={allocatedStudent._id} className='allocated-student'>
                             <td>{allocatedStudent.name}</td>
                             <td>{allocatedStudent.verified_on.slice(0,10)}</td>
-                            <td><Status statusName={allocatedStudent.status}/></td>
+                            <td><Status statusName={(allocatedStudent.status=="Approved")?"Not Active":allocatedStudent.status}/></td>
                             <td>
                                 <button className='button' onClick={()=>handleViewAllocatedStudent(allocatedStudent._id)}><RemoveRedEyeIcon/>View</button>
                                 <button className='button' onClick={()=>handleEditAllocatedStudent(allocatedStudent._id)}><CreateIcon/>Edit</button>  

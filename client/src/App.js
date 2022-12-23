@@ -6,6 +6,7 @@ import CreateCharityEvent from './views/ManageCharityEvent/CreateCharityEvent';
 import CreatePartTimeJob from './views/ManagePartTimeJob/CreatePartTimeJob';
 import ManagePartTimeJob from './views/ManagePartTimeJob/ManagePartTimeJob';
 import ManagePartTimeJobDetails from './views/ManagePartTimeJob/ManagePartTimeJobDetails';
+import ManageJobAllocatedStudent from './views/ManageRecipient/ManageJobAllocatedStudent';
 import ViewPartTimeJob from './views/PartTimeJob/ViewPartTimeJob';
 import ViewPartTimeJobDetails from './views/PartTimeJob/ViewPartTimeJobDetails';
 import ApplyPartTimeJob from './views/PartTimeJob/ApplyPartTimeJob';
@@ -78,6 +79,8 @@ function App() {
           <Route path='/manage_part_time_job' element={<ManagePartTimeJob/>}/>
           <Route path='/manage_part_time_job/view/:id' element={<ManagePartTimeJobDetails isAdmin={true} isEdit={false}/>}/>
           <Route path='/manage_part_time_job/edit/:id' element={<ManagePartTimeJobDetails isAdmin={true} isEdit={true}/>}/>
+          <Route path='/manage_part_time_job/allocated_student/view/:id' element={<ManageJobAllocatedStudent isEdit={false}/>}/>
+          <Route path='/manage_part_time_job/allocated_student/edit/:id' element={<ManageJobAllocatedStudent isEdit={true}/>}/>
           <Route path='/part_time_job/apply/:id' element={<ApplyPartTimeJob/>}/>
           <Route path='/part_time_job/view' element={<ViewPartTimeJob/>}/>
           <Route path='/part_time_job/view/:id' element={<ViewPartTimeJobDetails/>}/>

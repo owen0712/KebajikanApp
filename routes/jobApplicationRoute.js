@@ -122,14 +122,32 @@ router.put('/job_application/status/:id',requiredLogin,(req,res)=>{
     })
 });
 
+// @route   PUT /job_application/allocated_student/status/:id
+// @desc    Update User Application Status In Manage Allocated Student
+// @access  Private
+router.put('/job_application/allocated_student/status/:id',requiredLogin,(req,res)=>{
+    const {status, evidence} = req.body;
+    if(!status){
+        return res.json({error:'Error occur. Application Status failed to update'});
+    } 
+    if(status=="Paid" && !evidence){
+        return res.json({error:'Error occur. Please upload evidence as proof.'});
+    }
+    JobApplication.findByIdAndUpdate(req.params.id,req.body,(err,result)=>{
+        if(err){
+            return res.json({error:err})
+        }
+        res.json({message:"Successfully updated"})
+    })
+});
+
+
 // @route   PUT /job_application/job_closed/rejected/:id
 // @desc    Update User Application Status
 // @access  Private
 router.put('/job_application/job_closed/rejected/:id',requiredLogin,(req,res)=>{
-    JobApplication.upda
     JobApplication.updateMany({"job_id":req.params.id,"status":"Pending"},{status:"Rejected"},(err,result)=>{
         if(err){
-            console.log("****Update Job Closed",err)
             return res.json({error:err})
         }
         res.json({message:"Successfully updated"})

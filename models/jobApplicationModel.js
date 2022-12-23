@@ -49,6 +49,9 @@ const jobApplicationSchema = new mongoose.Schema({
         type:Object,
         required:true
     },
+    evidence:{
+        type:Object
+    }
     
 })
 

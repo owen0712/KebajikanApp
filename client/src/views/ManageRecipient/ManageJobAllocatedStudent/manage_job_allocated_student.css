@@ -1,0 +1,14 @@
+#manage-job-allocated-student-form{
+    width: 90%;
+    padding: 5px;
+    margin: auto;
+}
+
+#manage-job-allocated-student-form .resume-preview{
+    height: 200px;
+}
+
+#manage-job-allocated-student-form .read-only{
+    color: rgba(25, 47, 89, 0.8);
+    background-color: #E1E1E1;
+}
