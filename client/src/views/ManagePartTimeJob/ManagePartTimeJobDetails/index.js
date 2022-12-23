@@ -225,7 +225,7 @@ const ManagePartTimeJobDetails = (props) => {
                     <div id="form-right-content">
                         <span className="short-input">
                             <label >REQUIRED STUDENT</label>
-                            <input disabled={!isEdit} value={required_student} type="number" name="amount" onChange={event=>handleRequiredStudentOnChange(event)}/>
+                            <input disabled={!isEdit} value={required_student} min={allocated_student.length==0?"1":allocated_student.length} type="number" name="amount" onChange={event=>handleRequiredStudentOnChange(event)}/>
                         </span>
                         <span className="short-input">
                             <label >LOCATION</label>

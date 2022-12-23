@@ -209,14 +209,18 @@ router.post("/user/create",requiredLogin, (req, res) => {
           profile_pic:avatar,
           password: hashedpassword,
           role,
+          status:"Active",
           charity_event_organizer:isOrganizer,
           part_time_job_organizer:isOrganizer
         });
 
         user.save()
           .then(async (user) => {
-            const subject = 'Kebajikan App Account Verfication';
-            const content = `<p>Please click the link below to complete your info and activate your account</p> <a href='${DOMAIN}/activate/incomplete_info/${user._id}'>Click here</a>`
+            const subject = 'Kebajikan App Account Created';
+            const content = `<p>
+                              We have created an account for you in Kebajikan App. Please use your email and password (<strong>${password}</strong>) to login.
+                            </p>
+                            <a href='${DOMAIN}'>Click here to login</a>`
             await sendMail({destinationEmail:email,subject,content})
             res.json({ message: "New user successfully saved" });
           })

@@ -44,18 +44,6 @@ router.get('/user-info/:id',requiredLogin,(req,res)=>{
     });
 })
 
-// @route   GET /user-info/incomplete/:id
-// @desc    Retrieve incomplete User Details 
-// @access  Public
-router.get('/user-info/incomplete/:id',(req,res)=>{
-    User.find({_id:req.params.id})
-    .then(users=>{
-        res.json({user:users[0]});
-    }).catch(err=>{
-        res.json({error:err});
-    });
-})
-
 // @route   GET /user/:id
 // @desc    Retrieve User Details
 // @access  Private
@@ -83,21 +71,6 @@ router.put('/user/:id',requiredLogin,(req,res)=>{
     })
 })
 
-// @route   PUT /user/:id
-// @desc    Update Incomplete User Details
-// @access  Public
-router.put('/user-info/complete/:id',(req,res)=>{
-    const {birthdate,phone_number,status}=req.body;
-    if(!birthdate||!phone_number||!status){
-        return res.status(422).json({error:'please make sure all fields are filled'});
-    }
-    User.findByIdAndUpdate(req.params.id,{$set:req.body},{new:false},(err,result)=>{
-        if(err){
-            return res.status(422).json({error:"Update failed"});
-        }
-        res.json({message:'Update Successfully'});
-    })
-})
 
 // @route   PUT /password/:id
 // @desc    Update Password For Specific User

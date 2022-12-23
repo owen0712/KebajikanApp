@@ -44,7 +44,6 @@ import DonationHistory from './views/Profile/DonationHistory';
 import GenerateReceipt from './views/Profile/DonationHistory/GenerateReceipt';
 import ChangePassword from './views/Profile/ChangePassword';
 import EmailVerification from './views/Authorization/EmailVerification';
-import CompleteUserInfo from './views/Authorization/CompleteUserInfo';
 import ForgotPassword from './views/Authorization/ForgotPassword';
 import ResetPassword from './views/Authorization/ResetPassword';
 import Main from './views/Main';
@@ -149,7 +148,6 @@ function App() {
           <Route path='/forgot_password' element={<ForgotPassword/>}/>
           <Route path='/reset_password/:token' element={<ResetPassword/>}/>
           <Route path='/activate/:id' element={<EmailVerification/>}/>
-          <Route path='/activate/incomplete_info/:id' element={<CompleteUserInfo/>}/>
           <Route exact path='/chat' element={<Chat/>}/>
           <Route path='/chat/:id' element={<Chat/>}/>
         </Routes>
