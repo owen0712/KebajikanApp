@@ -94,6 +94,7 @@
 
 #announcement-list-table-section button{
     font-weight: bold;
+    display: inline-flex;
 }
 
 #announcement-list-pagination svg{

@@ -32,7 +32,12 @@ router.post('/charity_event',requiredLogin,(req,res)=>{
         document
     });
     newCharityEvent.save().then(createdCharityEvent=>{
-        res.json({message:'New event successfully created'});
+        if(role==2){ 
+            res.json({message:'New event successfully created'});
+        }
+        else{
+            res.json({message:'New event successfully proposed'});
+        }
     }).catch(err=>{
           res.json({error:err});
     });

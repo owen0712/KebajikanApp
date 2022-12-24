@@ -104,6 +104,14 @@ const CreateItemDonation = (props) => {
             })
             return
         }
+        if (item.quantity == 0) {
+            Swal.fire({
+              title: "Please fill valid item quantity",
+              icon: "error",
+              confirmButtonText: "Ok",
+            });
+            return;
+        }
         setItems(prev=>([...prev,item]));
         setItem({description:"",quantity:null})
         descriptionInputRef.current.value="";
@@ -116,6 +124,14 @@ const CreateItemDonation = (props) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        if(items.length<=0){
+            Swal.fire({
+                icon:"error",
+                title:"Item list cannot be empty",
+                confirmButtonText: 'Ok'
+            });
+            return;
+        }
         if(!isAgree){
             Swal.fire({
                 icon:"error",

@@ -124,6 +124,14 @@ const ManageNotificationDetails = (props) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        if(recipients.length==0){
+            Swal.fire({
+                title: "Receiver cannot be empty",
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
+            return;
+        }
         fetch('/notification/'+id,{
             method:'put',
             headers:{

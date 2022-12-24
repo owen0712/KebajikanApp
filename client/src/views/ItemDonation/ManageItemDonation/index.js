@@ -127,6 +127,14 @@ const ManageItemDonation = (props) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if(items.length<=0){
+      Swal.fire({
+          icon:"error",
+          title:"Item list cannot be empty",
+          confirmButtonText: 'Ok'
+      });
+      return;
+    }
     if (!isAgree) {
       Swal.fire({
         icon: "error",

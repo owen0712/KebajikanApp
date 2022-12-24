@@ -13,8 +13,8 @@ const {sendReceiptEmail} = require('../utils/nodemailer');
 // @access  Private
 router.post('/donation/money/:id',requiredLogin,(req,res)=>{
     const {name, email, phone_number, amount} = req.body;
-    if(!name,!email,!phone_number,!amount){
-        return res.json({error:'please fill all fields'});
+    if(!name||!email||!phone_number||!amount){
+        return res.json({error:'Please fill all fields'});
     }
 
     const newDonation = new Donation({

@@ -1,6 +1,7 @@
 #body{
     padding: 1% 5%;
     background-color: #E2ECFF;
+    min-height: 50vh;
 }
 
 /* width */

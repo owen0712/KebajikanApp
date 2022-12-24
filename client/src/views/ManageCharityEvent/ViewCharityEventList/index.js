@@ -151,7 +151,7 @@ const ViewCharityEventList = (props) => {
     return (
         <React.Fragment>
             {isLoading?<Loading/>:<>
-            <BackSection title="View Charity Event" onBackButtonClick={handleRedirectBack} previousIsHome={true} createButtonName="Create New Charity Event" handleButtonCreate={handleCreate}/>
+            <BackSection title="View Charity Event" onBackButtonClick={handleRedirectBack} previousIsHome={true} createButtonName={user.role==2?"Create New Charity Event":""} handleButtonCreate={user.role==2?handleCreate:""}/>
             <div id="#charity-event-list-table-section">
                 <table>
                     <thead>

@@ -100,7 +100,7 @@ router.put('/notification/read/:id',requiredLogin,(req,res)=>{
 router.put('/notification/:id',requiredLogin,(req,res)=>{
     const {title,description,recipients} = req.body;
     if(!title||!description){
-        return res.json({error:'Please fill all required field'});
+        return res.json({error:'Please fill all fields'});
     }
     recipients.forEach((recipient,index)=>{
         recipients[index]=recipient._id

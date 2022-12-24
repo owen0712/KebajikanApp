@@ -21,7 +21,7 @@
     background-color: #FDC800;
 }
 
-#not-started-status,#appointment-status{
+#not-started-status,#appointment-status,#paid-status{
     color: #FFFFFF;
     background-color: #B248AD;
 }

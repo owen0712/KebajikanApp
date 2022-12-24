@@ -245,7 +245,7 @@ const ManageCharityEventRecipients = (props) => {
                 {isEdit&&<span className="short-input">
                     <label >STATUS</label>
                     <select type="text" name="status" defaultValue={status} onChange={event=>handleStatusOnChange(event)}>
-                        <option>Active</option>
+                        <option>Approved</option>
                         <option>Paid</option>
                     </select>
                 </span>}

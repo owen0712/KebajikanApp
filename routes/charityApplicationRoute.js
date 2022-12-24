@@ -89,7 +89,7 @@ router.get('/charity_application/receipt/:id',(req,res)=>{
 // @desc    Retrieve Charity Application Receipt
 // @access  Private
 router.get('/charity_application/approved/:id',(req,res)=>{
-    CharityApplication.find({"created_by":req.params.id,"status":{ "$in": ["Active", "Paid"] }})
+    CharityApplication.find({"created_by":req.params.id,"status":{ "$in": ["Approved", "Paid"] }})
     .populate("event_id","title")
     .then(applications=>{
         res.json({applications});

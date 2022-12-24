@@ -149,11 +149,11 @@ const ViewNotificationList = (props) => {
         <React.Fragment>
             {isLoading?<Loading/>:<>
             <BackSection title="View Notification" onBackButtonClick={handleRedirectBack} previousIsHome={true} createButtonName="Create New Notification" handleButtonCreate={handleCreate}/>
-            <div id="#announcement-list-table-section">
+            <div id="announcement-list-table-section">
                 <table>
                     <thead>
                         <tr>
-                            <th className='title'>ANNOUNCEMENT</th>
+                            <th className='title'>NOTIFICATION</th>
                             <th className='description'>DESCRIPTION</th>
                             <th>DATE CREATED</th>
                             <th></th>
