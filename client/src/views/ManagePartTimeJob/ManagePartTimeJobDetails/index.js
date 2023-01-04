@@ -10,6 +10,7 @@ const ManagePartTimeJobDetails = (props) => {
     
     const [isLoading,setIsLoading] = useState(true);
     const [isSubmitLoading,setIsSubmitLoading] = useState(false);
+    const [job, setJob] = useState(null);
     const [title, setTitle] = useState("");
     const [required_student, setRequiredStudent] = useState(0);
     const [allocated_student, setAllocatedStudent] = useState([]);
@@ -68,6 +69,7 @@ const ManagePartTimeJobDetails = (props) => {
             }
             else{
                 const event = data.event;
+                setJob(event);
                 setTitle(event.title);
                 setRequiredStudent(event.required_student);
                 setAllocatedStudent(event.allocated_student);
@@ -144,6 +146,15 @@ const ManagePartTimeJobDetails = (props) => {
     const handleSave = (event) =>{
         event.preventDefault();
         setIsSubmitLoading(true);
+        if(new Date(closed_date)<new Date(job.created_on)){
+            Swal.fire({
+                title: "Closed Date must be after the date of this job created ("+job.created_on.slice(0,10)+")",
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
+            setIsSubmitLoading(false);
+            return;
+        }
         fetch('/part_time_job/'+job_id.id,{
             method:'put',
             headers:{
@@ -233,7 +244,7 @@ const ManagePartTimeJobDetails = (props) => {
                         </span>
                         <span className="short-input">
                             <label >ALLOWANCE (RM)</label>
-                            <input disabled={!isEdit} value={allowance} type="number" name="amount" onChange={event=>handleAllowanceOnChange(event)}/>
+                            <input disabled={!isEdit} value={allowance} min="1" type="number" name="amount" onChange={event=>handleAllowanceOnChange(event)}/>
                         </span>
                         <span className="short-input">
                             <label >CLOSED DATE</label>

@@ -18,7 +18,7 @@ router.post('/job_application/:id',requiredLogin,(req,res)=>{
     .select("-document")
     .then(events=>{
         if(events.length>0){
-            res.json({error:"You had appplied this job before."});
+            res.json({error:"You had applied this job before."});
             isAppliedBefore=true;
         }else{
             const newPartTimeJobApplication = new JobApplication({

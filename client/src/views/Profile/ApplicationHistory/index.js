@@ -187,13 +187,13 @@ const ApplicationHistoty = (props) =>{
                         });
                     }
                     else{
-                        
                         Swal.fire({
                             title: data.message,
                             text: 'Successfully withdraw this application!',
                             icon: 'success',
                             confirmButtonText: 'Ok'
                         })
+                        fetchEventApplicationData();
                     }
                     
                 }).catch(err=>{
@@ -203,7 +203,6 @@ const ApplicationHistoty = (props) =>{
                         confirmButtonText: 'Ok'
                     });
                 })
-                window.location.reload();
             }
         })
     }
@@ -234,13 +233,13 @@ const ApplicationHistoty = (props) =>{
                         });
                     }
                     else{
-                        console.log(data.message);
                         Swal.fire({
                             title: data.message,
                             text: 'Successfully withdraw this application!',
                             icon: 'success',
                             confirmButtonText: 'Ok'
                         })
+                        fetchJobApplicationData();
                     }
                     
                 }).catch(err=>{
@@ -250,7 +249,6 @@ const ApplicationHistoty = (props) =>{
                         confirmButtonText: 'Ok'
                     });
                 })
-                window.location.reload();
             }
         })
     }
@@ -285,6 +283,7 @@ const ApplicationHistoty = (props) =>{
                             icon: 'success',
                             confirmButtonText: 'Ok'
                         })
+                        fetchEventProposalApplicationData();
                     }
                 }).catch(err=>{
                     Swal.fire({
@@ -293,7 +292,6 @@ const ApplicationHistoty = (props) =>{
                         confirmButtonText: 'Ok'
                     })
                 })
-                window.location.reload();
             }
         })
     }
@@ -330,6 +328,7 @@ const ApplicationHistoty = (props) =>{
                             icon: 'success',
                             confirmButtonText: 'Ok'
                         })
+                        fetchJobProposalApplicationData();
                     }
                     
                 }).catch(err=>{
@@ -339,7 +338,6 @@ const ApplicationHistoty = (props) =>{
                         confirmButtonText: 'Ok'
                     });
                 })
-                window.location.reload();
             }
         })
         

@@ -107,6 +107,7 @@ const ManagePartTimeJob = (props) => {
                             icon: 'success',
                             confirmButtonText: 'Ok'
                         })
+                        fetchData();
                     }
                     
                 }).catch(err=>{
@@ -116,7 +117,6 @@ const ManagePartTimeJob = (props) => {
                         confirmButtonText: 'Ok'
                     });
                 })
-                window.location.reload();
             }
         })
         

@@ -85,6 +85,14 @@ const CreatePartTimeJob = (props) => {
 
     const handleSubmit = (event) =>{
         event.preventDefault();
+        if(new Date(closed_date)<new Date()){
+            Swal.fire({
+                title: "Closed Date must be after today",
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
+            return;
+        }
         setIsSubmitLoading(true);
         fetch('/part_time_job',{
             method:'post',
@@ -155,7 +163,7 @@ const CreatePartTimeJob = (props) => {
                     <div id="form-right-content">
                         <span className="short-input">
                             <label >REQUIRED STUDENT</label>
-                            <input type="number" name="amount" min="0" defaultValue={0} onChange={event=>handleRequiredStudentOnChange(event)}/>
+                            <input type="number" name="amount" min="1" defaultValue={0} onChange={event=>handleRequiredStudentOnChange(event)}/>
                         </span>
                         <span className="short-input">
                             <label >LOCATION</label>
@@ -163,7 +171,7 @@ const CreatePartTimeJob = (props) => {
                         </span>
                         <span className="short-input">
                             <label >ALLOWANCE (RM)</label>
-                            <input type="number" name="amount" min="0" defaultValue={0} onChange={event=>handleAllowanceOnChange(event)}/>
+                            <input type="number" name="amount" min="1" defaultValue={0} onChange={event=>handleAllowanceOnChange(event)}/>
                         </span>
                         <span className="short-input">
                             <label >CLOSED DATE</label>
