@@ -61,10 +61,6 @@ const ManageDonationList = (props) => {
         })
     }
 
-    const handleTransferMoney = () => {
-        navigate('/manage_donation/transfer_donation');
-    }
-
     const handleView = (id) => {
         navigate('/manage_donation/view/'+id);
     }
@@ -80,7 +76,7 @@ const ManageDonationList = (props) => {
     return (
         <React.Fragment>
             {isLoading?<Loading/>:<>
-            <BackSection title="Donation" previousIsHome={true} createButtonName="Transfer Money" onBackButtonClick={navigatePrev} handleButtonCreate={handleTransferMoney} isTransferIcon={true}/>
+            <BackSection title="Donation" previousIsHome={true} onBackButtonClick={navigatePrev}/>
             <div id="donation-list-table-section">
                 <table>
                     <thead>

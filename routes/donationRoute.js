@@ -107,10 +107,11 @@ router.get('/receipt/:id',requiredLogin,(req,res)=>{
 // @desc    Retrieve All Donation
 // @access  Private
 router.get('/donation',requiredLogin,(req,res)=>{
-    Donation.find({"status" : {"$ne": "Pending" }})
+    Donation.find({$or: [{"status" : {"$ne": "Pending" }}, {"category" : {"$ne": "Money" }}]})
     .sort('-created_on')
     .populate("charity_event_id","title")
     .populate("donor_id","name")
+    .populate("appointment_id")
     .then(donations=>{
         res.json({donations:donations});
     }).catch(err=>{

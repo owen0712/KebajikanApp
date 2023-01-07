@@ -5,13 +5,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useUser } from '../../../contexts/UserContext';
 
-
 const statusOption = [
     "Verified",
-    "Not Verified",
-    "Pending",
     "Rejected",
-    "Appointment"
+    "Not Verified"
 ];
 
 const ManageDonationDetails = (props) => {
@@ -20,6 +17,7 @@ const ManageDonationDetails = (props) => {
     const [isLoading,setIsLoading] = useState(true);
     const [status,setStatus] = useState("");
     const [evidence,setEvidence] = useState(null);
+    const [appointment,setAppointment] = useState(null);
     const [isVerify, setIsVerify] = useState(props.isVerify);
     const {id} = useParams();
     const navigate = useNavigate();
@@ -68,6 +66,7 @@ const ManageDonationDetails = (props) => {
                 setDonation(data.donation);
                 setStatus(data.donation.status);
                 setEvidence(data.donation.evidence);
+                setAppointment(data.donation.appointment_id);
                 setIsLoading(false);
             }
         }).catch(err=>{
@@ -166,7 +165,7 @@ const ManageDonationDetails = (props) => {
                     title: data.message,
                     confirmButtonText: 'OK'
                 });
-                setIsVerify(false);
+                toggleViewOnly();
             }
         }).catch(err=>{
             Swal.fire({
@@ -203,7 +202,7 @@ const ManageDonationDetails = (props) => {
                     title: data.message,
                     confirmButtonText: 'OK'
                 });
-                setIsVerify(false);
+                toggleViewOnly();
             }
         }).catch(err=>{
             Swal.fire({
@@ -213,6 +212,59 @@ const ManageDonationDetails = (props) => {
             });
         })
     }
+
+    const toggleUpdateAppointmentStatus = (isApproved) =>{
+        setIsLoading(true); 
+        const newStatus = isApproved?"Appointment":"Rejected";
+        const decision = isApproved?"Approve":"Reject";
+        Swal.fire({
+            title: decision+' Item Donation Appointment',
+            text: 'Do you want to '+decision.toLowerCase()+' this appointment?',
+            icon: 'info',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'Cancel',
+            showCancelButton: true
+        }).then(result=>{
+            if(result.isConfirmed){
+                fetch('/donation/status/'+id,{
+                    method:'put',
+                    headers:{
+                        'Content-Type':'application/json',
+                        'Authorization':"Bearer"+user.access_token
+                    },
+                    body:JSON.stringify({
+                        status: newStatus
+                    })
+                }).then(res=>res.json()).then(data=>{
+                    setIsLoading(false);
+                    if(data.error){
+                        Swal.fire({
+                            title: data.error,
+                            icon: 'error',
+                            confirmButtonText: 'Ok'
+                        });
+                    }
+                    else{
+                        Swal.fire({
+                            icon: 'success',
+                            title: data.message,
+                            confirmButtonText: 'OK'
+                        });
+                        toggleViewOnly();
+                    }
+                }).catch(err=>{
+                    Swal.fire({
+                        title: err,
+                        icon: 'error',
+                        confirmButtonText: 'Ok'
+                    });
+                })
+            }
+        })
+        toggleViewOnly();
+        setIsLoading(false); 
+    }
+    
 
     const toggleSave = () =>{
         if(status=="Verified"){
@@ -238,16 +290,52 @@ const ManageDonationDetails = (props) => {
         setIsVerify(true);
     }
 
-    const toggleCancel = () => {
+    const toggleViewOnly = () => {
         setIsVerify(false);
         resetState();
     }
+    const renderAppointmentDetails = () => {
+        return (
+            <>
+                <div>
+                    <span className="full-input">
+                        <label >APPOINTMENT DATE</label>
+                        <input disabled type="text" name="date" defaultValue={appointment.date.slice(0,10)}/>
+                    </span>
+                    <span className="full-input">
+                        <label >APPOINTMENT TIME</label>
+                        <input disabled type="time" name="time" defaultValue={appointment.time}/>
+                    </span>
+                    <span className="full-input">
+                        <label >APPOINTMENT LOCATION</label>
+                        <input disabled type="text" name="location" defaultValue={appointment.location}/>
+                    </span>
+                    <span className="full-input">
+                        <label >NAME</label>
+                        <input disabled type="text" name="location" defaultValue={appointment.name}/>
+                    </span>
+                    <span className="full-input">
+                        <label >EMAIL</label>
+                        <input disabled type="email" name="location" defaultValue={appointment.email}/>
+                    </span>
+                    <span className="full-input">
+                        <label >PHONE NUMBER</label>
+                        <input disabled type="text" name="location" defaultValue={appointment.phone_number}/>
+                    </span>
+                </div>
+                <div className="donation-status-section">
+                    <span className="full-input">
+                        <label >STATUS</label>
+                        <input disabled type="text" name="location" defaultValue={status}/>
+                    </span>
+                </div>
+            </>
+        )
+    }
 
-    return (
-        <React.Fragment>
-            {isLoading?<Loading/>:<>
-            <BackSection onBackButtonClick={handleRedirectBack} title="Donation Details"/>
-            <div id='donation-details-section'>
+    const renderDonationDetails = () => {
+        return (
+            <>
                 <table>
                     <tbody>
                         <tr className='title'>
@@ -292,17 +380,17 @@ const ManageDonationDetails = (props) => {
                         </tr>
                     </tbody>    
                 </table>
+
                 <div className="donation-status-section">
                     <Dropdown 
-                    optionList={statusOption}
-                    label = "STATUS"
-                    value = {status}
-                    handleOnChange = {handleStatusOnChange}
-                    inputClassName = "full-input"
-                    styling = {{width:"80%"}}
-                    isDisabled={!isVerify}
+                        optionList={statusOption}
+                        label = "STATUS"
+                        value = {status}
+                        handleOnChange = {handleStatusOnChange}
+                        inputClassName = "full-input"
+                        styling = {{width:"80%"}}
+                        isDisabled={!isVerify}
                     />
-
                     {(status=="Verified"||!isVerify)&&
                     <div>
                     <span className="full-input">
@@ -314,20 +402,48 @@ const ManageDonationDetails = (props) => {
                     </div>
                     }
                 </div>
-            {
-                (donation.status=="Verified"||donation.status=="Rejected")?
-                <div id="donation-button-row">
-                    <button className='button' id="donate-button" onClick={handleButtonOnClick}>Generate Receipt</button>
-                </div>:
-                <div id="donation-button-row">
-                    {isVerify?
-                    <div id="save-section">
-                        <button onClick={toggleCancel} id="cancel-button">Cancel</button>
-                        <button onClick={toggleSave} id="save-button">Save</button>
-                    </div>:
-                    <button onClick={toggleVerify} id="create-button">Verify</button>}
-                </div>
-            }
+            </>
+        )
+    }
+
+    return (
+        <React.Fragment>
+            {isLoading?<Loading/>:<>
+            <BackSection onBackButtonClick={handleRedirectBack} title={(status == "Pending" || status == "Appointment")?"Item Donation Appointment Details":"Donation Details"}/>
+            <div id='donation-details-section'>
+                
+                {(donation.category=="Item" && (status == "Pending" || status == "Appointment"))?
+                    renderAppointmentDetails():
+                    renderDonationDetails()
+                }
+
+                
+
+                {(donation.category=="Item"&&status=="Pending")&&<p id="file-upload-reminder">* Please verify the item donation appointment details.</p>}
+                {(donation.category=="Item"&&status=="Appointment")&&<p id="file-upload-reminder">* Waiting for donor to submit item donation form.</p>}
+                
+                {donation.status=="Verified"&&
+                    <div id="donation-button-row">
+                        <button className='button' id="donate-button" onClick={handleButtonOnClick}>Generate Receipt</button>
+                    </div>
+                }
+
+                {(donation.status!="Verified"&&donation.status!="Rejected"&&donation.status!="Appointment")&&
+                    <div id="donation-button-row">
+                        {isVerify?
+                        <div id="save-section">
+                            {donation.status=="Pending"?
+                            <>
+                                <button onClick={()=>toggleUpdateAppointmentStatus(true)} id="approve-button">Approve</button>
+                                <button onClick={()=>toggleUpdateAppointmentStatus(false)} id="reject-button">Reject</button>
+                            </>:
+                            <button onClick={toggleSave} id="save-button">Save</button>
+                            }
+                            <button onClick={toggleViewOnly} id="cancel-button">Cancel</button>
+                        </div>:
+                        <button onClick={toggleVerify} id="create-button">Verify</button>}
+                    </div>
+                }
             </div>
             </>}
         </React.Fragment>

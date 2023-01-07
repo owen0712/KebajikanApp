@@ -54,7 +54,6 @@ import ManageUserList from './views/ManageUser/ManageUserList';
 import ManageUserDetails from './views/ManageUser/ManageUserDetails';
 import ManageDonationList from './views/ManageDonation/ManageDonationList';
 import ManageDonationDetails from './views/ManageDonation/ManageDonationDetails';
-import TransferDonation from './views/ManageDonation/TransferDonation';
 import { UserProvider } from './contexts/UserContext.js';
 import { SocketProvider } from './contexts/SocketContext';
 // import NavRoute from './core/navRoute';
@@ -141,7 +140,6 @@ function App() {
           <Route path='/manage_donation' element={<ManageDonationList/>}/>
           <Route path='/manage_donation/view/:id' element={<ManageDonationDetails isVerify={false}/>}/>
           <Route path='/manage_donation/verify/:id' element={<ManageDonationDetails isVerify={true}/>}/>
-          <Route path='/manage_donation/transfer_donation' element={<TransferDonation/>}/>
           <Route path='/profile/manage_charity_recipient' element={<ManageCharityEventRecipient/>}/>
           <Route path='/profile/donation_history' element={<DonationHistory/>}/>
           <Route path='/profile/password' element={<ChangePassword/>}/>

@@ -19,6 +19,19 @@
 }
 
 .donation-status-section{
-    margin-top: 5%;
+    margin-top: 1%;
+}
 
+#donation-button-row #cancel-button{
+    background-color: #E1E1E1;
+    border-color: #E1E1E1;
+    color: white;
+    margin: 10px 4px;
+    border-radius: 20px;
+    height: 40px;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    width: 100px;
+    cursor: pointer;
 }
