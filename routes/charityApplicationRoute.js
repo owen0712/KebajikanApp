@@ -174,4 +174,20 @@ router.get('/charity_application',requiredLogin,(req,res)=>{
     });
 });
 
+// @route   GET /charity_application/organizer/:id
+// @desc    Retrieve Users' Charity Applications for the specific organizer who created the event
+// @access  Private
+router.get('/charity_application/organizer/:id',requiredLogin,(req,res)=>{
+    CharityApplication.find()
+    .select("-document")
+    .populate("event_id",["title","created_by"])
+    .populate("created_by","name")
+    .sort("-created_on")
+    .then(events=>{
+        res.json({events:events.filter((e)=>{return e.event_id.created_by==req.params.id})});
+    }).catch(err=>{
+        res.json({error:err});
+    });
+});
+
 module.exports = router;

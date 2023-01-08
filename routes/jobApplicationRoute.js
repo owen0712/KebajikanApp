@@ -61,6 +61,22 @@ router.get('/job_application',requiredLogin,(req,res)=>{
     });
 });
 
+// @route   GET /job_application/organizer/:id
+// @desc    Retrieve Users' Job Applications for the specific organizer who created the job
+// @access  Private
+router.get('/job_application/organizer/:id',requiredLogin,(req,res)=>{
+    JobApplication.find()
+    .select("-document")
+    .populate("job_id",["title","created_by"])
+    .populate("created_by","name")
+    .sort("-created_on")
+    .then(events=>{
+        res.json({events:events.filter((e)=>{return e.job_id.created_by==req.params.id})});
+    }).catch(err=>{
+        res.json({error:err});
+    });
+});
+
 
 // @route   GET /job_application/:id
 // @desc    Retrieve User's Job Applications

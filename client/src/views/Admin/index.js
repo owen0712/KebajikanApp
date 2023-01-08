@@ -69,10 +69,11 @@ const Admin = (props) => {
                     <WorkTwoToneIcon/>
                     <p>PART-TIME JOB</p>
                 </span>}
-                {isAdmin()&&<><span className="option-card" onClick={()=>handleClick('/manage_user_application')}>
+                {(isAdmin() || isCharityEventOrganizer() || isPartTimeJobOrganizer())&&<span className="option-card" onClick={()=>handleClick('/manage_user_application')}>
                     <FactCheckTwoToneIcon/>
                     <p>USER APPLICATION</p>
-                </span>
+                </span>}
+                {isAdmin()&&<>
                 <span className="option-card" onClick={()=>handleClick('/manage_donation')}>
                     <PaidTwoToneIcon/>
                     <p>DONATION</p>

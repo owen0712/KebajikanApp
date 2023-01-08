@@ -40,9 +40,31 @@ const ViewUserApplicationList = (props) =>{
         }
     },[])
 
+    const isAdmin = () => {
+        if(user){
+            return user.role==2;
+        }
+    }
+
+    const isCharityEventOrganizer = () => {
+        if(user){
+            return user.role==2||user.charity_event_organizer;
+        }
+    }
+
+    const isPartTimeJobOrganizer = () => {
+        if(user){
+            return user.role==2||user.part_time_job_organizer;
+        }
+    }
+
     const fetchJobApplicationData=()=>{
         setIsLoading(true);
-        fetch('/job_application',{
+        const url = (!isAdmin()&&isCharityEventOrganizer())?
+                        '/job_application/organizer/'+user.id:
+                        '/job_application';
+        console.log(url);
+        fetch(url,{
             method:'get',
             headers:{
                 'Content-Type':'application/json',
@@ -64,7 +86,11 @@ const ViewUserApplicationList = (props) =>{
 
     const fetchEventApplicationData=()=>{
         setIsLoading(true);
-        fetch('/charity_application',{
+        const url = (!isAdmin()&&isCharityEventOrganizer())?
+                        '/charity_application/organizer/'+user.id:
+                        '/charity_application';
+        console.log(url);
+        fetch(url,{
             method:'get',
             headers:{
                 'Content-Type':'application/json',
@@ -200,6 +226,11 @@ const ViewUserApplicationList = (props) =>{
                     </thead>
                     <tbody>
                         {
+                            eventApplications.length==0&&<tr className="no-event" rowSpan={6}>
+                                <td colSpan={5}>No event application is submitted yet.</td>
+                            </tr>
+                        }
+                        {
                         eventApplications.map(application=>{
                             return <tr key={application._id}>
                                 <td className='applicant-name'>{application.name}</td>
@@ -232,6 +263,11 @@ const ViewUserApplicationList = (props) =>{
                         </tr>
                     </thead>
                     <tbody>
+                        {
+                            jobApplications.length==0&&<tr className="no-event" rowSpan={6}>
+                                <td colSpan={5}>No event application is submitted yet.</td>
+                            </tr>
+                        }
                         {
                         jobApplications.map(application=>{
                             return <tr key={application._id}>
@@ -268,7 +304,11 @@ const ViewUserApplicationList = (props) =>{
                     </thead>
                     <tbody>
                         {
-
+                            proposal.length==0&&<tr className="no-event" rowSpan={6}>
+                                <td colSpan={6}>No proposal exists.</td>
+                            </tr>
+                        }
+                        {
                             proposal.sort((a,b)=>{return (new Date(b.created_on) - new Date(a.created_on))})
                             .map(application=>{
                             return <tr key={application._id}>
@@ -290,6 +330,41 @@ const ViewUserApplicationList = (props) =>{
                 
         )
     }
+
+    const renderTableHeader =()=>{
+        if(isAdmin()){
+            return(
+                <div id="user-application-list-header">
+                    <button style={{width:"33%"}} onClick={()=>onDisplayEventApplication()} className={isDisplayEventApplication?"user-application-list-head-button-active":"user-application-list-head-button"}>Charity Event Application</button>
+                    <button style={{width:"33%"}} onClick={()=>onDisplayJobApplication()} className={isDisplayJobApplication?"user-application-list-head-button-active":"user-application-list-head-button"}>Part-Time Job Application</button>
+                    <button style={{width:"33%"}} onClick={()=>onDisplayProposalApplication()} className={isDisplayProposalApplication?"user-application-list-head-button-active":"user-application-list-head-button"}>Proposal Application</button>
+                </div>
+            )
+        }
+        if(isCharityEventOrganizer() && isPartTimeJobOrganizer() ){
+            return(
+                <div id="user-application-list-header">
+                    <button style={{width:"49.5%"}} onClick={()=>onDisplayEventApplication()} className={isDisplayEventApplication?"user-application-list-head-button-active":"user-application-list-head-button"}>Charity Event Application</button>
+                    <button style={{width:"49.5%"}} onClick={()=>onDisplayJobApplication()} className={isDisplayJobApplication?"user-application-list-head-button-active":"user-application-list-head-button"}>Part-Time Job Application</button>
+                </div>
+            )
+        }
+        if(isCharityEventOrganizer()){
+            return(
+                <div id="user-application-list-header">
+                    <button style={{width:"99.5%"}} onClick={()=>onDisplayEventApplication()} className={isDisplayEventApplication?"user-application-list-head-button-active":"user-application-list-head-button"}>Charity Event Application</button>
+                </div>
+            )
+        }
+        if(isPartTimeJobOrganizer()){
+            return(
+                <div id="user-application-list-header">
+                    <button style={{width:"99.5%"}} onClick={()=>onDisplayJobApplication()} className={isDisplayJobApplication?"user-application-list-head-button-active":"user-application-list-head-button"}>Part-Time Job Application</button>
+                </div>
+            )
+        }
+        
+    }
     
     return( 
         <React.Fragment>
@@ -297,11 +372,7 @@ const ViewUserApplicationList = (props) =>{
             <BackSection title="User Application" previousIsHome={true} onBackButtonClick={navigatePrev}/>
                 <div id="user-application-list">
                     <div id="user-application-list-content">
-                        <div id="user-application-list-header">
-                        <button onClick={()=>onDisplayEventApplication()} className={isDisplayEventApplication?"user-application-list-head-button-active":"user-application-list-head-button"}>Charity Event Application</button>
-                            <button onClick={()=>onDisplayJobApplication()} className={isDisplayJobApplication?"user-application-list-head-button-active":"user-application-list-head-button"}>Part-Time Job Application</button>
-                            <button onClick={()=>onDisplayProposalApplication()} className={isDisplayProposalApplication?"user-application-list-head-button-active":"user-application-list-head-button"}>Proposal Application</button>
-                        </div>
+                        {renderTableHeader()}
                         <div id="user-application-list-table">
                         {isDisplayEventApplication? renderEventApplication(): ""}
                         {isDisplayJobApplication? renderJobApplication(): ""}
