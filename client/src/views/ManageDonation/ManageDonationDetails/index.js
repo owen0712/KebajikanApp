@@ -138,6 +138,30 @@ const ManageDonationDetails = (props) => {
         })
     }
 
+    const generateReceipt = () => {
+        fetch('/receipt/'+id,{
+            method:'post',
+            headers:{
+                'Content-Type':'application/json',
+                'Authorization':'Bearer'+user.access_token
+            }
+        }).then(res=>res.json()).then(data=>{
+            if(data.error){
+                Swal.fire({
+                    title: data.error,
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                })
+            }
+        }).catch(err=>{
+            Swal.fire({
+                title: err,
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            })
+        })
+    }
+
     const toggleVerified = () =>{
         setIsLoading(true); 
         fetch('/donation/status/verified/'+id,{
@@ -165,6 +189,7 @@ const ManageDonationDetails = (props) => {
                     title: data.message,
                     confirmButtonText: 'OK'
                 });
+                generateReceipt();
                 toggleViewOnly();
             }
         }).catch(err=>{
