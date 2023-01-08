@@ -160,4 +160,30 @@ router.put('/message/:id',requiredLogin,(req,res)=>{
     })
 })
 
+// @route   DELETE /chatrecord/:id
+// @desc    Delete Chat Record
+// @access  Private
+router.delete('/chatrecord/:id',requiredLogin,(req,res)=>{
+    ChatRecord.deleteOne({_id:req.params.id}).then(result=>{
+        res.json({message:"Successfully Deleted"});
+    }).catch(err=>{
+        res.json({error:err})
+    })
+});
+
+// @route   DELETE /chatmate/:id
+// @desc    Delete Chat Mate Contact
+// @access  Private
+router.delete('/chatmate/:id',requiredLogin,(req,res)=>{
+    const {user_id} = req.body;
+    if(!user_id){
+        return res.json({error:'Unexpected Error Occur. Please try again later.'});
+    }
+    ChatRelation.deleteOne({user_id, chatmate_id:req.params.id}).then(result=>{
+        res.json({message:"Successfully Deleted"});
+    }).catch(err=>{
+        res.json({error:err})
+    })
+});
+
 module.exports = router;

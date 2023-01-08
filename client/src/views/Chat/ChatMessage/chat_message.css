@@ -23,8 +23,82 @@
 }
 
 .chat-contact span{
-    width: 65%;
+    width: 90%;
     padding-left: 10px;
+}
+
+.chat-contact .done-button{
+    color:#192F59;
+    border: 2px solid #192F59;
+    border-radius: 5px;
+    padding: 3px 0;
+    background-color: white;
+    cursor: pointer;
+}
+
+.chat-contact .done-button:hover{
+    background-color: rgba(215,215,215,1);
+}
+
+
+.chat-contact .more-button{
+    color: #192F59;
+    display: inline-block;
+    height: 30px;
+    border: 1px;
+    background-color: white;
+    border-radius: 10px;
+    font-weight: bold;
+    line-height: 25px;
+    cursor: pointer;
+}
+
+.chat-contact .more-button:hover{
+    background-color: rgba(215,215,215,1);
+}
+
+.dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.more-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.more-dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 120px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    margin-left: -6%;
+    z-index: 1;
+}
+
+.more-dropdown-content button:hover {background-color: #f1f1f1}
+
+/* Show the dropdown menu on hover */
+.more-dropdown-display .more-dropdown-content {
+    display: block;
+}
+
+.more-dropdown-content .delete-chat-button{
+    color: #DF5645;
+    display: flex;
+    height: 30px;
+    border: 0px;
+    background-color: white;
+    border-radius: 10px;
+    font-weight: bold;
+    margin: 10px auto;
+    line-height: 25px;
+    cursor: pointer;
 }
 
 .chat-message{
@@ -62,6 +136,29 @@
 .chat-message small{
     display: flex;
     justify-content: flex-end;
+}
+
+.chat-message-section{
+    display: flex;
+    width: 98%;
+}
+
+.chat-message-section .delete-chat-record-button{
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    margin: auto 1px;
+    border: 0px;
+    cursor: pointer;
+}
+
+.chat-message-section .delete-chat-record-button svg{
+    color:#DF5645;
+}
+
+.chat-message-section  button:hover {
+    border: #192F59 1px solid;
+    border-radius: 5px;
 }
 
 .chat-input{
