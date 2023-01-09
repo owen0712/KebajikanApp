@@ -3,9 +3,8 @@ import {useNavigate} from 'react-router-dom';
 import './view_user_application_list.css';
 import { BackSection, Status, Loading } from '../../../components';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import CreateIcon from '@mui/icons-material/Create';
 import VerifiedIcon from '@mui/icons-material/Verified';
-import Swal from 'sweetalert2';
+import Pagination from '@mui/material/Pagination';
 import { useUser } from '../../../contexts/UserContext';
 
 const ViewUserApplicationList = (props) =>{
@@ -15,12 +14,18 @@ const ViewUserApplicationList = (props) =>{
     const [jobProposal, setJobProposal] = useState([]);
     const [eventProposal, setEventProposal] = useState([]);
     const [proposal, setProposal] = useState([]);
-    const [pageNumber,setPageNumber] = useState(1);
+    const [displayedEventApplications,setDisplayEventApplications] = useState([]);
+    const [eventApplicationsPage,setEventApplicationsPage] = useState(0);
+    const [displayedJobApplications,setDisplayJobApplications] = useState([]);
+    const [jobApplicationsPage,setJobApplicationsPage] = useState(0);
+    const [displayedProposals,setDisplayProposals] = useState([]);
+    const [proposalsPage,setProposalsPage] = useState(0);
     const [isLoading,setIsLoading] = useState(false);
     const [isDisplayEventApplication,setIsDisplayEventApplication] = useState(true);
     const [isDisplayJobApplication,setIsDisplayJobApplication] = useState(false);
     const [isDisplayProposalApplication,setIsDisplayProposalApplication] = useState(false);
     const user = useUser();
+    const ROW_PER_PAGE = 8;
 
     useEffect(()=>{
         let timer = null;
@@ -38,7 +43,19 @@ const ViewUserApplicationList = (props) =>{
         return () => {
             clearTimeout(timer);
         }
-    },[])
+    },[user])
+
+    useEffect(()=>{
+        setDisplayedEventApplication();
+    },[eventApplicationsPage,eventApplications])
+
+    useEffect(()=>{
+        setDisplayedJobApplication();
+    },[jobApplicationsPage,jobApplications])
+
+    useEffect(()=>{
+        setDisplayedProposal();
+    },[proposalsPage,proposal])
 
     const isAdmin = () => {
         if(user){
@@ -76,7 +93,7 @@ const ViewUserApplicationList = (props) =>{
             }
             else{
                 setJobApplications(data.events);
-                console.log("Job Application",data.events);
+                setJobApplicationsPage(1);
                 setIsLoading(false);
             }
         }).catch(err=>{
@@ -102,7 +119,7 @@ const ViewUserApplicationList = (props) =>{
             }
             else{
                 setEventApplications(data.events);
-                console.log("Event Application",data.events);
+                setEventApplicationsPage(1);
                 setIsLoading(false);
             }
         }).catch(err=>{
@@ -127,6 +144,7 @@ const ViewUserApplicationList = (props) =>{
                 data.events.map(event=>{event.type="Charity Event"});
                 const events = data.events;
                 setEventProposal(events);
+                setProposalsPage(1);
                 setIsLoading(false);
             }
         }).catch(err=>{
@@ -151,6 +169,7 @@ const ViewUserApplicationList = (props) =>{
                 data.events.map(event=>{event.type="Part-Time Job"});
                 const events = data.events;
                 setJobProposal(events);
+                setProposalsPage(1);
                 setIsLoading(false);
             }
         }).catch(err=>{
@@ -188,6 +207,18 @@ const ViewUserApplicationList = (props) =>{
             navigate('/manage_user_application/job_proposal_application/verify/'+id);
     }
 
+    const handleEventApplicationsPageOnChange = (event, value) => {
+        setEventApplicationsPage(value);
+    }
+
+    const handleJobApplicationsPageOnChange = (event, value) => {
+        setJobApplicationsPage(value);
+    }
+
+    const handleProposalsPageOnChange = (event, value) => {
+        setProposalsPage(value);
+    }
+
     const onDisplayEventApplication = ()=> {
         setIsDisplayEventApplication(true);
         setIsDisplayJobApplication(false);
@@ -211,6 +242,33 @@ const ViewUserApplicationList = (props) =>{
         navigate('/admin');
     }
 
+    const setDisplayedEventApplication = () =>{
+        const firstRow = (eventApplicationsPage-1) * ROW_PER_PAGE + 1;
+        const lastRow = eventApplicationsPage * ROW_PER_PAGE;
+        if(lastRow>=eventApplications.length){
+            setDisplayEventApplications(eventApplications.slice(firstRow-1));
+        }
+        setDisplayEventApplications(eventApplications.slice(firstRow-1,lastRow));
+    }
+
+    const setDisplayedJobApplication = () =>{
+        const firstRow = (jobApplicationsPage-1) * ROW_PER_PAGE + 1;
+        const lastRow = jobApplicationsPage * ROW_PER_PAGE;
+        if(lastRow>=jobApplications.length){
+            setDisplayJobApplications(jobApplications.slice(firstRow-1));
+        }
+        setDisplayJobApplications(jobApplications.slice(firstRow-1,lastRow));
+    }
+
+    const setDisplayedProposal = () =>{
+        const firstRow = (proposalsPage-1) * ROW_PER_PAGE + 1;
+        const lastRow = proposalsPage * ROW_PER_PAGE;
+        if(lastRow>=proposal.length){
+            setDisplayProposals(proposal.slice(firstRow-1));
+        }
+        setDisplayProposals(proposal.slice(firstRow-1,lastRow));
+    }
+
     const renderEventApplication = () =>{
         return(
             <div id="event-application-list-table-section">
@@ -231,7 +289,7 @@ const ViewUserApplicationList = (props) =>{
                             </tr>
                         }
                         {
-                        eventApplications.map(application=>{
+                        displayedEventApplications.map(application=>{
                             return <tr key={application._id}>
                                 <td className='applicant-name'>{application.name}</td>
                                 <td className='title'>{application.event_id.title}</td>
@@ -245,7 +303,10 @@ const ViewUserApplicationList = (props) =>{
                         })}
                     </tbody>
                 </table>
-                </div>
+                {eventApplications.length>0&&<div id="user-application-list-pagination">
+                    <Pagination count={eventApplications.length<=ROW_PER_PAGE?1:parseInt(eventApplications.length/ROW_PER_PAGE)+1} page={eventApplicationsPage} onChange={handleEventApplicationsPageOnChange} />
+                </div>}
+            </div>
         )
     }
 
@@ -269,7 +330,7 @@ const ViewUserApplicationList = (props) =>{
                             </tr>
                         }
                         {
-                        jobApplications.map(application=>{
+                        displayedJobApplications.map(application=>{
                             return <tr key={application._id}>
                                 <td className='applicant-name'>{application.name}</td>
                                 <td className='title'>{application.job_id.title}</td>
@@ -283,7 +344,10 @@ const ViewUserApplicationList = (props) =>{
                         })}
                     </tbody>
                 </table>
-                </div>
+                {jobApplications.length>0&&<div id="user-application-list-pagination">
+                    <Pagination count={jobApplications.length<=ROW_PER_PAGE?1:parseInt(jobApplications.length/ROW_PER_PAGE)+1} page={jobApplicationsPage} onChange={handleJobApplicationsPageOnChange} />
+                </div>}
+            </div>
         )
     }
 
@@ -309,7 +373,7 @@ const ViewUserApplicationList = (props) =>{
                             </tr>
                         }
                         {
-                            proposal.sort((a,b)=>{return (new Date(b.created_on) - new Date(a.created_on))})
+                            displayedProposals.sort((a,b)=>{return (new Date(b.created_on) - new Date(a.created_on))})
                             .map(application=>{
                             return <tr key={application._id}>
                                 <td className='applicant-name'>{application.organizer_id.name}</td>
@@ -322,12 +386,13 @@ const ViewUserApplicationList = (props) =>{
                                     <button className='button' disabled={(application.status!=="Pending")} onClick={(application.status!=="Pending")?()=>{}:()=>handleEditProposalApplication(application._id, application.type)}><VerifiedIcon/>Verify</button>
                                 </td>
                             </tr>
-                            })}
-                
+                        })}
                     </tbody>
-                    </table>
-                </div>
-                
+                </table>
+                {proposal.length>0&&<div id="user-application-list-pagination">
+                    <Pagination count={proposal.length<=ROW_PER_PAGE?1:parseInt(proposal.length/ROW_PER_PAGE)+1} page={proposalsPage} onChange={handleProposalsPageOnChange} />
+                </div>}
+            </div>
         )
     }
 

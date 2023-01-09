@@ -89,3 +89,19 @@
 #part-time-job-list-table-section .job-status{
     width: 15%;
 }
+
+#part-time-job-list-table-section nav{
+    display: flex;
+    background-color: white;
+    padding: 10px;
+    justify-content: flex-end;
+}
+
+#part-time-job-list-table-section button{
+    font-weight: bold;
+    display: inline-flex;
+}
+
+#job-list-pagination svg{
+    color: #192F59;
+}

@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {useNavigate, Navigate} from 'react-router-dom';
 import './manage_donation_list.css';
-import AddIcon from '@mui/icons-material/Add';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import VerifiedIcon from '@mui/icons-material/Verified';
-import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-import Swal from 'sweetalert2';
+import Pagination from '@mui/material/Pagination';
 import { Status, BackSection, Loading } from '../../../components';
 import { useUser } from '../../../contexts/UserContext';
 
@@ -14,9 +11,11 @@ const ManageDonationList = (props) => {
 
     const navigate = useNavigate();
     const [donations,setDonations] = useState([]);
-    const [pageNumber,setPageNumber] = useState(1);
+    const [displayedDonations,setDisplayDonations] = useState([]);
+    const [page,setPage] = useState(0);
     const [isLoading,setIsLoading] = useState(true);
     const user = useUser();
+    const ROW_PER_PAGE = 8;
 
     useEffect(()=>{
         let timer = null;
@@ -40,6 +39,10 @@ const ManageDonationList = (props) => {
         }
     },[user])
 
+    useEffect(()=>{
+        setDisplayedDonation();
+    },[page,donations])
+
     const fetchData = () =>{
         setIsLoading(true);
         fetch('/donation',{
@@ -53,7 +56,8 @@ const ManageDonationList = (props) => {
                 console.log(data.error);
             }
             else{
-                setDonations(data.donations)
+                setDonations(data.donations);
+                setPage(1);
                 setIsLoading(false);
             }
         }).catch(err=>{
@@ -69,8 +73,21 @@ const ManageDonationList = (props) => {
         navigate('/manage_donation/verify/'+id);
     }
 
+    const handlePageOnChange = (event, value) => {
+        setPage(value);
+    }
+
     const navigatePrev = () =>{
         navigate('/admin');
+    }
+
+    const setDisplayedDonation = () =>{
+        const firstRow = (page-1) * ROW_PER_PAGE + 1;
+        const lastRow = page * ROW_PER_PAGE;
+        if(lastRow>=donations.length){
+            setDisplayDonations(donations.slice(firstRow-1));
+        }
+        setDisplayDonations(donations.slice(firstRow-1,lastRow));
     }
 
     return (
@@ -92,7 +109,7 @@ const ManageDonationList = (props) => {
                     </thead>
                     <tbody>
                         {
-                        donations.map(donation=>{
+                        displayedDonations.map(donation=>{
                             return <tr key={donation._id}>
                                 <td className='event-title'>{donation.charity_event_id.title}</td>
                                 <td>{donation.category}</td>
@@ -108,12 +125,9 @@ const ManageDonationList = (props) => {
                         })}
                     </tbody>
                 </table>
-                {/* <div id="donation-list-pagination">
-                    <ArrowLeftIcon/>
-                    <input type="number" defaultValue={pageNumber}/>
-                    <p>/{events.length/7}</p>
-                    <ArrowRightIcon/>
-                </div> */}
+                {donations.length>0&&<div id="donation-list-pagination">
+                    <Pagination count={donations.length<=ROW_PER_PAGE?1:parseInt(donations.length/ROW_PER_PAGE)+1} page={page} onChange={handlePageOnChange} />
+                </div>}
             </div>
             </>}            
         </React.Fragment>

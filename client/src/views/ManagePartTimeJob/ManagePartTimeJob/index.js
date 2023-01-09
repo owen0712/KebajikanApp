@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {useNavigate, Navigate} from 'react-router-dom';
 import './manage_part_time_job.css';
-import AddIcon from '@mui/icons-material/Add';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import CreateIcon from '@mui/icons-material/Create';
 import DeleteIcon from '@mui/icons-material/Delete';
-import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import Pagination from '@mui/material/Pagination';
 import Swal from 'sweetalert2';
 import { Status, BackSection, Loading } from '../../../components';
 import { useUser } from '../../../contexts/UserContext';
@@ -14,10 +12,12 @@ import { useUser } from '../../../contexts/UserContext';
 const ManagePartTimeJob = (props) => {
 
     const navigate = useNavigate();
-    const [events,setEvents] = useState([]);
-    const [pageNumber,setPageNumber] = useState(1);
+    const [jobs,setJobs] = useState([]);
+    const [displayedJobs,setDisplayJobs] = useState([]);
+    const [page,setPage] = useState(0);
     const [isLoading,setIsLoading] = useState(true);
     const user = useUser();
+    const ROW_PER_PAGE = 6;
 
     useEffect(()=>{
         let timer = null;
@@ -41,6 +41,10 @@ const ManagePartTimeJob = (props) => {
         }
     },[user])
 
+    useEffect(()=>{
+        setDisplayedJob();
+    },[page,jobs])
+
     const fetchData = () =>{
         setIsLoading(true);
         const url = user.role==2?'/part_time_job':'/part_time_job/organizer/available/'+user.id;
@@ -55,7 +59,8 @@ const ManagePartTimeJob = (props) => {
                 console.log(data.error);
             }
             else{
-                setEvents(data.events)
+                setJobs(data.events);
+                setPage(1);
                 setIsLoading(false);
             }
         }).catch(err=>{
@@ -73,6 +78,10 @@ const ManagePartTimeJob = (props) => {
 
     const handleEdit = (id) => {
         navigate('/manage_part_time_job/edit/'+id);
+    }
+
+    const handlePageOnChange = (event, value) => {
+        setPage(value);
     }
 
     const handleDelete = (id) =>{
@@ -126,6 +135,15 @@ const ManagePartTimeJob = (props) => {
         navigate('/admin');
     }
 
+    const setDisplayedJob = () =>{
+        const firstRow = (page-1) * ROW_PER_PAGE + 1;
+        const lastRow = page * ROW_PER_PAGE;
+        if(lastRow>=jobs.length){
+            setDisplayJobs(jobs.slice(firstRow-1));
+        }
+        setDisplayJobs(jobs.slice(firstRow-1,lastRow));
+    }
+
     return (
         <React.Fragment>
             {isLoading?<Loading/>:<>
@@ -144,33 +162,30 @@ const ManagePartTimeJob = (props) => {
                     </thead>
                     <tbody>
                         {
-                            events.length==0&&<tr className="no-event" rowSpan={6}>
+                            jobs.length==0&&<tr className="no-event" rowSpan={6}>
                                 <td colSpan={6}>No part-time job exists. Please create new part-time job now!</td>
                             </tr>
                         }
                         {
-                        events.map(event=>{
-                            return <tr key={event._id}>
-                                <td className='title'>{event.title}</td>
-                                <td>{event.organizer_id.name}</td>
-                                <td>{event.allocated_student.length}/{event.required_student}</td>
-                                <td>{event.created_on.slice(0,10)}</td>
-                                <td><Status statusName={event.status}/></td>
+                        displayedJobs.map(job=>{
+                            return <tr key={job._id}>
+                                <td className='title'>{job.title}</td>
+                                <td>{job.organizer_id.name}</td>
+                                <td>{job.allocated_student.length}/{job.required_student}</td>
+                                <td>{job.created_on.slice(0,10)}</td>
+                                <td><Status statusName={job.status}/></td>
                                 <td className='button-list'>
-                                    <button className='button' onClick={()=>handleView(event._id)}><RemoveRedEyeIcon/>View</button>
-                                    <button className='button' onClick={()=>handleEdit(event._id)}><CreateIcon/>Edit</button>
-                                    <button disabled={event.status=="Closed"} className='danger-button' onClick={(event.status=="Closed")?()=>{}:()=>handleDelete(event._id)}><DeleteIcon/>Delete</button>    
+                                    <button className='button' onClick={()=>handleView(job._id)}><RemoveRedEyeIcon/>View</button>
+                                    <button className='button' onClick={()=>handleEdit(job._id)}><CreateIcon/>Edit</button>
+                                    <button disabled={job.status=="Closed"} className='danger-button' onClick={(job.status=="Closed")?()=>{}:()=>handleDelete(job._id)}><DeleteIcon/>Delete</button>    
                                 </td>
                             </tr>
                         })}
                     </tbody>
                 </table>
-                {/* <div id="part-time-job-list-pagination">
-                    <ArrowLeftIcon/>
-                    <input type="number" defaultValue={pageNumber}/>
-                    <p>/{events.length/7}</p>
-                    <ArrowRightIcon/>
-                </div> */}
+                {jobs.length>0&&<div id="job-list-pagination">
+                    <Pagination count={jobs.length<=ROW_PER_PAGE?1:parseInt(jobs.length/ROW_PER_PAGE)+1} page={page} onChange={handlePageOnChange} />
+                </div>}
             </div>
             </>}            
         </React.Fragment>

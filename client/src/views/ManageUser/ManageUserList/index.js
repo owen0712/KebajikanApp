@@ -5,6 +5,7 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import CreateIcon from '@mui/icons-material/Create';
 import CloseIcon from '@mui/icons-material/Close';
 import Modal from '@mui/material/Modal';
+import Pagination from '@mui/material/Pagination';
 import Swal from 'sweetalert2';
 import { Status, BackSection, Loading, Dropdown } from '../../../components';
 import { useUser } from '../../../contexts/UserContext';
@@ -24,10 +25,12 @@ const ManageUserList = () => {
     const [confirm_password,setConfirmPassword] = useState("");
     const [role,setRole] = useState("User"); 
     const [users,setUsers] = useState([]);
-    const [pageNumber,setPageNumber] = useState(1);
+    const [displayedUsers,setDisplayUsers] = useState([]);
+    const [page,setPage] = useState(0);
     const [isLoading,setIsLoading] = useState(true);
     const [isOpenForm,setIsOpenForm] = useState(false);
     const user = useUser();
+    const ROW_PER_PAGE = 8;
 
     useEffect(()=>{
         let timer = null;
@@ -46,6 +49,10 @@ const ManageUserList = () => {
             clearTimeout(timer);
         }
     },[user])
+    
+    useEffect(()=>{
+        setDisplayedUser();
+    },[page,users])
 
     const fetchData = () =>{
         setIsLoading(true);
@@ -60,7 +67,8 @@ const ManageUserList = () => {
                 console.log(data.error);
             }
             else{
-                setUsers(data.users)
+                setUsers(data.users);
+                setPage(1);
                 setIsLoading(false);
             }
         }).catch(err=>{
@@ -86,6 +94,10 @@ const ManageUserList = () => {
 
     const handleRoleOnChange = (event) => {
         setRole(event.target.value);
+    }
+
+    const handlePageOnChange = (event, value) => {
+        setPage(value);
     }
 
     const handleSubmit = (event) => {
@@ -145,7 +157,6 @@ const ManageUserList = () => {
         navigate('/manage_user/edit/'+id);
     }
 
-
     const navigatePrev = () =>{
         navigate('/admin');
     }
@@ -156,6 +167,15 @@ const ManageUserList = () => {
 
     const handleOpenForm = () => {
         setIsOpenForm(true);
+    }
+
+    const setDisplayedUser = () =>{
+        const firstRow = (page-1) * ROW_PER_PAGE + 1;
+        const lastRow = page * ROW_PER_PAGE;
+        if(lastRow>=users.length){
+            setDisplayUsers(users.slice(firstRow-1));
+        }
+        setDisplayUsers(users.slice(firstRow-1,lastRow));
     }
 
     return (
@@ -174,7 +194,7 @@ const ManageUserList = () => {
                     </thead>
                     <tbody>
                         {
-                        users.map(user=>{
+                        displayedUsers.map(user=>{
                             return <tr key={user._id}>
                                 <td><div className="full-name-cell"><img className='profile-pic' src={(user.profile_pic)?user.profile_pic:""}/>  <p className='full-name'>{user.name}</p></div></td>
                                 <td>{user.role}</td>
@@ -187,6 +207,9 @@ const ManageUserList = () => {
                         })}
                     </tbody>
                 </table>
+                {users.length>0&&<div id="user-list-pagination">
+                    <Pagination count={users.length<=ROW_PER_PAGE?1:parseInt(users.length/ROW_PER_PAGE)+1} page={page} onChange={handlePageOnChange} />
+                </div>}
             </div>
             <div id='create-form-modal'>
                 <Modal

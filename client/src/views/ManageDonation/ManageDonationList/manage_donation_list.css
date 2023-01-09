@@ -94,3 +94,19 @@
 .amount{
     width: 11%;
 }
+
+#donation-list-table-section nav{
+    display: flex;
+    background-color: white;
+    padding: 10px;
+    justify-content: flex-end;
+}
+
+#donation-list-table-section button{
+    font-weight: bold;
+    display: inline-flex;
+}
+
+#donation-list-pagination svg{
+    color: #192F59;
+}

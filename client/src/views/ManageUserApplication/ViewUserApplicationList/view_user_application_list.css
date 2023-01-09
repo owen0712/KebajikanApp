@@ -19,6 +19,18 @@
     border-top: none;
 }
 
+#user-application-list-table nav{
+    display: flex;
+    background-color: white;
+    padding: 10px;
+    justify-content: flex-end;
+}
+
+#user-application-list-table button{
+    font-weight: bold;
+    display: inline-flex;
+}
+
 .user-application-list-head-button{
     margin:0 1px;
     max-height: 600px;
@@ -42,6 +54,10 @@
     border: 3px solid#192F59;
     border-radius: 10px 10px 0px 0px;
     border-bottom: none;
+}
+
+#user-application-list-pagination svg{
+    color: #192F59;
 }
 
 #event-application-list-table-section .applicant-name{

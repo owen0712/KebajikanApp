@@ -5,6 +5,7 @@ import { ProfileSideNavigation, Status, Loading } from '../../../components';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import CreateIcon from '@mui/icons-material/Create';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
+import Pagination from '@mui/material/Pagination';
 import Swal from 'sweetalert2';
 import { useUser } from '../../../contexts/UserContext';
 
@@ -14,13 +15,19 @@ const ApplicationHistoty = (props) =>{
     const [jobApplications,setJobApplications] = useState([]);
     const [jobProposal, setJobProposal] = useState([]);
     const [eventProposal, setEventProposal] = useState([]);
-    const [proposal, setProposal] = useState();
-    const [pageNumber,setPageNumber] = useState(1);
+    const [proposal, setProposal] = useState([]);
+    const [displayedEventApplications,setDisplayEventApplications] = useState([]);
+    const [eventApplicationsPage,setEventApplicationsPage] = useState(0);
+    const [displayedJobApplications,setDisplayJobApplications] = useState([]);
+    const [jobApplicationsPage,setJobApplicationsPage] = useState(0);
+    const [displayedProposals,setDisplayProposals] = useState([]);
+    const [proposalsPage,setProposalsPage] = useState(0);
     const [isLoading,setIsLoading] = useState(false);
     const [isDisplayEventApplication,setIsDisplayEventApplication] = useState(true);
     const [isDisplayJobApplication,setIsDisplayJobApplication] = useState(false);
     const [isDisplayProposalApplication,setIsDisplayProposalApplication] = useState(false);
     const user = useUser();
+    const ROW_PER_PAGE = 6;
 
     useEffect(()=>{
         let timer = null;
@@ -40,6 +47,18 @@ const ApplicationHistoty = (props) =>{
         }
     },[user])
 
+    useEffect(()=>{
+        setDisplayedEventApplication();
+    },[eventApplicationsPage,eventApplications])
+
+    useEffect(()=>{
+        setDisplayedJobApplication();
+    },[jobApplicationsPage,jobApplications])
+
+    useEffect(()=>{
+        setDisplayedProposal();
+    },[proposalsPage,proposal])
+
     const fetchJobApplicationData=()=>{
         setIsLoading(true);
         const {id}=user;
@@ -55,6 +74,7 @@ const ApplicationHistoty = (props) =>{
             }
             else{
                 setJobApplications(data.events);
+                setJobApplicationsPage(1);
                 setIsLoading(false);
             }
         }).catch(err=>{
@@ -76,6 +96,7 @@ const ApplicationHistoty = (props) =>{
             }
             else{
                 setEventApplications(data.events);
+                setEventApplicationsPage(1);
                 setIsLoading(false);
             }
         }).catch(err=>{
@@ -100,6 +121,7 @@ const ApplicationHistoty = (props) =>{
                 data.events.map(event=>{event.type="Charity Event"});
                 const events = data.events;
                 setEventProposal(events);
+                setProposalsPage(1);
                 setIsLoading(false);
             }
         }).catch(err=>{
@@ -124,11 +146,24 @@ const ApplicationHistoty = (props) =>{
                 data.events.map(event=>{event.type="Part-Time Job"});
                 const events = data.events;
                 setJobProposal(events);
+                setProposalsPage(1);
                 setIsLoading(false);
             }
         }).catch(err=>{
             console.log(err);
         })
+    }
+    
+    const handleEventApplicationsPageOnChange = (event, value) => {
+        setEventApplicationsPage(value);
+    }
+
+    const handleJobApplicationsPageOnChange = (event, value) => {
+        setJobApplicationsPage(value);
+    }
+
+    const handleProposalsPageOnChange = (event, value) => {
+        setProposalsPage(value);
     }
 
     const handleViewEventApplication = (id) => {
@@ -368,6 +403,33 @@ const ApplicationHistoty = (props) =>{
         setIsDisplayProposalApplication(true);
         setProposal([...eventProposal,...jobProposal]);
     }
+    
+    const setDisplayedEventApplication = () =>{
+        const firstRow = (eventApplicationsPage-1) * ROW_PER_PAGE + 1;
+        const lastRow = eventApplicationsPage * ROW_PER_PAGE;
+        if(lastRow>=eventApplications.length){
+            setDisplayEventApplications(eventApplications.slice(firstRow-1));
+        }
+        setDisplayEventApplications(eventApplications.slice(firstRow-1,lastRow));
+    }
+
+    const setDisplayedJobApplication = () =>{
+        const firstRow = (jobApplicationsPage-1) * ROW_PER_PAGE + 1;
+        const lastRow = jobApplicationsPage * ROW_PER_PAGE;
+        if(lastRow>=jobApplications.length){
+            setDisplayJobApplications(jobApplications.slice(firstRow-1));
+        }
+        setDisplayJobApplications(jobApplications.slice(firstRow-1,lastRow));
+    }
+
+    const setDisplayedProposal = () =>{
+        const firstRow = (proposalsPage-1) * ROW_PER_PAGE + 1;
+        const lastRow = proposalsPage * ROW_PER_PAGE;
+        if(lastRow>=proposal.length){
+            setDisplayProposals(proposal.slice(firstRow-1));
+        }
+        setDisplayProposals(proposal.slice(firstRow-1,lastRow));
+    }
 
     const renderEventApplication = () =>{
         return(
@@ -388,7 +450,7 @@ const ApplicationHistoty = (props) =>{
                             </tr>
                         }
                         {
-                        eventApplications.map(application=>{
+                        displayedEventApplications.map(application=>{
                             return <tr key={application._id}>
                                 <td className='title'>{application.event_id.title}</td>
                                 <td>{application.created_on.slice(0,10)}</td>
@@ -402,7 +464,10 @@ const ApplicationHistoty = (props) =>{
                         })}
                     </tbody>
                 </table>
-                </div>
+                {eventApplications.length>0&&<div id="application-list-pagination">
+                    <Pagination count={eventApplications.length<=ROW_PER_PAGE?1:parseInt(eventApplications.length/ROW_PER_PAGE)+1} page={eventApplicationsPage} onChange={handleEventApplicationsPageOnChange} />
+                </div>}
+            </div>
         )
     }
 
@@ -425,7 +490,7 @@ const ApplicationHistoty = (props) =>{
                             </tr>
                         }
                         {
-                        jobApplications.map(application=>{
+                        displayedJobApplications.map(application=>{
                             return <tr key={application._id}>
                                 <td>{application.job_id.title}</td>
                                 <td>{application.created_on.slice(0,10)}</td>
@@ -439,7 +504,10 @@ const ApplicationHistoty = (props) =>{
                         })}
                     </tbody>
                 </table>
-                </div>
+                {jobApplications.length>0&&<div id="user-application-list-pagination">
+                    <Pagination count={jobApplications.length<=ROW_PER_PAGE?1:parseInt(jobApplications.length/ROW_PER_PAGE)+1} page={jobApplicationsPage} onChange={handleJobApplicationsPageOnChange} />
+                </div>}
+            </div>
         )
     }
 
@@ -464,7 +532,7 @@ const ApplicationHistoty = (props) =>{
                             </tr>
                         }
                         {
-                        proposal.sort((a,b)=>{return (new Date(b.created_on) - new Date(a.created_on))})
+                        displayedProposals.sort((a,b)=>{return (new Date(b.created_on) - new Date(a.created_on))})
                         .map(application=>{
                             return <tr key={application._id}>
                                 <td className='title'>{application.title}</td>
@@ -480,7 +548,10 @@ const ApplicationHistoty = (props) =>{
                         })}
                     </tbody>
                 </table>
-                </div>
+                {proposal.length>0&&<div id="user-application-list-pagination">
+                    <Pagination count={proposal.length<=ROW_PER_PAGE?1:parseInt(proposal.length/ROW_PER_PAGE)+1} page={proposalsPage} onChange={handleProposalsPageOnChange} />
+                </div>}
+            </div>
         )
     }
     
