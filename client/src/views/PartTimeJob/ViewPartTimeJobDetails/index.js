@@ -3,13 +3,15 @@ import { useNavigate, useParams } from 'react-router-dom';
 import './view_part_time_job_details.css';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Loading, BackSection } from '../../../components';
+import { useUser } from '../../../contexts/UserContext';
 
 const ViewPartTimeJobDetails = (props) => {
 
-    const [event,setEvent] = useState([]); 
+    const [job,setJob] = useState([]); 
     const [isLoading,setIsLoading] = useState(true);
     const navigate = useNavigate();
     const job_id = useParams();
+    const user = useUser();
 
     useEffect(()=>{
         fetchData();
@@ -27,7 +29,7 @@ const ViewPartTimeJobDetails = (props) => {
                 console.log(data.error);
             }
             else{
-                setEvent(data.event);
+                setJob(data.event);
                 setIsLoading(false);
             }
         }).catch(err=>{
@@ -52,16 +54,16 @@ const ViewPartTimeJobDetails = (props) => {
             <BackSection onBackButtonClick={navigatePrev} title="View Part-Time Job Details"/>
             {isLoading?<Loading/>:<>
             <div id="job-details-section">
-                <img src={event.photo.content}/>
+                <img src={job.photo.content}/>
                 <span>
-                    <p id="organizer"><AccountCircleIcon/>{event.organizer_id.name}</p>
-                    <p id="title">{event.title}</p>
-                    <p>Description: {event.description}</p>
-                    <p>Allowance: RM{event.allowance}</p>
-                    <p>Status: {event.status}</p>
-                    <p>Closed Date: {event.closed_date.slice(0,10)}</p>
-                    <button onClick={()=>handleApply(event._id)} className="apply-button">Apply Now</button>
-                    <button onClick={()=>handleChat(event.organizer_id._id)} className="chat-button">Chat</button>
+                    <p id="organizer"><AccountCircleIcon/>{job.organizer_id.name}</p>
+                    <p id="title">{job.title}</p>
+                    <p>Description: {job.description}</p>
+                    <p>Allowance: RM{job.allowance}</p>
+                    <p>Status: {job.status}</p>
+                    <p>Closed Date: {job.closed_date.slice(0,10)}</p>
+                    <button onClick={()=>handleApply(job._id)} className="apply-button">Apply Now</button>
+                    {(user.id!=job.organizer_id._id)&&<button onClick={()=>handleChat(job.organizer_id._id)} className="chat-button">Chat</button>}
                 </span>
             </div>
             </>}

@@ -190,6 +190,7 @@ const ManageDonationDetails = (props) => {
                     confirmButtonText: 'OK'
                 });
                 generateReceipt();
+                fetchData();
                 toggleViewOnly();
             }
         }).catch(err=>{
@@ -227,6 +228,7 @@ const ManageDonationDetails = (props) => {
                     title: data.message,
                     confirmButtonText: 'OK'
                 });
+                fetchData();
                 toggleViewOnly();
             }
         }).catch(err=>{
@@ -275,6 +277,7 @@ const ManageDonationDetails = (props) => {
                             title: data.message,
                             confirmButtonText: 'OK'
                         });
+                        fetchData();
                         toggleViewOnly();
                     }
                 }).catch(err=>{
@@ -351,7 +354,7 @@ const ManageDonationDetails = (props) => {
                 <div className="donation-status-section">
                     <span className="full-input">
                         <label >STATUS</label>
-                        <input disabled type="text" name="location" defaultValue={status}/>
+                        <input disabled type="text" name="location" defaultValue={status} value={status}/>
                     </span>
                 </div>
             </>

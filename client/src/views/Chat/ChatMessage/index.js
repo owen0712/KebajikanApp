@@ -171,7 +171,7 @@ const ChatMessage = (props) => {
     const handleDeleteContact = () => {
         console.log("Delete",selectedChatMate);
         Swal.fire({
-            title: 'Delete Chat Contect',
+            title: 'Delete Chat Contact',
             text: 'Do you want to delete this contact?',
             icon: 'warning',
             confirmButtonText: 'Yes',
