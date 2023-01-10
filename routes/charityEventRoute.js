@@ -47,7 +47,7 @@ router.post('/charity_event',requiredLogin,(req,res)=>{
 // @desc    Retrieve Approved Charity Event
 // @access  Private
 router.get('/charity_event/approved',requiredLogin,(req,res)=>{
-    CharityEvent.find({ "status" : { "$in": ["Not Started", "In Progress", "Preregistration","Closed"] }})
+    CharityEvent.find({ "status" : { "$in": ["Not Started", "In Progress", "Preregistration Closed", "Preregistration","Closed"] }})
     .select("-document")
     .populate("organizer_id","-_id name")
     .sort('-created_on')
@@ -78,7 +78,7 @@ router.get('/charity_event/closed',requiredLogin,(req,res)=>{
 // @desc    Retrieve Organizer Approved Charity Event
 // @access  Private
 router.get('/charity_event/organizer/approved/:id',requiredLogin,(req,res)=>{
-    CharityEvent.find({ "status" : { "$in": ["Not Started", "In Progress", "Preregistration","Closed"] }, "created_by":req.params.id })
+    CharityEvent.find({ "status" : { "$in": ["Not Started", "In Progress",  "Preregistration Closed", "Preregistration","Closed"] }, "created_by":req.params.id })
     .select("-document")
     .populate("organizer_id","-_id name")
     .sort('-created_on')
@@ -210,6 +210,9 @@ router.put('/charity_event/:id',requiredLogin,(req,res)=>{
     const date = new Date();
     if(date>new Date(donation_end_date)){
         req.body.status = "Closed";
+    }
+    else if(date>new Date(preregister_end_date)&&date<new Date(donation_start_date)){
+        req.body.status = "Preregistration Closed";
     }
     else if(date>new Date(preregister_end_date)){
         req.body.status = "In Progress";

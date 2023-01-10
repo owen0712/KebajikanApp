@@ -26,7 +26,7 @@
     background-color: #B248AD;
 }
 
-#paid-status{
+#paid-status,#preregistration-closed-status{
     color: #FFFFFF;
     background-color: #192F59;
 }

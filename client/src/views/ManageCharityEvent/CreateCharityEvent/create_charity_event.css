@@ -68,26 +68,26 @@ textarea{
     width: 85%;
 }
 
-#form-left-content .short-input{
+#charity-form-left-content .short-input{
     margin-left: 0;
     margin-right: 0;
     margin-bottom: 0px;
 }
 
-#form-left-content .long-input *{
+#charity-form-left-content .long-input *{
     width: 98%;
 }
 
-#form-left-content{
+#charity-form-left-content{
     width: 50%;
     margin-right: 15px;
 }
 
-#form-right-content label{
-    width: 40%;
+#charity-form-right-content label{
+    width: 50%;
 }
 
-#form-right-content input{
+#charity-form-right-content input{
     width: 60%;
 }
 

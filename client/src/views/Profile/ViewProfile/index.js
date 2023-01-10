@@ -152,7 +152,7 @@ const ViewProfile = (props) =>{
             {isLoading?<Loading/>:<>
                 <div id='profile-section'>
                     <ProfileSideNavigation activeIndex={0}/>
-                    <div id='profile-content-section'>
+                    <form id='profile-content-section' onSubmit={handleSubmit}>
                         <div id='profile-left-section'>
                             <input className="hidden" ref={imageUploadInput} type="file" accept="image/*" onChange={event=>handleImageOnChange(event)} disabled={!isEdit}/>
                             <img ref={imageDisplay} src={userData.profile_pic?userData.profile_pic:"data:,"} name="image"/>
@@ -179,7 +179,7 @@ const ViewProfile = (props) =>{
                                 <input type="date" defaultValue={userData.birthdate.slice(0,10)} name="birth_date" onChange={event=>handleBirthDateOnChange(event)} disabled={!isEdit}/>
                             </span>
                         </div>
-                        <div>
+                        <div id="profile-bottom-section">
                             <span className="full-input">
                                 <label >STATUS</label>
                                 <input type="text" defaultValue={userData.status} name="status" disabled/>
@@ -190,12 +190,12 @@ const ViewProfile = (props) =>{
                             </span>
                             {isEdit?<div id="save-section">
                             <button onClick={toggleCancel} id="cancel-button">Cancel</button>
-                            <button onClick={handleSubmit} id="save-button">Save</button>
+                            <input id="save-button" type="submit" value="Save"/>
                             </div>:
                             <button onClick={toggleEdit} id="create-button">Edit</button>
                             }
                         </div>
-                    </div>
+                    </form>
                 </div>
             </>}
         </React.Fragment>

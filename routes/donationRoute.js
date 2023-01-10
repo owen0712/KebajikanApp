@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const Donation = mongoose.model("Donation");
+const CharityEvent = mongoose.model("CharityEvent");
 const {STRIPE_SECRET, DOMAIN}=require('../config/keys');
 const stripe = require('stripe')(STRIPE_SECRET);
 const requiredLogin = require('../middlewares/requiredLogin');
@@ -80,12 +81,22 @@ router.post('/receipt/:id',requiredLogin,(req,res)=>{
                     attachment:donation.receipt
                 }
                 await sendReceiptEmail(emailContent);
-                res.json({status:"OK"});
             }).catch(err=>{
                 res.json({error:err});
             });
         }, 5000);
-        
+        if(donation.category=="Money"){
+            CharityEvent.findOneAndUpdate({_id:donation.charity_event_id},{$inc : {'current_amount' : donation.amount}},{new:false},(err,result)=>{
+                if(err){
+                    return res.json({error:err})
+                }
+                res.json({status:"OK"});
+    
+            })
+        }
+        else{
+            res.json({status:"OK"});
+        }
     }).catch(err=>{
         res.json({error:err});
     });
@@ -176,6 +187,7 @@ router.put('/donation/status/verified/:id',requiredLogin,(req,res)=>{
     }
     Donation.findByIdAndUpdate(req.params.id,req.body,{new:false},(err,result)=>{
         if(err){
+            console.log(err)
             return res.json({error:err})
         }
         res.json({message:"Successfully updated"})

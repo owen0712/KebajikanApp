@@ -85,7 +85,7 @@ const ViewCharityEventDetails = (props) => {
                     </>:
                     <button onClick={()=>handleClick("apply_help",event._id)} className="preregistration-button">Apply For Help</button>
                     }
-                    {user?.id==event.organizer_id._id?"":<button onClick={()=>handleChat(event.organizer_id._id)} className="chat-button">Chat</button>}
+                    {!user||user?.id==event.organizer_id._id?"":<button onClick={()=>handleChat(event.organizer_id._id)} className="chat-button">Chat</button>}
                 </span>
             </div>
             </>}

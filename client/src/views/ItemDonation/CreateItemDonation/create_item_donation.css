@@ -45,8 +45,14 @@
     vertical-align: middle;
 }
 
+.add-item-section input{
+    width: 10vw;
+    margin-right: 10px;
+}
+
 .item-list-board .add-item-section {
     border-bottom: 2px solid #192f59;
+    background-color: white;
 }
 
 .add-item-section label::before{

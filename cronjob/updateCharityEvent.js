@@ -7,6 +7,9 @@ const checkEventStatus = (event) => {
     if(event.status==="In Progress"&&date>event.donation_end_date){
         return "Closed";
     }
+    if(event.status==="Preregistration"&&date>event.preregister_end_date&&date<event.donation_start_date){
+        return "Preregistration Closed";
+    }
     if(event.status==="Preregistration"&&date>event.preregister_end_date){
         return "In Progress";
     }

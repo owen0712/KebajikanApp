@@ -61,13 +61,13 @@ router.get('/user/:id',requiredLogin,(req,res)=>{
 router.put('/user/:id',requiredLogin,(req,res)=>{
     const {name,email,birthdate,phone_number,profile_pic}=req.body;
     if(!name||!email||!birthdate||!phone_number||!profile_pic){
-        return res.status(422).json({error:'please make sure all fields are filled'});
+        return res.status(422).json({error:'Please make sure all fields are filled'});
     }
     User.findByIdAndUpdate(req.params.id,{$set:req.body},{new:false},(err,result)=>{
         if(err){
-            return res.status(422).json({error:"Update failed"});
+            return res.status(422).json({error:"Updated failed"});
         }
-        res.json({message:'Update Successfully'});
+        res.json({message:'Updated Successfully'});
     })
 })
 

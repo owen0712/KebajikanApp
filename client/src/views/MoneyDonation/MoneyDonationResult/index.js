@@ -25,7 +25,6 @@ const MoneyDonationResult = (props) => {
             },5000)
         }
         if(user){
-            console.log('render')
             updateData();
             if(isSuccess){
                 generateReceipt();
