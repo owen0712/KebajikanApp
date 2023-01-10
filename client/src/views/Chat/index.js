@@ -11,6 +11,7 @@ const Chat = (props) => {
     const {id} = useParams();
     const [chatmate,setChatMate] = useState(id);
     const [updateList,setUpdateList] = useState(false);
+    const [chatRelationCreatedOn,setChatRelationCreatedOn] = useState(null);
     const user = useUser();
 
     useEffect(()=>{
@@ -53,8 +54,8 @@ const Chat = (props) => {
     return (
         <React.Fragment>
             <div id='chat-room'>
-                <ContactList chatmate={chatmate} setChatMate={setChatMate} updateList={updateList} setUpdateList={setUpdateList}/>
-                <ChatMessage chatmate={chatmate} setUpdateList={setUpdateList}/>
+                <ContactList chatmate={chatmate} setChatMate={setChatMate} updateList={updateList} setUpdateList={setUpdateList} setChatRelationCreatedOn={setChatRelationCreatedOn}/>
+                <ChatMessage chatmate={chatmate} setUpdateList={setUpdateList} chatRelationCreatedOn={chatRelationCreatedOn} />
             </div>
         </React.Fragment>
     )

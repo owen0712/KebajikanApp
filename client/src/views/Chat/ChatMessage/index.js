@@ -18,6 +18,7 @@ const ChatMessage = (props) => {
     const [isOpenMoreOption, setIsOpenMoreOption] = useState(false);
     const [isEnableDeleteMessage, setIsEnableDeleteMessage] = useState(false);
     const selectedChatMate = props.chatmate;
+    const chatRelationCreatedOn = props.chatRelationCreatedOn;
     const socket = useSocket();
     const setUpdateList = props.setUpdateList;
 
@@ -95,11 +96,14 @@ const ChatMessage = (props) => {
             return;
         }
         fetch('/chatrecord/'+selectedChatMate,{
-            method:'get',
+            method:'post',
             headers:{
                 'Content-Type':'application/json',
                 'Authorization':'Bearer'+user.access_token
-            }
+            },
+            body:JSON.stringify({
+                created_on:chatRelationCreatedOn
+            })
         }).then(res=>res.json()).then(data=>{
             if(data.error){
                 Swal.fire({

@@ -20,6 +20,11 @@ const chatRelationSchema = new mongoose.Schema({
         type:Date,
         required:true,
         default:Date.now
+    },
+    created_on:{
+        type:Date,
+        required:true,
+        default:Date.now
     }
 })
 

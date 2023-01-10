@@ -17,6 +17,7 @@ const ContactList = (props) => {
     const chatmate = props.chatmate;
     const updateList = props.updateList;
     const setUpdateList = props.setUpdateList;
+    const setChatRelationCreatedOn = props.setChatRelationCreatedOn;
 
     useEffect(()=>{
         let timer = null;
@@ -109,6 +110,7 @@ const ContactList = (props) => {
 
     const handleContactOnClick = (relation) => {
         setChatMate(relation.chatmate_id._id);
+        setChatRelationCreatedOn(relation.created_on);
         if(relation.latest_chat_record?.recipient==user.id&&relation.latest_chat_record?.status=="Unread"){
             updateReadMessage(relation.chatmate_id._id);
         }

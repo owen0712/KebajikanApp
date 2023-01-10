@@ -73,13 +73,23 @@ router.get('/relation/:id',requiredLogin,(req,res)=>{
                 user_id:req.user._id,
                 chatmate_id:req.params.id
             });
-            const newChatMateRelation = new ChatRelation({
-                user_id:req.params.id,
-                chatmate_id:req.user._id
-            });
             newChatRelation.save().then(createdRelation=>{
-                newChatMateRelation.save().then(createdRelation=>{
-                    return res.json({result:true});
+                ChatRelation.findOne({user_id:req.user._id,chatmate_id:req.params.id})
+                .then(relation=>{
+                    if(relation){
+                        res.json({result:false});
+                    }
+                    else{
+                        const newChatMateRelation = new ChatRelation({
+                            user_id:req.params.id,
+                            chatmate_id:req.user._id
+                        });
+                        newChatMateRelation.save().then(createdRelation=>{
+                            return res.json({result:true});
+                        }).catch(err=>{
+                            res.json({error:err});
+                        });
+                    }
                 }).catch(err=>{
                     res.json({error:err});
                 });
@@ -102,7 +112,8 @@ router.get('/chatmate/:id',requiredLogin,(req,res)=>{
             User.findOne({_id:req.params.id})
             .then(user=>{
                 const {name,profile_pic} = user;
-                return res.json({chatmate:{name,profile_pic}});
+                const created_on = relation.created_on;
+                return res.json({chatmate:{name,profile_pic,created_on}});
             }).catch(err=>{
                 res.json({error:err});
             });
@@ -118,11 +129,12 @@ router.get('/chatmate/:id',requiredLogin,(req,res)=>{
 // @route   GET /chatrecord/:id
 // @desc    Retrieve Chatmate Record
 // @access  Private
-router.get('/chatrecord/:id',requiredLogin,(req,res)=>{
+router.post('/chatrecord/:id',requiredLogin,(req,res)=>{
+    const {created_on} = req.body;
     ChatRecord.find({$or:[{$and:[{sender:req.params.id},{recipient:req.user._id}]},{$and:[{sender:req.user._id},{recipient:req.params.id}]}]})
     .sort('date')
     .then(records=>{
-        return res.json({records});
+        return res.json({records:records.filter((e)=>{return new Date(e.date) >= new Date(created_on)})});
     }).catch(err=>{
         res.json({error:err});
     });
