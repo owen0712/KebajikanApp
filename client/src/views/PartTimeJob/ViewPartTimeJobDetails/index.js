@@ -63,7 +63,10 @@ const ViewPartTimeJobDetails = (props) => {
                     <p>Status: {job.status}</p>
                     <p>Closed Date: {job.closed_date.slice(0,10)}</p>
                     <button onClick={()=>handleApply(job._id)} className="apply-button">Apply Now</button>
-                    {(user.id!=job.organizer_id._id)&&<button onClick={()=>handleChat(job.organizer_id._id)} className="chat-button">Chat</button>}
+                    {user&&(user.id==job.organizer_id._id)?
+                        <></>:
+                        <button onClick={()=>handleChat(job.organizer_id._id)} className="chat-button">Chat</button>
+                    }
                 </span>
             </div>
             </>}
