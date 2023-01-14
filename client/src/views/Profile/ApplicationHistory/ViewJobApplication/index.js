@@ -25,7 +25,7 @@ const ViewJobApplication = (props) => {
     const [email, setEmail] = useState("");
     const [course, setCourse] = useState("");
     const [identity_no, setIdentityNo] = useState("");
-    const [document,setDocument] = useState({});
+    const [documents,setDocuments] = useState({});
     const [status,setStatus] = useState(""); 
     const [isEdit,setIsEdit] = useState(props.isEdit);
     const fileUploadInput = useRef();
@@ -68,9 +68,18 @@ const ViewJobApplication = (props) => {
         fileUploadInput.current.click();
     }
 
+    const onDownloadDocuments = () => {
+        const linkSource = documents.content;
+        const downloadLink = document.createElement("a");
+        const fileName = documents.name;
+        downloadLink.href = linkSource;
+        downloadLink.download = fileName;
+        downloadLink.click();
+    }
+
     const handleFileOnChange = (event) => {
         const setDocumentUploaded = (documentUploaded) =>{
-            setDocument(documentUploaded);
+            setDocuments(documentUploaded);
             console.log(documentUploaded);
         }
         var reader = new FileReader();
@@ -108,7 +117,7 @@ const ViewJobApplication = (props) => {
                 setEmail(event.email);
                 setIdentityNo(event.identity_no);
                 setCourse(event.course);
-                setDocument(event.document);
+                setDocuments(event.document);
                 setStatus(event.status);
                 setIsLoading(false);
             }
@@ -131,7 +140,7 @@ const ViewJobApplication = (props) => {
                 email,
                 identity_no,
                 course,
-                document
+                document:documents
             })
         }).then(res=>res.json()).then(data=>{
             console.log("Data",data);
@@ -215,7 +224,7 @@ const ViewJobApplication = (props) => {
                     <span className="short-input">
                         <label >CURRICULUM VITAE</label>
                         <input className="hidden" ref={fileUploadInput} onChange={event=>handleFileOnChange(event)} type="file" accept=".pdf" name="document"/>
-                        <input disabled={!isEdit} ref={fileTextDisplay} onClick={isEdit?handleTextInputOnClick:()=>{}} type="text" defaultValue={document.name}/>
+                        <input readOnly={!isEdit} ref={fileTextDisplay} onClick={isEdit?handleTextInputOnClick:onDownloadDocuments} type="text" defaultValue={documents.name}/>
                     </span>
                     <span className="short-input">
                         <label >STATUS</label>
@@ -226,7 +235,7 @@ const ViewJobApplication = (props) => {
                         <button onClick={toggleCancel} id="cancel-button">Cancel</button>
                         <input type="submit" value="Save" id="save-button"/>
                     </div>:
-                    <button disabled={(status=="Approved" || status=="Rejected")} onClick={(status=="Approved" || status=="Rejected")?()=>{}:toggleEdit} id="create-button">Edit</button>}
+                    <button disabled={(status!="Pending")} onClick={(status!="Pending")?()=>{}:toggleEdit} id="create-button">Edit</button>}
                 </form>
             </div>
             </>}

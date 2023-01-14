@@ -125,6 +125,15 @@ const ManageJobAllocatedStudent = (props) => {
         evidenceUploadInput.current.click();
     }
 
+    const onDownloadEvidence = () => {
+        const linkSource = evidence.content;
+        const downloadLink = document.createElement("a");
+        const fileName = evidence.name;
+        downloadLink.href = linkSource;
+        downloadLink.download = fileName;
+        downloadLink.click();
+    }
+
     const handleEvidenceOnChange = (event) => {
         const setEvidenceUploaded=(evidenceUploaded)=>{
             setEvidence(evidenceUploaded);
@@ -212,7 +221,7 @@ const ManageJobAllocatedStudent = (props) => {
                     <span className="short-input">
                         <label>EVIDENCE</label>
                         <input className="hidden" ref={evidenceUploadInput} onChange={event=>handleEvidenceOnChange(event)} type="file" accept=".pdf*" name="document"/>
-                        <input className={isEdit?"":"read-only"} ref={evidenceDisplay} onClick={handleTextInputOnClick} type="text" value={evidence&&evidence.name?evidence.name:isEdit?"No file is chosen":"-"} readOnly={!isEdit}/>
+                        <input className={isEdit?"":"read-only"} ref={evidenceDisplay} onClick={isEdit?handleTextInputOnClick:onDownloadEvidence} type="text" value={evidence&&evidence.name?evidence.name:isEdit?"No file is chosen":"-"} readOnly={!isEdit}/>
                     </span>
                     {(isEdit)&&<p id="file-upload-reminder">* Please upload the evidence as a proof of receiving donated items</p>}
                 </>}

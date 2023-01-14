@@ -86,6 +86,15 @@ const ManageDonationDetails = (props) => {
         evidenceUploadInput.current.click();
     }
 
+    const onDownloadEvidence = () => {
+        const linkSource = evidence.content;
+        const downloadLink = document.createElement("a");
+        const fileName = evidence.name;
+        downloadLink.href = linkSource;
+        downloadLink.download = fileName;
+        downloadLink.click();
+    }
+
     const handleEvidenceOnChange = (event) => {
         const setEvidenceUploaded=(evidenceUploaded)=>{
             setEvidence(evidenceUploaded);
@@ -424,7 +433,7 @@ const ManageDonationDetails = (props) => {
                     <span className="full-input">
                         <label>EVIDENCE</label>
                         <input className="hidden" ref={evidenceUploadInput} onChange={event=>handleEvidenceOnChange(event)} type="file" accept="image/*" name="document"/>
-                        <input ref={evidenceDisplay} onClick={handleTextInputOnClick} type="text" defaultValue={evidence.name?evidence.name:isVerify?"No file is chosen":"-"} disabled={!isVerify}/>
+                        <input ref={evidenceDisplay} onClick={(isVerify)?handleTextInputOnClick:onDownloadEvidence} type="text" defaultValue={evidence.name?evidence.name:isVerify?"No file is chosen":"-"} readOnly={!isVerify}/>
                     </span>
                     {(isVerify)&&<p id="file-upload-reminder">* Please upload the evidence as a proof of receiving donated items</p>}
                     </div>

@@ -79,6 +79,11 @@ input:disabled{
     background-color: #E1E1E1;
 }
 
+input:read-only{
+    color: rgba(25, 47, 89, 0.8);
+    background-color: #E1E1E1;
+}
+
 #tnc-section{
     display: flex;
     justify-content: center;

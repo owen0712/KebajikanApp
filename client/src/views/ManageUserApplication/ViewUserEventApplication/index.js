@@ -26,7 +26,7 @@ const ViewUserEventApplication = (props) => {
     const [total_income,setTotalIncome] = useState(0);
     const [no_sibling,setSiblingNo] = useState(0);
     const [no_dependent,setDependentNo] = useState(0);
-    const [document,setDocument] = useState(null);
+    const [documents,setDocuments] = useState(null);
     const [photo,setPhoto] = useState(null);
     const [isAgree,setIsAgree] = useState(false);
     const [created_by,setCreatedBy] = useState(null); 
@@ -92,7 +92,7 @@ const ViewUserEventApplication = (props) => {
                 setTotalIncome(event.total_income);
                 setSiblingNo(event.no_sibling);
                 setDependentNo(event.no_dependent);
-                setDocument(event.document);
+                setDocuments(event.document);
                 setPhoto(event.photo);
                 setEventId(event.event_id._id);
                 setCreatedBy(event.created_by);
@@ -106,7 +106,12 @@ const ViewUserEventApplication = (props) => {
     }
 
     const handleTextInputOnClick = () => {
-        fileUploadInput.current.click();
+        const linkSource = documents.content;
+        const downloadLink = document.createElement("a");
+        const fileName = documents.name;
+        downloadLink.href = linkSource;
+        downloadLink.download = fileName;
+        downloadLink.click();
     }
 
     const navigatePrev = () =>{
@@ -347,7 +352,7 @@ const ViewUserEventApplication = (props) => {
                     <span className="full-input">
                         <label >SUPPORTING DOCUMENT</label>
                         <input className="hidden" ref={fileUploadInput} type="file" accept=".zip,.rar,.7zip" name="document"/>
-                        <input disabled ref={fileTextDisplay} onClick={(isVerify)?handleTextInputOnClick:()=>{}} type="text" defaultValue={document.name}/>
+                        <input readOnly ref={fileTextDisplay} onClick={handleTextInputOnClick} type="text" defaultValue={documents.name}/>
                     </span>
                     <span className="full-input">
                         <label >STATUS</label>
@@ -364,7 +369,7 @@ const ViewUserEventApplication = (props) => {
                         <button onClick={toggleReject} id="reject-button">Reject</button>
                         <button onClick={toggleViewOnly} id="cancel-button">Cancel</button>
                     </div>:
-                    <button disabled={(status=="Approved" || status=="Rejected")} onClick={(status=="Approved" || status=="Rejected")?()=>{}:toggleVerify} id="verify-button">Verify</button>}
+                    <button disabled={(status!="Pending")} onClick={(status!="Pending")?()=>{}:toggleVerify} id="verify-button">Verify</button>}
             </form>
             </>}
         </React.Fragment>

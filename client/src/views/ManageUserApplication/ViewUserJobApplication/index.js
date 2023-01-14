@@ -22,7 +22,7 @@ const ViewJobApplication = (props) => {
     const [identity_no, setIdentityNo] = useState("");
     const [created_on, setCreatedOn] = useState("");
     const [created_by, setCreatedBy] = useState("");
-    const [document,setDocument] = useState({});
+    const [documents,setDocuments] = useState({});
     const [status, setStatus] = useState("");
     const [isVerify,setIsVerify] = useState(props.isVerify);
     const [isPreviewPdf,setIsPreviewPdf] = useState(false);
@@ -48,7 +48,12 @@ const ViewJobApplication = (props) => {
 
 
     const handleTextInputOnClick = () => {
-        fileUploadInput.current.click();
+        const linkSource = documents.content;
+        const downloadLink = document.createElement("a");
+        const fileName = documents.name;
+        downloadLink.href = linkSource;
+        downloadLink.download = fileName;
+        downloadLink.click();
     }
     
 
@@ -74,7 +79,7 @@ const ViewJobApplication = (props) => {
                 setCourse(event.course);
                 setCreatedOn(event.created_on);
                 setCreatedBy(event.created_by);
-                setDocument(event.document);
+                setDocuments(event.document);
                 setStatus(event.status);
                 setIsLoading(false);
             }
@@ -251,7 +256,7 @@ const ViewJobApplication = (props) => {
                     <span className="long-input">
                         <label className='resume-preview-label'>CURRICULUM VITAE PREVIEW <OpenInFull onClick={handleOpenPreviewPdf} /></label>
                         <div className='resume-preview-frame'>
-                            <iframe className='resume-preview' src={document.content}></iframe>
+                            <iframe className='resume-preview' src={documents.content}></iframe>
                         </div>
                     </span>
                     
@@ -277,7 +282,7 @@ const ViewJobApplication = (props) => {
                     <span className="short-input">
                         <label >CURRICULUM VITAE</label>
                         <input className="hidden" ref={fileUploadInput}  type="file" accept=".pdf" name="document"/>
-                        <input disabled ref={fileTextDisplay} onClick={isVerify?handleTextInputOnClick:()=>{}} type="text" defaultValue={document.name}/>
+                        <input readOnly ref={fileTextDisplay} onClick={handleTextInputOnClick} type="text" defaultValue={documents.name}/>
                     </span>
                     <span className="short-input">
                         <label >STATUS</label>
@@ -289,7 +294,7 @@ const ViewJobApplication = (props) => {
                         <button onClick={toggleReject} id="reject-button">Reject</button>
                         <button onClick={toggleViewOnly} id="cancel-button">Cancel</button>
                     </div>:
-                    <button disabled={(status=="Approved" || status=="Rejected")} onClick={(status=="Approved" || status=="Rejected")?()=>{}:toggleVerify} id="verify-button">Verify</button>}
+                    <button disabled={(status!="Pending")} onClick={(status!="Pending")?()=>{}:toggleVerify} id="verify-button">Verify</button>}
                 </form>
             </div>
             <div id='pdf-modal'>
@@ -299,10 +304,10 @@ const ViewJobApplication = (props) => {
                 >
                     <div className='resume-preview-box'>
                         <h2 className='resume-full-preview-title'>
-                            {document.name}
+                            {documents.name}
                         </h2>
                         <div className='resume-full-preview-frame'>
-                            <iframe className='resume-preview' src={document.content}></iframe>
+                            <iframe className='resume-preview' src={documents.content}></iframe>
                         </div>
                         <div className='resume-full-preview-action-section'>
                             <button className="modal-close-button" onClick={handleClosePreviewPdf}>Close</button>

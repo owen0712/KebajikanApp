@@ -297,7 +297,7 @@ const ViewUserApplicationList = (props) =>{
                                 <td><Status statusName={application.status}/></td>
                                 <td className='button-list'>
                                     <button className='button' onClick={()=>handleViewEventApplication(application._id)}><RemoveRedEyeIcon/>View</button>
-                                    <button className='button' disabled={(application.status=="Approved" || application.status=="Rejected")} onClick={(application.status=="Approved" || application.status=="Rejected")?()=>{}:()=>handleVerifyEventApplication(application._id)}><VerifiedIcon/>Verify</button>
+                                    <button className='button' disabled={(application.status!="Pending")} onClick={(application.status!="Pending")?()=>{}:()=>handleVerifyEventApplication(application._id)}><VerifiedIcon/>Verify</button>
                                 </td>
                             </tr>
                         })}
@@ -338,7 +338,7 @@ const ViewUserApplicationList = (props) =>{
                                 <td><Status statusName={application.status}/></td>
                                 <td className='button-list'>
                                     <button className='button' onClick={()=>handleViewJobApplication(application._id)}><RemoveRedEyeIcon/>View</button>
-                                    <button className='button' disabled={(application.status=="Approved" || application.status=="Rejected")} onClick={(application.status=="Approved" || application.status=="Rejected")?()=>{}:()=>handleVerifyJobApplication(application._id)}><VerifiedIcon/>Verify</button>
+                                    <button className='button' disabled={(application.status!="Pending")} onClick={(application.status!="Pending")?()=>{}:()=>handleVerifyJobApplication(application._id)}><VerifiedIcon/>Verify</button>
                                 </td>
                             </tr>
                         })}

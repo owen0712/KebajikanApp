@@ -26,7 +26,7 @@ const ViewEventApplication = (props) => {
     const [total_income,setTotalIncome] = useState(0);
     const [no_sibling,setSiblingNo] = useState(0);
     const [no_dependent,setDependentNo] = useState(0);
-    const [document,setDocument] = useState(null);
+    const [documents,setDocuments] = useState(null);
     const [photo,setPhoto] = useState(null);
     const [isAgree,setIsAgree] = useState(false);
     const [event_name,setEventName] = useState(""); 
@@ -90,7 +90,7 @@ const ViewEventApplication = (props) => {
                 setTotalIncome(event.total_income);
                 setSiblingNo(event.no_sibling);
                 setDependentNo(event.no_dependent);
-                setDocument(event.document);
+                setDocuments(event.document);
                 setPhoto(event.photo);
                 setEventName(event.event_id.title);
                 setStatus(event.status);
@@ -179,9 +179,18 @@ const ViewEventApplication = (props) => {
         fileUploadInput.current.click();
     }
 
+    const onDownloadDocuments = () => {
+        const linkSource = documents.content;
+        const downloadLink = document.createElement("a");
+        const fileName = documents.name;
+        downloadLink.href = linkSource;
+        downloadLink.download = fileName;
+        downloadLink.click();
+    }
+
     const handleFileOnChange = (event) => {
         const setDocumentUploaded = (documentUploaded) =>{
-            setDocument(documentUploaded);
+            setDocuments(documentUploaded);
         }
         var reader = new FileReader();
         reader.readAsDataURL(event.target.files[0]);
@@ -248,7 +257,7 @@ const ViewEventApplication = (props) => {
                 total_income,
                 no_sibling,
                 no_dependent,
-                document,
+                document:documents,
                 photo
             })
         }).then(res=>res.json()).then(data=>{
@@ -408,7 +417,7 @@ const ViewEventApplication = (props) => {
                     <span className="full-input">
                         <label >SUPPORTING DOCUMENT</label>
                         <input className="hidden" ref={fileUploadInput} onChange={event=>handleFileOnChange(event)} type="file" accept=".zip,.rar,.7zip" name="document"/>
-                        <input disabled={!isEdit} ref={fileTextDisplay} onClick={(isEdit)?handleTextInputOnClick:()=>{}} type="text" defaultValue={document.name}/>
+                        <input readOnly={!isEdit} ref={fileTextDisplay} onClick={(isEdit)?handleTextInputOnClick:onDownloadDocuments} type="text" defaultValue={documents.name}/>
                     </span>
                     {!isEdit?"":<p id="file-upload-reminder">* Please upload your parents or guardian salary statement together with supporting documents in zip files</p>}
                     <span className="full-input">
@@ -425,7 +434,7 @@ const ViewEventApplication = (props) => {
                     <button onClick={toggleCancel} id="cancel-button">Cancel</button>
                     <input type="submit" value="Save" id="save-button"/>
                 </div>:
-                <button disabled={(status=="Approved" || status=="Rejected")} onClick={(status=="Approved" || status=="Rejected")?()=>{}:toggleEdit} id="create-button">Edit</button>}
+                <button disabled={(status!="Pending")} onClick={(status!="Pending")?()=>{}:toggleEdit} id="create-button">Edit</button>}
             </form>
             </>}
         </React.Fragment>

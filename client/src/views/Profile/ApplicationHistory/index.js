@@ -315,6 +315,7 @@ const ApplicationHistoty = (props) =>{
                     else{
                         Swal.fire({
                             title: data.message,
+                            text: 'Successfully withdraw this proposal!',
                             icon: 'success',
                             confirmButtonText: 'Ok'
                         })
@@ -359,7 +360,7 @@ const ApplicationHistoty = (props) =>{
                     else{
                         Swal.fire({
                             title: data.message,
-                            text: 'Successfully delete this proposed part-time job!',
+                            text: 'Successfully withdraw this proposal!',
                             icon: 'success',
                             confirmButtonText: 'Ok'
                         })
@@ -457,8 +458,8 @@ const ApplicationHistoty = (props) =>{
                                 <td><Status statusName={application.status}/></td>
                                 <td className='button-list'>
                                     <button className='button' onClick={()=>handleViewEventApplication(application._id)}><RemoveRedEyeIcon/>View</button>
-                                    <button className='button' disabled={(application.status=="Approved" || application.status=="Rejected")} onClick={()=>(application.status=="Approved" || application.status=="Rejected")?()=>{}:handleEditEventApplication(application._id)}><CreateIcon/>Edit</button>
-                                    <button className='danger-button' disabled={(application.status=="Approved" || application.status=="Rejected")}  onClick={()=>(application.status=="Approved" || application.status=="Rejected")?()=>{}:handleDeleteEventApplication(application._id)}><PersonRemoveIcon/>Withdraw</button>    
+                                    <button className='button' disabled={(application.status!="Pending")} onClick={()=>(application.status!="Pending")?()=>{}:handleEditEventApplication(application._id)}><CreateIcon/>Edit</button>
+                                    <button className='danger-button' disabled={(application.status!="Pending")}  onClick={()=>(application.status!="Pending")?()=>{}:handleDeleteEventApplication(application._id)}><PersonRemoveIcon/>Withdraw</button>    
                                 </td>
                             </tr>
                         })}
@@ -497,8 +498,8 @@ const ApplicationHistoty = (props) =>{
                                 <td><Status statusName={application.status}/></td>
                                 <td className='button-list'>
                                     <button className='button' onClick={()=>handleViewJobApplication(application._id)}><RemoveRedEyeIcon/>View</button>
-                                    <button className='button' disabled={(application.status=="Approved" || application.status=="Rejected")} onClick={()=>(application.status=="Approved" || application.status=="Rejected")?()=>{}:handleEditJobApplication(application._id)}><CreateIcon/>Edit</button>
-                                    <button className='danger-button' disabled={(application.status=="Approved" || application.status=="Rejected")}  onClick={()=>(application.status=="Approved" || application.status=="Rejected")?()=>{}:handleDeleteJobApplication(application._id)}><PersonRemoveIcon/>Withdraw</button>    
+                                    <button className='button' disabled={(application.status!="Pending")} onClick={()=>(application.status!="Pending")?()=>{}:handleEditJobApplication(application._id)}><CreateIcon/>Edit</button>
+                                    <button className='danger-button' disabled={(application.status!="Pending")}  onClick={()=>(application.status!="Pending")?()=>{}:handleDeleteJobApplication(application._id)}><PersonRemoveIcon/>Withdraw</button>    
                                 </td>
                             </tr>
                         })}
