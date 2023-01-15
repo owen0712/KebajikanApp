@@ -1,7 +1,8 @@
 #job-list{
-    margin: 20px auto;
+    margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
+    background-color: white;
 }
 
 .job-card{
@@ -61,4 +62,19 @@
     vertical-align: middle;
     margin:24px 20px 24px auto;
     cursor: pointer;
+}
+
+#jobs-list-pagination nav{
+    display: flex;
+    background-color: white;
+    padding: 10px;
+    justify-content: flex-end;
+}
+
+#jobs-list-pagination button{
+    font-weight: bold;
+}
+
+#jobs-list-pagination svg{
+    color: #192F59;
 }

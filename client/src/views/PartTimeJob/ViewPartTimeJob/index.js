@@ -1,28 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import {useNavigate} from 'react-router-dom';
 import './view_part_time_job.css';
-import { Slide } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-import Swal from 'sweetalert2';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import { Status, BackSection, Loading } from '../../../components';
+import { Loading } from '../../../components';
+import Pagination from '@mui/material/Pagination';
 
 const ViewPartTimeJob = (props) => {
 
     const navigate = useNavigate();
-    const [events,setEvents] = useState([]);
+    const [jobs,setJobs] = useState([]);
+    const [displayedJobs,setDisplayJobs] = useState([]);
+    const [page,setPage] = useState(0);
     const [isLoading,setIsLoading] = useState(false);
+    const ROW_PER_PAGE = 6;
 
     useEffect(()=>{
         fetchData();
     },[])
+
+    useEffect(()=>{
+        setDisplayedJobs();
+    },[page,jobs])
 
     const fetchData = () =>{
         setIsLoading(true);
@@ -36,7 +40,8 @@ const ViewPartTimeJob = (props) => {
                 console.log(data.error);
             }
             else{
-                setEvents(data.events);  
+                setJobs(data.events);  
+                setPage(1);
                 setIsLoading(false);
             }
         }).catch(err=>{
@@ -56,18 +61,31 @@ const ViewPartTimeJob = (props) => {
         navigate('/part_time_job/create');
     }
 
+    const handlePageOnChange = (event, value) => {
+        setPage(value);
+    }
+
+    const setDisplayedJobs = () =>{
+        const firstRow = (page-1) * ROW_PER_PAGE + 1;
+        const lastRow =  page * ROW_PER_PAGE;
+        if(lastRow>=jobs.length){
+            setDisplayJobs(jobs.slice(firstRow-1));
+        }
+        setDisplayJobs(jobs.slice(firstRow-1,lastRow));
+    }
+
     return (
         <React.Fragment>
             {isLoading?<Loading/>:<>
             <div id="carousel">
                 <ArrowLeftIcon/>
                 {
-                    events.slice(0,1).map(data=>{
+                    jobs.slice(0,1).map(data=>{
                         return(
                             <div key={data._id} className="carousel-item">
                                 <img src={data.photo.content} onClick={()=>handleView(data._id)}/>
                                 <span>
-                                    <h1 onClick={()=>handleView(data._id)}>{events[0].title}</h1>
+                                    <h1 onClick={()=>handleView(data._id)}>{jobs[0].title}</h1>
                                     <p onClick={()=>handleView(data._id)}>Description: {data.description}</p>
                                     <p onClick={()=>handleView(data._id)}>Allowance: {data.allowance}</p>
                                     <button onClick={()=>handleApply(data._id)} className="apply-button">Apply</button>
@@ -76,13 +94,6 @@ const ViewPartTimeJob = (props) => {
                         )
                     })
                 }
-                {/* <img src={events[0].photo.content} onError={errorHandler} onClick={()=>handleView(events[0]._id)}/> */}
-                {/* <span>
-                    <h1 onClick={()=>handleView(events[0]._id)}>{events[0].title}</h1>
-                    <p onClick={()=>handleView(events[0]._id)}>Description: {events[0].description}</p>
-                    <p onClick={()=>handleView(events[0]._id)}>Target Amount: {events[0].amount}</p>
-                    <button onClick={()=>handleApply(events[0]._id)} className="apply-button">Apply</button>
-                </span> */}
                 <ArrowRightIcon/>
             </div>
             <div id="title-section">
@@ -90,41 +101,35 @@ const ViewPartTimeJob = (props) => {
                 <button onClick={handleProposeJob}><AddIcon/>Propose New Part-Time Job</button>
             </div>
             <div id="job-list">
-                {events.map(event=>{
+                {displayedJobs.map(job=>{
                 return(
-                <Card key={event._id} className="job-card">
+                <Card key={job._id} className="job-card">
                     <CardMedia
                         component="img"
-                        alt={event.title}
+                        alt={job.title}
                         height="140"
-                        src={event.photo.content}
-                        onClick={()=>handleView(event._id)}
+                        src={job.photo.content}
+                        onClick={()=>handleView(job._id)}
                     />
-                    <CardContent onClick={()=>handleView(event._id)} className="job-content">
+                    <CardContent onClick={()=>handleView(job._id)} className="job-content">
                         <p className="job-title">
-                            {event.title}
+                            {job.title}
                         </p>
                         <p className="job-description">
-                            Description: {event.description}
+                            Description: {job.description}
                         </p>
                         <p className="job-description">
-                            Allowance: RM {event.allowance}
+                            Allowance: RM {job.allowance}
                         </p>
                     </CardContent>
                     <CardActions className="action-section">
-                        <button onClick={()=>handleApply(event._id)} className="apply-button">Apply</button>
+                        <button onClick={()=>handleApply(job._id)} className="apply-button">Apply</button>
                     </CardActions>
                 </Card>)
                 })}
             </div>
-            <div id="#part-time-job-list">
-                
-                {/* <div id="part-time-job-list-pagination">
-                    <ArrowLeftIcon/>
-                    <input type="number" defaultValue={pageNumber}/>
-                    <p>/{events.length/7}</p>
-                    <ArrowRightIcon/>
-                </div> */}
+            <div id="jobs-list-pagination">
+                <Pagination count={jobs.length<=ROW_PER_PAGE?1:parseInt(jobs.length/ROW_PER_PAGE)+1} page={page} onChange={handlePageOnChange} />
             </div>
             </>}            
         </React.Fragment>
