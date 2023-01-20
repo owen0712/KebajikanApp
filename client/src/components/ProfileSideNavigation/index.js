@@ -15,7 +15,6 @@ const ProfileSideNavigation = (props) =>{
                 <ul><Link to='/profile/password' className={props.activeIndex===1?"profile-nav-item-active":"profile-nav-item"}>PASSWORD</Link></ul>
                 <ul><Link to='/profile/application_history' className={props.activeIndex===2?"profile-nav-item-active":"profile-nav-item"}>APPLICATION HISTORY</Link></ul>
                 <ul><Link to='/profile/donation_history' className={props.activeIndex===3?"profile-nav-item-active":"profile-nav-item"}>DONATION HISTORY</Link></ul>
-                <ul><Link to='/' className={props.activeIndex===4?"profile-nav-item-active":"profile-nav-item"}>PRIVACY SETTING</Link></ul>
                 {user?.charity_event_recipient&&<ul><Link to='/profile/manage_charity_recipient' className={props.activeIndex===5?"profile-nav-item-active":"profile-nav-item"}>MANAGE CHARITY RECIPIENT</Link></ul>}
             </nav>
         </div>

@@ -119,7 +119,6 @@ const Header = (props) => {
           <span><Link to='/announcement/view' className="nav-item white-text">ANNOUNCEMENT</Link></span>
           <span><Link to='/charity_event/view' className="nav-item white-text">CHARITY EVENT</Link></span>
           <span><Link to='/part_time_job/view' className="nav-item white-text">PART-TIME JOB</Link></span>
-          <span><Link to='/' className="nav-item white-text">ABOUT US</Link></span>
       </nav>
       {
         user?
