@@ -151,11 +151,11 @@ const Header = (props) => {
         </Popover>
 
         <span><Link to='/profile' className="nav-item white-text align-middle"><AccountCircleIcon/>{user.name}</Link></span>
-        <span><Link to='/login'  onClick={handleOnClick} className="nav-item white-text">Logout</Link></span>
+        <span><Link to='/login'  onClick={handleOnClick} className="nav-item white-text">LOG OUT</Link></span>
         </nav>
         :
         <nav id="user-section">
-          <span><Link to='/login' className="nav-item white-text align-middle"><AccountCircleIcon/>Sign In</Link></span>
+          <span><Link to='/login' className="nav-item white-text align-middle"><AccountCircleIcon/>SIGN IN</Link></span>
         </nav>
       }
       

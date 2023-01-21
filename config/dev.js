@@ -6,4 +6,5 @@ module.exports={
     STRIPE_SECRET:"sk_test_51KRvhoFSMJYMwhaRZzuVJcdqi8JQjo5YPXcQAWCdb7XNvJZA4PdPDncEsLKfmclOmTQrUy0zh5k7rlUKxNn2RPZY00SR4cQ5pJ",
     NODEMAILER_EMAIL:"kebajikanapp@gmail.com",
     NODEMAILER_PASSWORD:"daefulhitydchyfd"
+    //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
 }

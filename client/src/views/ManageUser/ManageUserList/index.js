@@ -181,7 +181,7 @@ const ManageUserList = () => {
     return (
         <React.Fragment>
             {isLoading?<Loading/>:<>
-            <BackSection title="User" previousIsHome={true} createButtonName="Create New Usere" onBackButtonClick={navigatePrev} handleButtonCreate={handleOpenForm}/>
+            <BackSection title="User" previousIsHome={true} createButtonName="Create New User" onBackButtonClick={navigatePrev} handleButtonCreate={handleOpenForm}/>
             <div id="user-list-table-section">
                 <table>
                     <thead>
