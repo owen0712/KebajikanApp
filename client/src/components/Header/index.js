@@ -124,7 +124,7 @@ const Header = (props) => {
         user?
         <nav id="user-section">
         <span><Link to='/chat' className="nav-item white-text"><ChatIcon/></Link></span>
-        {isAdministrator()?<span><Link to='/admin' className="nav-item white-text">Administration</Link></span>:<></>}
+        {isAdministrator()?<span><Link to='/admin' className="nav-item white-text">ADMINISTRATION</Link></span>:<></>}
         <span className="nav-item" id="notification-icon"><NotificationsActiveIcon onClick={handleNotificationOnClick}/></span>
         <Popover
           id={id}
@@ -151,7 +151,7 @@ const Header = (props) => {
         </Popover>
 
         <span><Link to='/profile' className="nav-item white-text align-middle"><AccountCircleIcon/>{user.name}</Link></span>
-        <span><Link to='/login'  onClick={handleOnClick} className="nav-item white-text">LOG OUT</Link></span>
+        <span><Link to='/login'  onClick={handleOnClick} className="nav-item white-text">LOGOUT</Link></span>
         </nav>
         :
         <nav id="user-section">

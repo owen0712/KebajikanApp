@@ -121,6 +121,15 @@ router.put('/notification/:id',requiredLogin,(req,res)=>{
                         res.json({error:err})
                     })
                 }
+                //update existing message to unread
+                else{
+                    UserNotification.findByIdAndUpdate(existingUserNotification._id,{status:"unread"},{new:false},(err,result)=>{
+                        if(err){
+                            console.log(err);
+                        }
+                        // console.log(result);
+                    })
+                }
             })
         })
         //push notification to user after update the recipient

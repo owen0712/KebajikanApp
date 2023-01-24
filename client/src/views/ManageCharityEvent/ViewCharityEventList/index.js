@@ -181,7 +181,7 @@ const ViewCharityEventList = (props) => {
                                 <td className='button-list'>
                                     <button className='button' onClick={()=>handleView(event._id)}><RemoveRedEyeIcon/>View</button>
                                     <button className='button' onClick={()=>handleEdit(event._id)}><CreateIcon/>Edit</button>
-                                    <button className='danger-button' onClick={()=>handleDelete(event._id)}><DeleteIcon/>Delete</button>    
+                                    <button className='danger-button' onClick={()=>handleDelete(event._id)} disabled={event.status=="Closed"}><DeleteIcon/>Delete</button>    
                                 </td>
                             </tr>
                         })}
