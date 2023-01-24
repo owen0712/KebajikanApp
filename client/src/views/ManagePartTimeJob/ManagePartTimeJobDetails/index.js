@@ -223,7 +223,7 @@ const ManagePartTimeJobDetails = (props) => {
             <BackSection title={isEdit?"Edit Part-Time Job Details":"View Part-Time Job Details"} onBackButtonClick={navigatePrev}/> 
             <form onSubmit={event=>handleSave(event)}>
                 <div id="upper-part">
-                    <div id="form-left-content">
+                    <div id="job-form-left-content">
                         <span className="short-input">
                             <label >TITLE</label>
                             <input disabled={!isEdit} value={title} type="text" name="title" onChange={event=>handleTitleOnChange(event)}/>
@@ -233,7 +233,7 @@ const ManagePartTimeJobDetails = (props) => {
                             <textarea disabled={!isEdit} value={description} name="description" onChange={event=>handleDescriptionOnChange(event)}/>
                         </span>
                     </div>
-                    <div id="form-right-content">
+                    <div id="job-form-right-content">
                         <span className="short-input">
                             <label >REQUIRED STUDENT</label>
                             <input disabled={!isEdit} value={required_student} min={allocated_student.length==0?"1":allocated_student.length} type="number" name="amount" onChange={event=>handleRequiredStudentOnChange(event)}/>

@@ -150,7 +150,7 @@ const CreatePartTimeJob = (props) => {
             <BackSection title={(props.isAdmin)?"Create Part-Time Job":"Propose Part-Time Job"} onBackButtonClick={navigatePrev}/> 
             <form onSubmit={event=>handleSubmit(event)}>
                 <div id="upper-part">
-                    <div id="form-left-content">
+                    <div id="job-form-left-content">
                         <span className="short-input">
                             <label >TITLE</label>
                             <input type="text" name="title" onChange={event=>handleTitleOnChange(event)}/>
@@ -160,7 +160,7 @@ const CreatePartTimeJob = (props) => {
                             <textarea name="description" onChange={event=>handleDescriptionOnChange(event)}/>
                         </span>
                     </div>
-                    <div id="form-right-content">
+                    <div id="job-form-right-content">
                         <span className="short-input">
                             <label >REQUIRED STUDENT</label>
                             <input type="number" name="amount" min="1" defaultValue={0} onChange={event=>handleRequiredStudentOnChange(event)}/>

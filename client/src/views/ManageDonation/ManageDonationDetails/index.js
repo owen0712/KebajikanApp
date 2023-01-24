@@ -331,6 +331,11 @@ const ManageDonationDetails = (props) => {
         setIsVerify(false);
         resetState();
     }
+
+    const handleChat = (id) =>{
+        navigate('/chat/'+id);
+    }
+
     const renderAppointmentDetails = () => {
         return (
             <>
@@ -467,18 +472,28 @@ const ManageDonationDetails = (props) => {
 
                 {(donation.status!="Verified"&&donation.status!="Rejected"&&donation.status!="Appointment")&&
                     <div id="donation-button-row">
-                        {isVerify?
+                        
                         <div id="save-section">
-                            {donation.status=="Pending"?
+                            {isVerify?
                             <>
-                                <button onClick={()=>toggleUpdateAppointmentStatus(true)} id="approve-button">Approve</button>
-                                <button onClick={()=>toggleUpdateAppointmentStatus(false)} id="reject-button">Reject</button>
-                            </>:
-                            <button onClick={toggleSave} id="save-button">Save</button>
-                            }
-                            <button onClick={toggleViewOnly} id="cancel-button">Cancel</button>
-                        </div>:
-                        <button onClick={toggleVerify} id="create-button">Verify</button>}
+                                {donation.status=="Pending"?
+                                <>
+                                    <button onClick={()=>toggleUpdateAppointmentStatus(true)} id="approve-button">Approve</button>
+                                    <button onClick={()=>toggleUpdateAppointmentStatus(false)} id="reject-button">Reject</button>
+                                </>:
+                                <button onClick={toggleSave} id="save-button">Save</button>
+                                }
+                                <button onClick={toggleViewOnly} id="cancel-button">Cancel</button>
+                            </>
+                            :
+                            <>
+                                <button onClick={toggleVerify} id="verify-donation-button">Verify</button>
+                                {user&&(user.id==donation.donor_id)?
+                                    <></>:
+                                    <button onClick={()=>handleChat(donation.donor_id)} id="chat-donor-button">Chat</button>
+                                }
+                            </>}
+                        </div>
                     </div>
                 }
             </div>

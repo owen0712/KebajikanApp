@@ -24,3 +24,26 @@ button{
     width: 100px;
     cursor: pointer;
 }
+
+#charity-form-left-content .short-input{
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 0px;
+}
+
+#charity-form-left-content .long-input *{
+    width: 98%;
+}
+
+#charity-form-left-content{
+    width: 50%;
+    margin-right: 15px;
+}
+
+#charity-form-right-content label{
+    width: 50%;
+}
+
+#charity-form-right-content input{
+    width: 60%;
+}

@@ -251,7 +251,7 @@ const ViewUserEventProposal = (props) => {
             {isLoading?<Loading/>:<>
             <form id="view-user-event-proposal">
                 <div id="create-form-upper-part">
-                    <div id="form-left-content">
+                    <div id="charity-form-left-content">
                         <span className="short-input">
                             <label >TITLE</label>
                             <input type="text" name="title" defaultValue={title} disabled />
@@ -265,7 +265,7 @@ const ViewUserEventProposal = (props) => {
                             <textarea name="description" defaultValue={description} disabled />
                         </span>
                     </div>
-                    <div id="form-right-content">
+                    <div id="charity-form-right-content">
                         <span className="short-input">
                             <label >LOCATION</label>
                             <input type="text" name="location" defaultValue={location} disabled />

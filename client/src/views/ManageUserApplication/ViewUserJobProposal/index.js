@@ -198,7 +198,7 @@ const ViewUserJobProposal = (props) => {
             <BackSection title={isVerify?"Verify Part-Time Job Proposal":"View Part-Time Job Proposal"} onBackButtonClick={navigatePrev}/> 
             <form id="view-user-job-proposal">
                 <div id="upper-part">
-                    <div id="form-left-content">
+                    <div id="job-form-left-content">
                         <span className="short-input">
                             <label >TITLE</label>
                             <input disabled value={title} type="text" name="title"/>
@@ -208,7 +208,7 @@ const ViewUserJobProposal = (props) => {
                             <textarea disabled value={description} name="description"/>
                         </span>
                     </div>
-                    <div id="form-right-content">
+                    <div id="job-form-right-content">
                         <span className="short-input">
                             <label >REQUIRED STUDENT</label>
                             <input disabled value={required_student} type="number" name="required_student"/>

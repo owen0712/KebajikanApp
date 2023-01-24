@@ -73,11 +73,26 @@ textarea{
     width: 85%;
 }
 
-#form-right-content label{
-    width: 40%;
+#job-form-left-content .short-input{
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 0px;
 }
 
-#form-right-content input{
+#job-form-left-content .long-input *{
+    width: 98%;
+}
+
+#job-form-left-content{
+    width: 50%;
+    margin-right: 15px;
+}
+
+#job-form-right-content label{
+    width: 50%;
+}
+
+#job-form-right-content input{
     width: 60%;
 }
 

@@ -35,3 +35,29 @@
     width: 100px;
     cursor: pointer;
 }
+
+#donation-button-row #verify-donation-button{
+    background-color: #192F59;
+    color: white;
+    margin: 10px 4px;
+    border-radius: 20px;
+    height: 40px;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    width: 100px;
+    cursor: pointer;
+}
+
+#donation-button-row #chat-donor-button{
+    background-color: #192F59;
+    color: white;
+    margin: 10px 4px;
+    border-radius: 20px;
+    height: 40px;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    width: 100px;
+    cursor: pointer;
+}
