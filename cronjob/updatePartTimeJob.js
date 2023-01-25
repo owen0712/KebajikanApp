@@ -8,9 +8,6 @@ const checkJobStatus = (job) => {
     if(job.status==="Available"&&(date>job.closed_date || job.required_student<=job.allocated_student.length)){
         return "Closed";
     }
-    if(job.status==="Closed"&&(date>job.closed_date  && job.required_student>job.allocated_student.length)){
-        return "Available";
-    }
     return "";
 }
 cron.schedule("* * * * * *",()=>{

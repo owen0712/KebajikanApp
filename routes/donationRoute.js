@@ -131,6 +131,23 @@ router.get('/donation',requiredLogin,(req,res)=>{
     });
 })
 
+// @route   GET /donation/organizer
+// @desc    Retrieve Donation Records for charity event organizer
+// @access  Private
+router.get('/donation/organizer/:id',requiredLogin,(req,res)=>{
+    Donation.find({$or: [{"status" : {"$ne": "Pending" }}, {"category" : {"$ne": "Money" }}]})
+    .select("-receipt")
+    .sort('-created_on')
+    .populate("charity_event_id",["title","created_by"])
+    .populate("donor_id","name")
+    .populate("appointment_id")
+    .then(donations=>{
+        res.json({donations:donations.filter((donation)=>{return donation.charity_event_id.created_by==req.params.id})});
+    }).catch(err=>{
+        res.json({error:err});
+    });
+})
+
 // @route   GET /donation/user/:id
 // @desc    Retrieve Spcific User's Donation
 // @access  Private

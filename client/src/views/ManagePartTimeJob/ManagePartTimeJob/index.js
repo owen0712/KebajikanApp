@@ -95,8 +95,8 @@ const ManagePartTimeJob = (props) => {
         }).then(result=>{
             if(result.isConfirmed){
                 console.log(id)
-                fetch('/part_time_job/'+id,{
-                    method:'delete',
+                fetch('/part_time_job/delete/'+id,{
+                    method:'put',
                     headers:{
                         'Content-Type':'application/json',
                         'Authorization':"Bearer"+user.access_token
@@ -116,6 +116,7 @@ const ManagePartTimeJob = (props) => {
                             icon: 'success',
                             confirmButtonText: 'Ok'
                         })
+                        updateAllJobApplicationToClosed(id);
                         fetchData();
                     }
                     
@@ -129,6 +130,25 @@ const ManagePartTimeJob = (props) => {
             }
         })
         
+    }
+
+    const updateAllJobApplicationToClosed = (id) => {
+        fetch('/job_application/job_closed/rejected/'+id,{
+            method:'put',
+            headers:{
+                'Content-Type':'application/json',
+                'Authorization':'Bearer'+user.access_token
+            }
+        }).then(res=>res.json()).then(data=>{
+            if(data.error){
+                console.log(data.error);
+            }
+            else{
+                console.log(data.message);
+            }
+        }).catch(err=>{
+            console.log(err);
+        })
     }
 
     const navigatePrev = () =>{
@@ -177,7 +197,7 @@ const ManagePartTimeJob = (props) => {
                                 <td className='button-list'>
                                     <button className='button' onClick={()=>handleView(job._id)}><RemoveRedEyeIcon/>View</button>
                                     <button className='button' onClick={()=>handleEdit(job._id)}><CreateIcon/>Edit</button>
-                                    <button disabled={job.status=="Closed"} className='danger-button' onClick={(job.status=="Closed")?()=>{}:()=>handleDelete(job._id)}><DeleteIcon/>Delete</button>    
+                                    <button disabled={job.status=="Closed" || job.allocated_student.length>0} className='danger-button' onClick={(job.status=="Closed"||job.allocated_student.length>0)?()=>{}:()=>handleDelete(job._id)}><DeleteIcon/>Delete</button>    
                                 </td>
                             </tr>
                         })}

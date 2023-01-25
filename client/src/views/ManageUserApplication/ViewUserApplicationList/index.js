@@ -35,10 +35,22 @@ const ViewUserApplicationList = (props) =>{
             },5000)
         }
         if(user){
-            fetchEventApplicationData();
-            fetchJobApplicationData();
-            fetchEventProposalApplicationData();
-            fetchJobProposalApplicationData();
+            if(user.role==0){
+                setIsLoading(true)
+                timer = setTimeout(()=>{
+                    navigate('/login')
+                },5000)
+            }else{
+                fetchEventApplicationData();
+                fetchJobApplicationData();
+                fetchEventProposalApplicationData();
+                fetchJobProposalApplicationData();
+            }
+            
+        }
+        if (!isAdmin()&&!isCharityEventOrganizer()&&isPartTimeJobOrganizer()){
+            setIsDisplayEventApplication(false)
+            setIsDisplayJobApplication(true)
         }
         return () => {
             clearTimeout(timer);
@@ -77,10 +89,9 @@ const ViewUserApplicationList = (props) =>{
 
     const fetchJobApplicationData=()=>{
         setIsLoading(true);
-        const url = (!isAdmin()&&isCharityEventOrganizer())?
+        const url = (!isAdmin()&&isPartTimeJobOrganizer())?
                         '/job_application/organizer/'+user.id:
                         '/job_application';
-        console.log(url);
         fetch(url,{
             method:'get',
             headers:{
@@ -106,7 +117,6 @@ const ViewUserApplicationList = (props) =>{
         const url = (!isAdmin()&&isCharityEventOrganizer())?
                         '/charity_application/organizer/'+user.id:
                         '/charity_application';
-        console.log(url);
         fetch(url,{
             method:'get',
             headers:{
@@ -119,6 +129,7 @@ const ViewUserApplicationList = (props) =>{
             }
             else{
                 setEventApplications(data.events);
+                console.log("Event application",data.events)
                 setEventApplicationsPage(1);
                 setIsLoading(false);
             }
@@ -326,7 +337,7 @@ const ViewUserApplicationList = (props) =>{
                     <tbody>
                         {
                             jobApplications.length==0&&<tr className="no-event" rowSpan={6}>
-                                <td colSpan={5}>No event application is submitted yet.</td>
+                                <td colSpan={5}>No job application is submitted yet.</td>
                             </tr>
                         }
                         {

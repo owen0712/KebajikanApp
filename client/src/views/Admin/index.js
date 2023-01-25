@@ -61,11 +61,11 @@ const Admin = (props) => {
                     <NewReleasesIcon/>
                     <p>ANNOUNCEMENT</p>
                 </span>}
-                {isCharityEventOrganizer()&&<span className="option-card" onClick={()=>handleClick('/manage_charity_event')}>
+                {(isAdmin() || isCharityEventOrganizer())&&<span className="option-card" onClick={()=>handleClick('/manage_charity_event')}>
                     <EventTwoToneIcon/>
                     <p>CHARITY EVENT</p>
                 </span>}
-                {isPartTimeJobOrganizer()&&<span className="option-card" onClick={()=>handleClick('/manage_part_time_job')}>
+                {(isAdmin() || isPartTimeJobOrganizer())&&<span className="option-card" onClick={()=>handleClick('/manage_part_time_job')}>
                     <WorkTwoToneIcon/>
                     <p>PART-TIME JOB</p>
                 </span>}
@@ -73,11 +73,11 @@ const Admin = (props) => {
                     <FactCheckTwoToneIcon/>
                     <p>USER APPLICATION</p>
                 </span>}
-                {isAdmin()&&<>
-                <span className="option-card" onClick={()=>handleClick('/manage_donation')}>
+                {(isAdmin() || isCharityEventOrganizer())&&<span className="option-card" onClick={()=>handleClick('/manage_donation')}>
                     <PaidTwoToneIcon/>
                     <p>DONATION</p>
-                </span>
+                </span>}
+                {isAdmin()&&<>
                 <span className="option-card" onClick={()=>handleClick('/manage_notification')}>
                     <NotificationsActiveTwoToneIcon/>
                     <p>NOTIFICATION</p>

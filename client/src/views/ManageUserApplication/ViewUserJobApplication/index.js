@@ -126,6 +126,7 @@ const ViewJobApplication = (props) => {
                 if(newStatus=="Closed"){
                     updateAllJobApplicationToClosed();
                 }
+                fetchData();
                 toggleViewOnly();
             }
         }).catch(err=>{

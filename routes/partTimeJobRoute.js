@@ -126,10 +126,18 @@ router.get('/part_time_job/:id',(req,res)=>{
 // @desc    Update Part-time Job
 // @access  Private
 router.put('/part_time_job/:id',requiredLogin,(req,res)=>{
-    const {title,required_student,description,location,allowance,closed_date,photo} = req.body;
+    const {title,required_student,allocated_student,description,location,allowance,closed_date,photo} = req.body;
     if(!title||!required_student||!description||!location||!allowance||!closed_date||!photo){
         return res.json({error:'please fill all fields'});
     }
+    const date = new Date();
+
+    if( date < new Date(closed_date)  && required_student>allocated_student.length){
+        req.body.status = "Available";
+    }else if(date<new Date(closed_date) || required_student<=allocated_student.length){
+        req.body.status = "Closed";
+    }
+
     PartTimeJob.findByIdAndUpdate(req.params.id,req.body,{new:false},(err,result)=>{
         if(err){
             return res.json({error:err})
@@ -162,6 +170,18 @@ router.put('/part_time_job/allocated_student/:id',requiredLogin,(req,res)=>{
             return res.json({error:err})
         }
         res.json({message:"Successfully updated"})
+    })
+});
+
+// @route   PUT /part_time_job/delete/:id
+// @desc    Update Part-time Job Status to deleted
+// @access  Private
+router.put('/part_time_job/delete/:id',requiredLogin,(req,res)=>{
+    PartTimeJob.findByIdAndUpdate(req.params.id, { status: "Deleted" },{new:false},(err,result)=>{
+        if(err){
+            return res.json({error:err})
+        }
+        res.json({message:"Successfully Deleted"})
     })
 });
 

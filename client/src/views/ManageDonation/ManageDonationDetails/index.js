@@ -33,13 +33,14 @@ const ManageDonationDetails = (props) => {
             },5000)
         }
         if(user){
-            if(user.role==2){
-                fetchData();
-            }
-            else{
+            if(user.role==0){
+                setIsLoading(true)
                 timer = setTimeout(()=>{
                     navigate('/login')
                 },5000)
+            }
+            else{
+                fetchData();
             }
         }
         return () => {

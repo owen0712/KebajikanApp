@@ -164,6 +164,7 @@ const ManagePartTimeJobDetails = (props) => {
             body:JSON.stringify({
                 title,
                 required_student,
+                allocated_student,
                 description,
                 location,
                 allowance,
@@ -185,6 +186,9 @@ const ManagePartTimeJobDetails = (props) => {
                     title: data.message,
                     confirmButtonText: 'OK'
                 });
+                if(required_student<=allocated_student.length){
+                    updateAllJobApplicationToClosed(job_id.id)
+                }
                 setIsEdit(false);
             }
         }).catch(err=>{
@@ -195,6 +199,26 @@ const ManagePartTimeJobDetails = (props) => {
             });
         })
     }
+
+    const updateAllJobApplicationToClosed = (id) => {
+        fetch('/job_application/job_closed/rejected/'+id,{
+            method:'put',
+            headers:{
+                'Content-Type':'application/json',
+                'Authorization':'Bearer'+user.access_token
+            }
+        }).then(res=>res.json()).then(data=>{
+            if(data.error){
+                console.log(data.error);
+            }
+            else{
+                console.log(data.message);
+            }
+        }).catch(err=>{
+            console.log(err);
+        })
+    }
+
 
     const navigatePrev = () =>{
         if(props.isAdmin)

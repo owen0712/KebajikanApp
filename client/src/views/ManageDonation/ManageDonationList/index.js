@@ -25,13 +25,14 @@ const ManageDonationList = (props) => {
             },5000)
         }
         if(user){
-            if(user.role==2){
-                fetchData();
-            }
-            else{
+            if(user.role==0){
+                setIsLoading(true)
                 timer = setTimeout(()=>{
                     navigate('/login')
                 },5000)
+            }
+            else{
+                fetchData();
             }
         }
         return () => {
@@ -43,9 +44,24 @@ const ManageDonationList = (props) => {
         setDisplayedDonation();
     },[page,donations])
 
+    const isAdmin = () => {
+        if(user){
+            return user.role==2;
+        }
+    }
+
+    const isCharityEventOrganizer = () => {
+        if(user){
+            return user.role==2||user.charity_event_organizer;
+        }
+    }
+
     const fetchData = () =>{
         setIsLoading(true);
-        fetch('/donation',{
+        const url = (!isAdmin()&&isCharityEventOrganizer())?
+                    '/donation/organizer/'+user.id:
+                    '/donation';
+        fetch(url,{
             method:'get',
             headers:{
                 'Content-Type':'application/json',
@@ -108,6 +124,11 @@ const ManageDonationList = (props) => {
                         </tr>
                     </thead>
                     <tbody>
+                        {
+                            displayedDonations.length==0&&<tr className="no-event" rowSpan={6}>
+                                <td colSpan={7}>There is still without any donation record.</td>
+                            </tr>
+                        }
                         {
                         displayedDonations.map(donation=>{
                             return <tr key={donation._id}>
