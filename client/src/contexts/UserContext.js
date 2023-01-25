@@ -29,9 +29,9 @@ export const UserProvider = ( {children} ) => {
         if(user==null&&refresh_token){
             refreshUserData();
         }
-        if(user&&refresh_token){
-            refreshToken();
-        }
+        // if(user&&refresh_token){
+        //     refreshToken();
+        // }
         setIsFetching(false);
     },[user])
     

@@ -87,8 +87,8 @@ router.post("/signin", (req, res) => {
       bcrypt.compare(password, savedUser.password).then((isMatch) => {
         if (isMatch) {
           const _id = savedUser._id;
-          const access_token= jwt.sign({_id},JWT_SECRET_ACCESS,{expiresIn:'10m'});
-          const refresh_token= jwt.sign({_id},JWT_SECRET_REFRESH,{expiresIn:'1h'});
+          const access_token= jwt.sign({_id},JWT_SECRET_ACCESS,{expiresIn:'2h'});
+          const refresh_token= jwt.sign({_id},JWT_SECRET_REFRESH,{expiresIn:'12h'});
           if(savedUser.role=="User"){
             savedUser.role=0;
           }
@@ -126,7 +126,7 @@ router.post('/forgot_password',(req,res)=>{
       if(!savedUser){
           return res.json({error:'User is not existed'});
       }
-      const access_token= jwt.sign({_id:savedUser._id},JWT_SECRET_ACCESS,{expiresIn:'10m'});
+      const access_token= jwt.sign({_id:savedUser._id},JWT_SECRET_ACCESS,{expiresIn:'2h'});
       const subject = 'Kebajikan App User Reset Password';
       const content = `<p>Please click the link below to reset your password</p> <a href='${DOMAIN}/reset_password/${access_token}'>Click here</a>`;
       const result = sendMail({destinationEmail:email,subject,content})

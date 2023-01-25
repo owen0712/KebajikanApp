@@ -78,7 +78,7 @@ const Login = (props) => {
                 </span>
                 <input id="login-button" type="submit" value="LOGIN"/>
                 <Link to="/forgot_password">FORGOT PASSWORD?</Link>
-                <Link to="/signup">SIGN UP NOW</Link>
+                <Link to="/signup">SIGNUP NOW</Link>
             </form>
         </div>
     )

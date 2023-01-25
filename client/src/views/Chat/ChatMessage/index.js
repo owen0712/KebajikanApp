@@ -42,8 +42,6 @@ const ChatMessage = (props) => {
 
     useEffect(()=>{
         socket.on('receive_message',(data)=>{
-            console.log(data)
-            console.log(selectedChatMate)
             setUpdateList(true);
             if(data.sender==selectedChatMate){
                 setChatRecord(prev=>[...prev,data]);
