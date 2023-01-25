@@ -52,8 +52,8 @@ mongoose.connection.on('error', (err) => {
     console.log('err connecting', err)
 })
 
-// require('./cronjob/updateCharityEvent');
-// require('./cronjob/updatePartTimeJob');
+require('./cronjob/updateCharityEvent');
+require('./cronjob/updatePartTimeJob');
 
 const server = http.createServer(app);
 
