@@ -8,7 +8,10 @@ const checkEventStatus = (event) => {
     if(event.status==="In Progress"&&date>event.donation_end_date){
         return "Closed";
     }
-    if(event.status==="Preregistration"&&date.getDate()+1>event.preregister_end_date&&date<event.donation_start_date){
+    if(event.status==="Preregistration Closed"&&date>=event.donation_start_date){
+        return "In Progress";
+    }
+    if(event.status==="Preregistration"&&date>event.preregister_end_date&&date<event.donation_start_date){
         return "Preregistration Closed";
     }
     if(event.status==="Preregistration"&&date>event.preregister_end_date){
@@ -20,8 +23,7 @@ const checkEventStatus = (event) => {
     return "";
 }
 cron.schedule("0 */15 * * * *",()=>{
-    console.log('update')
-    CharityEvent.find({ "status" : { "$in": ["Not Started", "In Progress", "Preregistration"] }})
+    CharityEvent.find({ "status" : { "$in": ["Not Started", "In Progress", "Preregistration", "Preregistration Closed"] }})
     .select('-photo')
     .select('-document')
     .then((events)=>{
