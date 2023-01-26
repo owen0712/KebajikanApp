@@ -10,7 +10,7 @@ const checkJobStatus = (job) => {
     }
     return "";
 }
-cron.schedule("* * * * * *",()=>{
+cron.schedule("0 */15 * * * *",()=>{
     PartTimeJob.find({ "status" : { "$in": ["Closed", "Available"] }})
     .select('-photo')
     .then((jobs)=>{

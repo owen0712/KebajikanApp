@@ -53,7 +53,7 @@ mongoose.connection.on('error', (err) => {
 })
 
 // require('./cronjob/updateCharityEvent');
-// require('./cronjob/updatePartTimeJob');
+require('./cronjob/updatePartTimeJob');
 
 const server = http.createServer(app);
 

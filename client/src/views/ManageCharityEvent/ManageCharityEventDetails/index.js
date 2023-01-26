@@ -301,7 +301,6 @@ const ManageCharityEventDetails = (props) => {
             }
             else{
                 setDocument(data.document);
-                console.log(data.document)
             }
         }).catch(err=>{
             Swal.fire({
