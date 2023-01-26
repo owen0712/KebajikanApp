@@ -12,7 +12,7 @@ export const SocketProvider = ( {children} ) => {
 
     // const [port,setPort] = useState("5000");
 
-    const socket = io(`:5000`,{
+    const socket = io(``,{
         autoconnect: true,
         reconnect: true,
         reconnection: true,
