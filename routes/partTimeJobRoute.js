@@ -131,11 +131,12 @@ router.put('/part_time_job/:id',requiredLogin,(req,res)=>{
         return res.json({error:'please fill all fields'});
     }
     const date = new Date();
-
-    if( date < new Date(closed_date)  && required_student>allocated_student.length){
-        req.body.status = "Available";
-    }else if(date<new Date(closed_date) || required_student<=allocated_student.length){
-        req.body.status = "Closed";
+    if (req.user.role=="Admin" || req.user.part_time_job_organizer){
+        if( date < new Date(closed_date)  && required_student>allocated_student.length){
+            req.body.status = "Available";
+        }else if(date<new Date(closed_date) || required_student<=allocated_student.length){
+            req.body.status = "Closed";
+        }
     }
 
     PartTimeJob.findByIdAndUpdate(req.params.id,req.body,{new:false},(err,result)=>{
